@@ -3,4 +3,5 @@ __pycache__/
 *.pyc
 reports/
 commands.txt
-evals/reports/
+evals/reports/br2040_data/
+brasil2040_reports/
