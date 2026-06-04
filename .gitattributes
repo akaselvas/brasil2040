@@ -1,0 +1,2 @@
+*.json !text !filter !merge !diff
+mapaMunicipiosBR.json filter=lfs diff=lfs merge=lfs -text

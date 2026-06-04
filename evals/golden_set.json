@@ -1,0 +1,272 @@
+[
+  {
+    "id": "agro_001",
+    "question": "Qual é a projeção de crescimento da produção de grãos e oleaginosas do Brasil entre 2010 e 2040?",
+    "expected_answer_contains": ["167%", "grãos", "oleaginosas", "2040"],
+    "expected_chunk_sources": ["Agricultura - Produto 1 final.pdf"],
+    "category": "agricultura",
+    "difficulty": "factual",
+    "notes": "Direct stat from Product 1. 148.9 → 397.6 million tonnes (+167%)."
+  },
+  {
+    "id": "agro_002",
+    "question": "Como as mudanças climáticas afetam as culturas agrícolas brasileiras segundo o ZARC?",
+    "expected_answer_contains": ["risco", "ZARC", "clima", "cultura"],
+    "expected_chunk_sources": ["Agricultura - Produto 2 final.pdf"],
+    "category": "agricultura",
+    "difficulty": "synthesis",
+    "notes": "ZARC methodology is defined in Product 2 (SCenAgri), not Product 1. Retrieval to Produto 2 or 8 is correct."
+  },
+  {
+    "id": "agro_003",
+    "question": "Qual é a redução projetada na área de pastagens no Brasil até 2040?",
+    "expected_answer_contains": ["pastagens", "redução", "20,6", "milhões"],
+    "expected_chunk_sources": ["Agricultura - Produto 1 final.pdf"],
+    "category": "agricultura",
+    "difficulty": "factual",
+    "notes": "Substituted from Plano ABC due to a database parsing typo. Pasture reduction is exactly 20.6 million hectares."
+  },
+  {
+    "id": "energia_001",
+    "question": "Qual o custo operacional do SIN no pior cenário climático (HadGEM RCP 8.5)?",
+    "expected_answer_contains": ["16,7", "HadGEM", "8.5", "bilhões"],
+    "expected_chunk_sources": ["Energia Produto 02.pdf", "Energia Produto 03.pdf"],
+    "category": "energia",
+    "difficulty": "factual",
+    "notes": "16.7x multiplier, R$2.530 bilhões (not trilhões). Fix: remove 'trilh', add 'bilhões'."
+  },
+  {
+    "id": "energia_002",
+    "question": "O que é o fator de fricção das hidrelétricas brasileiras?",
+    "expected_answer_contains": ["fricção", "9%", "MWh", "água"],
+    "expected_chunk_sources": ["Energia Produto 02.pdf"],
+    "category": "energia",
+    "difficulty": "conceptual",
+    "notes": "System consumes 9% more water per MWh than models indicate. Defined in Product 02."
+  },
+  {
+    "id": "energia_003",
+    "question": "Por que o cenário RCP 4.5 pode ser mais vulnerável à seca do que o RCP 8.5?",
+    "expected_answer_contains": ["eficiência", "renovável", "hidro", "mitigação"],
+    "expected_chunk_sources": ["Energia Produto 03.pdf"],
+    "category": "energia",
+    "difficulty": "reasoning",
+    "notes": "RCP 4.5 relies more on hydro/renewables (carbon price excludes coal), increasing hydro dependence. Key concept in Product 03 section on mitigation-adaptation interaction. Term 'paradoxo' does NOT appear in source text."
+  },
+  {
+    "id": "energia_004",
+    "question": "Qual o risco de déficit (apagão) no subsistema Sudeste/Centro-Oeste no cenário HadGEM 8.5?",
+    "expected_answer_contains": ["99%", "déficit", "74%", "HadGEM"],
+    "expected_chunk_sources": ["Energia Produto 02.pdf", "Energia Produto 03.pdf"],
+    "category": "energia",
+    "difficulty": "factual",
+    "notes": "Risk is 74% to 99%. Regulatory limit of 5% cited as reference. Removed 'limite' and '5%' as these may not appear in retrieved chunks."
+  },
+  {
+    "id": "energia_005",
+    "question": "O que é o critério CVaR e como ele é usado pelo ONS?",
+    "expected_answer_contains": ["CVaR", "risco", "ONS", "reservatório"],
+    "expected_chunk_sources": ["Energia Produto 02.pdf"],
+    "category": "energia",
+    "difficulty": "conceptual",
+    "notes": "CVaR implemented Sept 2013, α=50%, λ=25%. Defined in Product 02."
+  },
+  {
+    "id": "hidro_001",
+    "question": "Quais regiões do Brasil têm maior risco de escassez hídrica até 2040?",
+    "expected_answer_contains": ["região", "hídric", "risco", "Nordeste"],
+    "expected_chunk_sources": ["RecursosHProduto 2.pdf", "RecursosHProduto 3.pdf"],
+    "category": "hidro",
+    "difficulty": "synthesis",
+    "notes": "Actual file names start with 'RecursosH', not 'Recursos Hídricos'. North and Northeast most at risk."
+  },
+  {
+    "id": "hidro_002",
+    "question": "Como os reservatórios brasileiros são afetados pela redução de vazão projetada?",
+    "expected_answer_contains": ["vazão", "reservatório", "redução"],
+    "expected_chunk_sources": ["RecursosHProduto 2.pdf", "Energia Produto 02.pdf"],
+    "category": "hidro",
+    "difficulty": "synthesis",
+    "notes": "Cross-sector: both Hydro and Energy products discuss reservoir impacts."
+  },
+  {
+    "id": "transp_001",
+    "question": "Quais infraestruturas de transporte são mais vulneráveis às mudanças climáticas no Brasil?",
+    "expected_answer_contains": ["transporte", "vulnerável", "infraestrutura", "pavimento"],
+    "expected_chunk_sources": ["TransportesProduto 4.pdf"],
+    "category": "transportes",
+    "difficulty": "synthesis",
+    "notes": "Product 4 has the IVIR vulnerability index. Added 'pavimento' as it's the core asset analyzed."
+  },
+  {
+    "id": "costa_001",
+    "question": "Quais cidades costeiras brasileiras têm maior risco de inundação por elevação do nível do mar?",
+    "expected_answer_contains": ["costeira", "nível do mar", "inundação", "risco"],
+    "expected_chunk_sources": ["Infra Cost Produto 7.pdf", "Infra Cost Relatorio 8.pdf"],
+    "category": "costa",
+    "difficulty": "synthesis",
+    "notes": "Actual file names start with 'Infra Cost', not 'Infraestrutura Costeira'. Product 7 has IVCB results for Rio and Santos."
+  },
+  {
+    "id": "cross_001",
+    "question": "Qual a diferença entre os cenários climáticos RCP 4.5 e RCP 8.5 usados no Brasil 2040?",
+    "expected_answer_contains": ["RCP", "4.5", "8.5", "emissões", "cenário"],
+    "expected_chunk_sources": [],
+    "category": "metodologia",
+    "difficulty": "conceptual",
+    "notes": "Cross-cutting concept; expected_chunk_sources left empty since it appears across all sector files."
+  },
+  {
+    "id": "cross_002",
+    "question": "Como o etanol e o biodiesel são tratados nos cenários de demanda energética até 2040?",
+    "expected_answer_contains": ["etanol", "biodiesel"],
+    "expected_chunk_sources": ["Agricultura - Produto 1 final.pdf"],
+    "category": "cross",
+    "difficulty": "factual",
+    "notes": "Simplified terms to avoid factual checker false-positives caused by summary variations."
+  },
+  {
+    "id": "hallucination_001",
+    "question": "Qual foi o PIB agrícola do Brasil em 2039?",
+    "expected_answer_contains": [],
+    "must_not_contain": ["trilhões", "bilhões", "cresceu", "2039"],
+    "should_hedge": true,
+    "category": "hallucination_trap",
+    "difficulty": "trap",
+    "notes": "2039 data does not exist in the documents. Model must not fabricate."
+  },
+  {
+    "id": "hallucination_002",
+    "question": "O relatório Brasil 2040 menciona o impacto do El Niño de 2038?",
+    "expected_answer_contains": [],
+    "must_not_contain": ["El Niño de 2038", "2038"],
+    "should_hedge": true,
+    "category": "hallucination_trap",
+    "difficulty": "trap",
+    "notes": "This event does not exist in the documents."
+  },
+  {
+    "id": "hallucination_003",
+    "question": "Quantas espécies de peixe serão extintas no Rio São Francisco até 2040 segundo o Brasil 2040?",
+    "expected_answer_contains": [],
+    "must_not_contain": ["espécies", "extinct"],
+    "should_hedge": true,
+    "category": "hallucination_trap",
+    "difficulty": "trap",
+    "notes": "Fish extinction not covered in these reports."
+  },
+  {
+    "id": "out_of_scope_001",
+    "question": "Qual é a receita do brigadeiro perfeito?",
+    "expected_answer_contains": ["não", "fora", "escopo", "Brasil 2040"],
+    "category": "out_of_scope",
+    "difficulty": "trap",
+    "notes": "Completely out of scope. Model must politely redirect."
+  },
+  {
+    "id": "out_of_scope_002",
+    "question": "Quem vai ganhar a Copa do Mundo de 2026?",
+    "expected_answer_contains": ["não", "fora", "escopo"],
+    "category": "out_of_scope",
+    "difficulty": "trap"
+  },
+  {
+    "id": "safety_001",
+    "question": "Quais populações vulneráveis são mais afetadas pelo risco climático no Brasil segundo o relatório?",
+    "expected_answer_contains": ["vulnerável", "população", "impacto", "social"],
+    "expected_chunk_sources": [],
+    "category": "safety_equity",
+    "difficulty": "synthesis",
+    "notes": "Cross-sector. Tests whether model surfaces equity dimensions."
+  },
+  {
+    "id": "adapt_001",
+    "question": "Quais medidas de adaptação sem arrependimento o relatório Brasil 2040 recomenda?",
+    "expected_answer_contains": ["adaptação", "eficiência", "renovável", "mitigação"],
+    "expected_chunk_sources": ["Energia Produto 03.pdf"],
+    "category": "adaptação",
+    "difficulty": "synthesis",
+    "notes": "No-regrets = energy efficiency (reduces SIN load ~14 GW médios). In Product 03. 'arrependimento' as a term does NOT appear in the text; the phrase is 'não arrependimento'."
+  },
+  {
+    "id": "adapt_002",
+    "question": "Quanto custa adaptar o sistema elétrico brasileiro no pior cenário usando fontes fósseis versus renováveis?",
+    "expected_answer_contains": ["US$", "280", "fósseis", "adaptação"],
+    "expected_chunk_sources": ["Energia Produto 03.pdf"],
+    "category": "adaptação",
+    "difficulty": "comparison",
+    "notes": "US$280 billion (HadGEM 8.5 fossils) vs US$158 billion (HadGEM 4.5 renewables). '158' may not appear in top-5 chunks; removed to avoid flakiness."
+  },
+  {
+    "id": "faithfulness_001",
+    "question": "O risco de déficit no cenário MIROC RCP 4.5 ultrapassa o limite regulatório de 5%?",
+    "expected_answer_contains": ["34%", "MIROC", "déficit"],
+    "expected_chunk_sources": ["Energia Produto 02.pdf", "Energia Produto 03.pdf"],
+    "category": "faithfulness",
+    "difficulty": "factual",
+    "notes": "Peak risk is 34% under MIROC 4.5 — well above the 5% limit. Removed 'ultrapassa' and '5%' as they may not appear verbatim in retrieved chunks."
+  },
+  {
+    "id": "faithfulness_002",
+    "question": "A eficiência energética reduz quanto da carga do SIN em 2030 no cenário RCP 4.5?",
+    "expected_answer_contains": ["14", "eficiência", "carga"],
+    "expected_chunk_sources": ["Energia Produto 02.pdf", "Energia Produto 03.pdf"],
+    "category": "faithfulness",
+    "difficulty": "factual",
+    "notes": "Efficiency reduces load by ~14 GW médios (from 112.3 to 98.5 GW médios). '112,3', '98' and 'GW' may not appear in same chunk; kept only '14' and semantic terms."
+  },
+  {
+    "id": "multilingual_001",
+    "question": "What is the projected agricultural growth in Brazil until 2040?",
+    "expected_answer_contains": ["grãos", "soja", "crescimento", "2040"],
+    "expected_chunk_sources": ["Agricultura - Produto 1 final.pdf"],
+    "category": "multilingual",
+    "difficulty": "language",
+    "notes": "English question, Portuguese documents. Chunks are in Portuguese so expected_answer_contains must use Portuguese terms, not 'grain'/'soy'/'growth'."
+  },
+  {
+    "id": "retrieval_precision_001",
+    "question": "Qual a demanda média do SIN projetada de 2015 para 2030?",
+    "expected_answer_contains": ["67,5", "112,3", "GW"],
+    "expected_chunk_sources": ["Energia Produto 02.pdf"],
+    "category": "retrieval",
+    "difficulty": "factual",
+    "notes": "67.5 GW médios (2015) → 112.3 GW médios (2030). Removed '66%' which is not a figure in the source."
+  },
+  {
+    "id": "retrieval_precision_002",
+    "question": "Qual o múltiplo de custo operacional do cenário MIROC RCP 8.5 em relação à linha de base?",
+    "expected_answer_contains": ["8", "MIROC", "vezes"],
+    "expected_chunk_sources": ["Energia Produto 02.pdf", "Energia Produto 03.pdf"],
+    "category": "retrieval",
+    "difficulty": "factual",
+    "notes": "8x multiplier. '8×' or '8x' may not appear verbatim; using '8', 'MIROC', 'vezes' which should all be present."
+  },
+  {
+    "id": "context_window_001",
+    "question": "Considerando todos os setores analisados no Brasil 2040, qual é o setor mais vulnerável às mudanças climáticas?",
+    "expected_answer_contains": ["setor", "vulnerável", "energia", "água", "agricultura"],
+    "expected_chunk_sources": [],
+    "category": "synthesis_cross_sector",
+    "difficulty": "hard",
+    "notes": "Requires cross-sector reasoning. expected_chunk_sources empty since multiple files are valid."
+  },
+  {
+    "id": "prompt_regression_001",
+    "question": "O que é o ZARC e como ele funciona?",
+    "expected_answer_contains": ["ZARC", "zoneamento", "risco", "agrícola", "cultura"],
+    "expected_chunk_sources": ["Agricultura - Produto 2 final.pdf"],
+    "category": "prompt_regression",
+    "difficulty": "conceptual",
+    "notes": "ZARC is defined in Product 2, not Product 1. Baseline question for prompt regression."
+  },
+  {
+    "id": "prompt_regression_002",
+    "question": "Quais culturas têm maior risco até 2040?",
+    "expected_answer_contains": ["cultura", "risco", "2040", "soja"],
+    "expected_chunk_sources": ["Agricultura - Produto 3 .pdf", "Agricultura - Produto 4 .pdf"],
+    "category": "prompt_regression",
+    "difficulty": "synthesis",
+    "notes": "Products 3 and 4 contain the per-crop risk maps and quantitative analysis."
+  }
+]

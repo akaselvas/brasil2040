@@ -1,0 +1,6 @@
+old/
+__pycache__/
+*.pyc
+reports/
+commands.txt
+evals/reports/

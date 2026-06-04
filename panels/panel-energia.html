@@ -1,0 +1,221 @@
+        <section class="panel" id="panel-energia">
+          <div class="sec-header">
+            <div class="sec-title">Energia</div>
+            <div class="sec-sub">3 relatórios · COPPE/UFRJ, PSR · Sistema Interligado Nacional até 2040</div>
+            <div class="sec-desc">
+              A matriz elétrica brasileira depende em ~80% da hidroeletricidade.
+              A queda nas vazões dos rios projetada pelos modelos climáticos pode elevar o custo de operação
+              do sistema em até 16,7 vezes e o risco de apagão a 99% — muito acima do limite regulatório de 5%.
+              Nenhum dos quatro cenários mantém o sistema seguro sem adaptação.
+            </div>
+          </div>
+
+          <!-- STAT ROW 1 — pior cenário -->
+          <div class="stats-row">
+            <div class="stat-card red">
+              <div class="stat-val red">16,7×</div>
+              <div class="stat-lbl">Custo operacional · HadGEM 8.5</div>
+              <div class="stat-note">De R$145 bi para R$2,53 trilhões acumulados 2015–2030</div>
+            </div>
+            <div class="stat-card red">
+              <div class="stat-val red">99%</div>
+              <div class="stat-lbl">Risco de déficit (apagão) · SE/CO · HadGEM 8.5</div>
+              <div class="stat-note">Limite seguro regulatório: 5% — superado em todos os cenários</div>
+            </div>
+            <div class="stat-card blue">
+              <div class="stat-val blue">−30%</div>
+              <div class="stat-lbl">Redução da ENA · HadGEM 8.5</div>
+              <div class="stat-note">ENA média do SIN vs. histórico · MIROC projeta −10%</div>
+            </div>
+            <div class="stat-card amber">
+              <div class="stat-val amber">US$ 280 bi</div>
+              <div class="stat-lbl">Custo de adaptação · HadGEM 8.5 (caminho fóssil)</div>
+              <div class="stat-note">US$158 bi no RCP 4.5 via renováveis</div>
+            </div>
+          </div>
+
+          <!-- STAT ROW 2 — cenários intermediários -->
+          <div class="stats-row">
+            <div class="stat-card red">
+              <div class="stat-val red">14,4×</div>
+              <div class="stat-lbl">Custo operacional · HadGEM 4.5</div>
+              <div class="stat-note">Paradoxo: limpar a matriz aumenta a dependência hídrica</div>
+            </div>
+            <div class="stat-card amber">
+              <div class="stat-val amber">8×</div>
+              <div class="stat-lbl">Custo operacional · MIROC 8.5</div>
+              <div class="stat-note">R$1,25 tri · risco de déficit: 17–65%</div>
+            </div>
+            <div class="stat-card green">
+              <div class="stat-val green">US$ 122 bi</div>
+              <div class="stat-lbl">Economia via mitigação + eficiência · HadGEM</div>
+              <div class="stat-note">RCP 8.5 custa US$122 bi a mais de adaptação que o 4.5</div>
+            </div>
+            <div class="stat-card blue">
+              <div class="stat-val blue">3,5×</div>
+              <div class="stat-lbl">Custo operacional · MIROC 4.5 (menor impacto)</div>
+              <div class="stat-note">R$444 bi · mas risco de déficit já chega a 34% — acima do limite</div>
+            </div>
+          </div>
+
+          <!-- STAT ROW 3 — demanda SIN -->
+          <div class="stats-row">
+            <div class="stat-card blue">
+              <div class="stat-val blue">67,5 → 112,3 GW</div>
+              <div class="stat-lbl">Demanda média do SIN projetada · 2015 a 2030</div>
+              <div class="stat-note">+66% de crescimento na carga — o sistema precisa crescer e se proteger ao mesmo tempo</div>
+            </div>
+            <div class="stat-card amber">
+              <div class="stat-val amber">R$224–469/MWh</div>
+              <div class="stat-lbl">CMO (Custo Marginal de Operação) · 2015–2016 · cenário base</div>
+              <div class="stat-note">Estabiliza em ~R$140/MWh após entrada de novas usinas — sem mudança climática</div>
+            </div>
+            <div class="stat-card green">
+              <div class="stat-val green">65–74%</div>
+              <div class="stat-lbl">Participação hidrelétrica na garantia física do SIN · cenário base</div>
+              <div class="stat-note">Alta dependência hídrica torna o sistema hipersensível às projeções de vazão</div>
+            </div>
+            <div class="stat-card red">
+              <div class="stat-val red">−14 GW médios</div>
+              <div class="stat-lbl">Redução de carga com eficiência energética · RCP 4.5 em 2030</div>
+              <div class="stat-note">De 112,3 para 98,5 GW — medida "sem arrependimento" independente do cenário climático</div>
+            </div>
+          </div>
+
+          <!-- CHART ROW 1 — existentes -->
+          <div class="chart-grid">
+            <div class="chart-block">
+              <div class="chart-title">Redução de vazão por usina (%)</div>
+              <div class="chart-sub">HadGEM vs. MIROC · RCP 8.5 · principais reservatórios do SIN</div>
+              <div class="legend">
+                <div class="leg-item">
+                  <div class="leg-dot" style="background:#5ba3f5"></div>MIROC5 RCP 8.5
+                </div>
+                <div class="leg-item">
+                  <div class="leg-dot" style="background:#f05252"></div>HadGEM RCP 8.5
+                </div>
+              </div>
+              <div class="chart-area" id="chart-flow"></div>
+            </div>
+            <div class="chart-block">
+              <div class="chart-title">Custo total de operação do SIN (R$ bilhões)</div>
+              <div class="chart-sub">Acumulado 2015–2030 · todos os cenários climáticos vs. linha de base</div>
+              <div class="chart-area" id="chart-energy-cost-full"></div>
+            </div>
+          </div>
+
+          <!-- SCENARIO MATRIX -->
+          <div class="agro-divider">Quadro Completo de Cenários — Impacto sobre o SIN</div>
+          <div class="scenario-matrix">
+            <div class="sm-row sm-header">
+              <div class="sm-cell">Cenário</div>
+              <div class="sm-cell">ENA vs. histórico</div>
+              <div class="sm-cell">Risco de déficit</div>
+              <div class="sm-cell">Custo total acumulado</div>
+              <div class="sm-cell">Múltiplo</div>
+            </div>
+            <div class="sm-row">
+              <div class="sm-cell sm-label">Linha de Base</div>
+              <div class="sm-cell blue">histórico</div>
+              <div class="sm-cell green">2,5–5%</div>
+              <div class="sm-cell">R$ 145 bi (op.) + R$ 6 bi (déf.)</div>
+              <div class="sm-cell green">1×</div>
+            </div>
+            <div class="sm-row">
+              <div class="sm-cell sm-label">MIROC · RCP 4.5</div>
+              <div class="sm-cell blue">−7%</div>
+              <div class="sm-cell amber">5–34%</div>
+              <div class="sm-cell">R$ 428 bi (op.) + R$ 16 bi (déf.)</div>
+              <div class="sm-cell amber">3,5×<span class="sm-badge renew">renováveis</span></div>
+            </div>
+            <div class="sm-row">
+              <div class="sm-cell sm-label">MIROC · RCP 8.5</div>
+              <div class="sm-cell amber">−10%</div>
+              <div class="sm-cell amber">17–65%</div>
+              <div class="sm-cell">R$ 1.196 bi (op.) + R$ 58 bi (déf.)</div>
+              <div class="sm-cell amber">8×<span class="sm-badge fossil">fósseis</span></div>
+            </div>
+            <div class="sm-row">
+              <div class="sm-cell sm-label">HadGEM · RCP 4.5</div>
+              <div class="sm-cell red">−25%</div>
+              <div class="sm-cell red">52–86%</div>
+              <div class="sm-cell">R$ 1.689 bi (op.) + R$ 167 bi (déf.)</div>
+              <div class="sm-cell red">14,4×<span class="sm-badge renew">renováveis</span></div>
+            </div>
+            <div class="sm-row">
+              <div class="sm-cell sm-label">HadGEM · RCP 8.5</div>
+              <div class="sm-cell red">−30%</div>
+              <div class="sm-cell red">74–99%</div>
+              <div class="sm-cell">R$ 2.294 bi (op.) + R$ 236 bi (déf.)</div>
+              <div class="sm-cell red">16,7×<span class="sm-badge fossil">fósseis</span></div>
+            </div>
+          </div>
+
+          <!-- FATOR DE FRICÇÃO -->
+          <div class="friction-box">
+            <div class="friction-kpi">
+              <div class="friction-val">+9%</div>
+              <div class="friction-lbl">Fator de Fricção — água extra por MWh</div>
+              <div style="margin-top:12px">
+                <div class="friction-val" style="font-size:20px">17 p.p.</div>
+                <div class="friction-lbl">Divergência modelo vs. realidade operativa (2012)</div>
+              </div>
+            </div>
+            <div class="friction-desc">
+              Em 2012, o SIN iniciou com <strong>78% de armazenamento</strong> e encerrou com apenas
+              <strong>31%</strong>, mesmo com afluência não excepcional. O modelo operativo superestimou a produção em
+              17 pontos percentuais, explicados por: <strong>3 p.p.</strong> de vazões anômalas no Nordeste (abaixo da
+              média histórica desde 1993) e <strong>14 p.p.</strong> de restrições não modeladas — assoreamento, limites
+              ambientais de turbinamento e coeficientes de produção inflados. O resultado: o sistema consome 9% mais
+              água por MWh do que os modelos indicam — e esse erro já está embutido nos cálculos de risco de déficit.
+            </div>
+          </div>
+
+          <!-- CHART ROW 2 — risco déficit + adaptação -->
+          <div class="agro-divider">Caminhos de Adaptação</div>
+          <div class="chart-grid">
+            <div class="chart-block">
+              <div class="chart-title">Risco de déficit máximo por cenário (%)</div>
+              <div class="chart-sub">Pico ao longo do horizonte 2015–2030 · limite regulatório: 5%</div>
+              <div class="chart-area" id="chart-deficit-scenarios"></div>
+            </div>
+            <div class="chart-block">
+              <div class="chart-title">Custo de adaptação por investimento (US$ bilhões)</div>
+              <div class="chart-sub">Nova capacidade instalada necessária para cobrir perda hidrelétrica · até 2040
+              </div>
+              <div class="chart-area" id="chart-adapt-invest"></div>
+            </div>
+          </div>
+
+          <div class="alert-box red-border">
+            <strong>Paradoxo da Mitigação:</strong> O RCP 4.5, que pressupõe energia limpa e preço de carbono crescente,
+            depende ainda <em>mais</em> das hidrelétricas — tornando-o proporcionalmente mais vulnerável às secas do que
+            o RCP 8.5. Mas ao selecionar renováveis (eólica, solar, biomassa) em vez de carvão como adaptação, o RCP 4.5
+            economiza <strong>US$ 76 a US$ 122 bilhões</strong> em investimentos e mantém as emissões sob controle.
+            Adaptar e mitigar não são objetivos concorrentes — são sinérgicos.
+          </div>
+          <div class="alert-box" style="border-color:rgba(91,163,245,.25);background:rgba(91,163,245,.04)">
+            <strong>Eficiência energética: a medida "sem arrependimento":</strong> No cenário RCP 4.5, a eficiência
+            energética reduz a carga do SIN em <strong>~14 GW médios</strong> em 2030 (de 112,3 para 98,5 GW médios).
+            Isso reduz o CMO de ~140 para ~100 R$/MWh no longo prazo e diminui drasticamente a necessidade de nova
+            geração — sem comprometer a segurança do sistema e independentemente de qual modelo climático se confirmar.
+          </div>
+          <div class="alert-box amber-border">
+            <strong>CVaR e o "Nível Meta" — por que os modelos subestimam o risco:</strong> O operador do SIN (ONS) usa o critério CVaR (Conditional Value at Risk) para calcular o risco de déficit — uma medida estatística que captura o custo esperado dos piores cenários. O "Nível Meta" é o volume mínimo de armazenamento que os reservatórios devem manter para garantir a segurança operativa. Em 2012, o sistema iniciou com 78% de armazenamento e encerrou com apenas 31%, com o modelo superestimando a produção em 17 p.p. — parte por restrições não modeladas (assoreamento, limites ambientais de turbinamento) e parte pelo chamado "fator de fricção" de 9% de água extra por MWh. O critério CVaR foi introduzido exatamente para lidar com essa cauda de risco, mas sua aplicação pressupõe que as séries históricas de afluência são representativas do futuro — premissa que as mudanças climáticas violam sistematicamente.
+          </div>
+
+          <div class="questions-block">
+            <div class="questions-title">Perguntas sugeridas ao assistente IA</div>
+            <div class="question-chips">
+              <span class="chip">O que é o "fator de fricção" das hidrelétricas brasileiras?</span>
+              <span class="chip">Como o preço do carbono afeta a expansão elétrica no RCP 4.5?</span>
+              <span class="chip">Por que o RCP 4.5 tem risco de déficit maior que o esperado?</span>
+              <span class="chip">Qual seria o papel da energia solar e eólica na adaptação?</span>
+              <span class="chip">Por que Sobradinho é tão vulnerável à seca?</span>
+              <span class="chip">Qual o custo de operação em R$/MWh no pior cenário?</span>
+              <span class="chip">O que é o critério CVaR e como o ONS o aplica?</span>
+              <span class="chip">Por que o licenciamento ambiental é o maior gargalo hidrelétrico?</span>
+              <span class="chip">Qual é o "Nível Meta" operativo e por que ele causa desvios?</span>
+            </div>
+          </div>
+        </section>

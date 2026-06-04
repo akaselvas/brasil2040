@@ -1,0 +1,330 @@
+        <section class="panel" id="panel-transp">
+          <div class="sec-header">
+            <div class="sec-title">Transportes</div>
+            <div class="sec-sub">5 relatórios · LIMA/COPPE/UFRJ + IME · Malha rodoviária federal · horizonte 2011–2040
+            </div>
+            <div class="sec-desc">
+              O Brasil move 61% de suas cargas por rodovias — mas apenas 11,8% da malha nacional é pavimentada,
+              e grande parte já está em condições precárias. As mudanças climáticas vão acelerar a deterioração:
+              o hotspot de temperatura cobre mais de 90% do território, comprometendo o asfalto em praticamente
+              toda a malha federal. O número de estados em alta vulnerabilidade salta de 8 para 22 até 2040.
+            </div>
+          </div>
+
+          <!-- STAT ROW 1 -->
+          <div class="stats-row">
+            <div class="stat-card red">
+              <div class="stat-val red">22 UF + DF</div>
+              <div class="stat-lbl">Estados em alta vulnerabilidade (IVIR) · 2040</div>
+              <div class="stat-note">Presente: apenas 8 estados — expansão dramática</div>
+            </div>
+            <div class="stat-card red">
+              <div class="stat-val red">&gt;90%</div>
+              <div class="stat-lbl">Território nacional em hotspot de temperatura</div>
+              <div class="stat-note">Temp7dias ultrapassa limites do CAP em quase todo o Brasil</div>
+            </div>
+            <div class="stat-card amber">
+              <div class="stat-val amber">99 mil km</div>
+              <div class="stat-lbl">Rodovias federais no hotspot N3 (temperatura)</div>
+              <div class="stat-note">4.961 segmentos — risco de fluência plástica do asfalto</div>
+            </div>
+            <div class="stat-card blue">
+              <div class="stat-val blue">61,1%</div>
+              <div class="stat-lbl">Participação do modal rodoviário no transporte de cargas</div>
+              <div class="stat-note">Ferroviário: 20,7% · Aquaviário: 13,6%</div>
+            </div>
+          </div>
+
+          <!-- STAT ROW 2 -->
+          <div class="stats-row">
+            <div class="stat-card red">
+              <div class="stat-val red">11,8%</div>
+              <div class="stat-lbl">Malha nacional pavimentada — patamar crítico de partida</div>
+              <div class="stat-note">EUA: 445 km/1.000 km² · Brasil: 23,8 km/1.000 km²</div>
+            </div>
+            <div class="stat-card amber">
+              <div class="stat-val amber">0,1–1,4%</div>
+              <div class="stat-lbl">Território em hotspot de precipitação extrema</div>
+              <div class="stat-note">121 mil km² no litoral NE + SE · sistemas de drenagem em risco</div>
+            </div>
+            <div class="stat-card red">
+              <div class="stat-val red">88%</div>
+              <div class="stat-lbl">Malha sob DNIT — capacidade adaptativa mais baixa</div>
+              <div class="stat-note">Apenas 11% sob concessão (maior capacidade de resposta)</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-val amber">8.634 km</div>
+              <div class="stat-lbl">Rodovias planejadas (PLA) já nascendo em hotspot</div>
+              <div class="stat-note">Infraestrutura futura projetada sem considerar clima futuro</div>
+            </div>
+          </div>
+
+          <!-- CHART ROW 1 -->
+          <div class="chart-grid">
+            <div class="chart-block">
+              <div class="chart-title">Cobertura de hotspot de temperatura por zona climática (%)</div>
+              <div class="chart-sub">Área em risco para pavimento asfáltico · HadGEM vs. MIROC · 2011–2040</div>
+              <div class="legend">
+                <div class="leg-item">
+                  <div class="leg-dot" style="background:#5ba3f5"></div>MIROC5
+                </div>
+                <div class="leg-item">
+                  <div class="leg-dot" style="background:#f05252"></div>HadGEM
+                </div>
+              </div>
+              <div class="chart-area" id="chart-hotspot"></div>
+            </div>
+            <div class="chart-block">
+              <div class="chart-title">Expansão da vulnerabilidade — presente vs. futuro</div>
+              <div class="chart-sub">Estados com segmentos em alta e muito alta vulnerabilidade (IVIR)</div>
+              <div class="chart-area" id="chart-vuln"></div>
+            </div>
+          </div>
+
+          <!-- HOTSPOT ENSEMBLE TABLE -->
+          <div class="agro-divider">Níveis de Ensemble dos Hotspots — Por Grau de Risco</div>
+          <div class="scenario-matrix">
+            <div class="sm-row sm-header" style="grid-template-columns:0.4fr 1.2fr 1.6fr 0.8fr">
+              <div class="sm-cell">Nível</div>
+              <div class="sm-cell">Estressor</div>
+              <div class="sm-cell">Regiões / Estados afetados</div>
+              <div class="sm-cell">% Brasil</div>
+            </div>
+            <div class="sm-row" style="grid-template-columns:0.4fr 1.2fr 1.6fr 0.8fr">
+              <div class="sm-cell sm-label blue">N1</div>
+              <div class="sm-cell">Hotspots não sobrepostos</div>
+              <div class="sm-cell" style="color:var(--muted);font-size:10px">CE, RN, BA, MG, ES, RJ, SP, PR, SC, RS
+              </div>
+              <div class="sm-cell amber">3,6%</div>
+            </div>
+            <div class="sm-row" style="grid-template-columns:0.4fr 1.2fr 1.6fr 0.8fr">
+              <div class="sm-cell sm-label blue">N2</div>
+              <div class="sm-cell">Apenas precipitação</div>
+              <div class="sm-cell" style="color:var(--muted);font-size:10px">Faixa litorânea RN → RJ</div>
+              <div class="sm-cell amber">0,6%</div>
+            </div>
+            <div class="sm-row" style="grid-template-columns:0.4fr 1.2fr 1.6fr 0.8fr">
+              <div class="sm-cell sm-label red">N3</div>
+              <div class="sm-cell">Apenas temperatura</div>
+              <div class="sm-cell" style="color:var(--muted);font-size:10px">Norte, Centro-Oeste + extensas áreas de
+                todas as regiões</div>
+              <div class="sm-cell red">90,0%</div>
+            </div>
+            <div class="sm-row" style="grid-template-columns:0.4fr 1.2fr 1.6fr 0.8fr">
+              <div class="sm-cell sm-label red">N4</div>
+              <div class="sm-cell">Temp. + precip. (1 cenário)</div>
+              <div class="sm-cell" style="color:var(--muted);font-size:10px">Litoral PE → RJ e Sul do RS</div>
+              <div class="sm-cell red">0,7%</div>
+            </div>
+            <div class="sm-row" style="grid-template-columns:0.4fr 1.2fr 1.6fr 0.8fr">
+              <div class="sm-cell sm-label red">N5</div>
+              <div class="sm-cell">Temp. + precip. (ambos cenários)</div>
+              <div class="sm-cell" style="color:var(--muted);font-size:10px">Litoral AL, SE, BA, ES, RJ — máxima
+                gravidade</div>
+              <div class="sm-cell red">1,0%</div>
+            </div>
+          </div>
+
+          <div class="alert-box">
+            <strong>Temperatura vs. Precipitação:</strong> O risco térmico afeta quase todo o país de forma difusa — o
+            pavimento asfáltico em toda a malha federal entra na zona de fluência plástica do CAP. O risco hídrico é
+            mais restrito, mas concentrado em rodovias estratégicas do litoral NE e SE, onde a capacidade dos sistemas
+            de drenagem dimensionada para tr = 5 anos já foi projetada como insuficiente.
+          </div>
+
+          <!-- CHART ROW 2 — pavement condition + IVIR weights -->
+          <div class="agro-divider">Condições Técnicas da Malha e Peso na Vulnerabilidade</div>
+          <div class="chart-grid">
+            <div class="chart-block">
+              <div class="chart-title">Condições de sinalização e geometria nos hotspots (%)</div>
+              <div class="chart-sub">Segmentos classificados por categoria · Pesquisa CNT 2014</div>
+              <div class="chart-area" id="chart-road-condition"></div>
+            </div>
+            <div class="chart-block">
+              <div class="chart-title">Peso de cada critério no IVIR (%)</div>
+              <div class="chart-sub">Índice de Vulnerabilidade da Infraestrutura Rodoviária · método MACBETH</div>
+              <div class="chart-area" id="chart-ivir-weights"></div>
+            </div>
+          </div>
+
+          <!-- STATE WORST PERFORMERS -->
+          <div class="agro-divider">Estados com Piores Indicadores Técnicos nos Hotspots</div>
+          <div class="adapt-grid">
+            <div class="adapt-card c-red">
+              <div class="adapt-eyebrow">Sinalização — Ruim / Péssimo</div>
+              <div class="adapt-title">Norte e Nordeste lideram</div>
+              <div class="adapt-rows">
+                <div class="adapt-row"><span class="adapt-row-key">AM</span><span class="adapt-row-leader"></span><span class="adapt-row-val bad">Ruim/Péssimo · BR-174, BR-319</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">PA</span><span class="adapt-row-leader"></span><span class="adapt-row-val bad">Péssimo · BR-155, BR-222, BR-230</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">PI</span><span class="adapt-row-leader"></span><span class="adapt-row-val bad">Péssimo · BR-020</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">RO</span><span class="adapt-row-leader"></span><span class="adapt-row-val bad">Péssimo · BR-319, BR-425</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">AC</span><span class="adapt-row-leader"></span><span class="adapt-row-val warn">Ruim · BR-364</span></div>
+              </div>
+            </div>
+            <div class="adapt-card c-red">
+              <div class="adapt-eyebrow">Geometria — Péssimo (pior indicador)</div>
+              <div class="adapt-title">Problema disseminado</div>
+              <div class="adapt-rows">
+                <div class="adapt-row"><span class="adapt-row-key">AC</span><span class="adapt-row-leader"></span><span class="adapt-row-val bad">Péssimo · BR-364</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">BA / ES / MG</span><span class="adapt-row-leader"></span><span class="adapt-row-val bad">Vários trechos Péssimo</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">PA</span><span class="adapt-row-leader"></span><span class="adapt-row-val bad">Péssimo · BR-153, BR-230</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">PB / PI</span><span class="adapt-row-leader"></span><span class="adapt-row-val bad">Péssimo · BRs 104, 020</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">SC</span><span class="adapt-row-leader"></span><span class="adapt-row-val bad">Péssimo · BR-163, BR-480</span></div>
+              </div>
+            </div>
+            <div class="adapt-card c-green">
+              <div class="adapt-eyebrow">Melhor IGG (estado do pavimento)</div>
+              <div class="adapt-title">São Paulo lidera</div>
+              <div class="adapt-metric green">10,5</div>
+              <div class="adapt-metric-label">IGG médio SP (0–100, quanto menor melhor)</div>
+              <div class="adapt-rows">
+                <div class="adapt-row"><span class="adapt-row-key">SC (pior)</span><span class="adapt-row-leader"></span><span class="adapt-row-val bad">IGG médio 95,55</span></div>
+<div class="adapt-row"><span class="adapt-row-key">AC (pior IRI)</span><span class="adapt-row-leader"></span><span class="adapt-row-val bad">IRI médio 3,82 (escala 1–5)</span></div>
+<div class="adapt-row"><span class="adapt-row-key">AL (melhor IRI)</span><span class="adapt-row-leader"></span><span class="adapt-row-val good">IRI médio 2,25</span></div>
+              </div>
+            </div>
+            <div class="adapt-card c-blue">
+              <div class="adapt-eyebrow">Capacidade Adaptativa — Gestão</div>
+              <div class="adapt-title">Concessão vs. DNIT</div>
+              <div class="adapt-metric blue">11%</div>
+              <div class="adapt-metric-label">da malha sob concessão (maior resiliência)</div>
+              <div class="adapt-rows">
+                <div class="adapt-row"><span class="adapt-row-key">DNIT (88%)</span><span class="adapt-row-leader"></span><span class="adapt-row-val warn">Capacidade adaptativa mediana</span></div>
+<div class="adapt-row"><span class="adapt-row-key">VMD &lt;5 mil/dia</span><span class="adapt-row-leader"></span><span class="adapt-row-val warn">49% dos segmentos — baixo tráfego</span></div>
+<div class="adapt-row"><span class="adapt-row-key">VMD &gt;40 mil/dia</span><span class="adapt-row-leader"></span><span class="adapt-row-val good">Apenas 3,4% dos segmentos</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- IVIR SCALE + ADAPTATION RESPONSE -->
+          <div class="agro-divider">Estratégias Adaptativas por Nível de Vulnerabilidade (IVIR)</div>
+          <div class="scenario-matrix">
+            <div class="sm-row sm-header" style="grid-template-columns:1fr 1fr 0.6fr 1.8fr">
+              <div class="sm-cell">Faixa IVIR (0–1)</div>
+              <div class="sm-cell">Estratégia</div>
+              <div class="sm-cell">Prazo</div>
+              <div class="sm-cell">Ação principal</div>
+            </div>
+            <div class="sm-row" style="grid-template-columns:1fr 1fr 0.6fr 1.8fr">
+              <div class="sm-cell sm-label green">0,00 – 0,20</div>
+              <div class="sm-cell green">Melhoria</div>
+              <div class="sm-cell green">Curto</div>
+              <div class="sm-cell" style="color:var(--muted);font-size:10px">Operação &amp; Manutenção · correção de
+                defeitos locais</div>
+            </div>
+            <div class="sm-row" style="grid-template-columns:1fr 1fr 0.6fr 1.8fr">
+              <div class="sm-cell sm-label amber">0,21 – 0,40</div>
+              <div class="sm-cell amber">Preservação</div>
+              <div class="sm-cell amber">Médio</div>
+              <div class="sm-cell" style="color:var(--muted);font-size:10px">Reestruturação dos ativos existentes</div>
+            </div>
+            <div class="sm-row" style="grid-template-columns:1fr 1fr 0.6fr 1.8fr">
+              <div class="sm-cell sm-label amber">0,41 – 0,60</div>
+              <div class="sm-cell amber">Preservação</div>
+              <div class="sm-cell amber">Médio</div>
+              <div class="sm-cell" style="color:var(--muted);font-size:10px">Reestruturação com substituição pontual de
+                estruturas</div>
+            </div>
+            <div class="sm-row" style="grid-template-columns:1fr 1fr 0.6fr 1.8fr">
+              <div class="sm-cell sm-label red">0,61 – 0,80</div>
+              <div class="sm-cell red">Substituição</div>
+              <div class="sm-cell red">Longo</div>
+              <div class="sm-cell" style="color:var(--muted);font-size:10px">Retirada completa e reconstrução com
+                resistência superior</div>
+            </div>
+            <div class="sm-row" style="grid-template-columns:1fr 1fr 0.6fr 1.8fr">
+              <div class="sm-cell sm-label red">0,81 – 1,00</div>
+              <div class="sm-cell red">Substituição</div>
+              <div class="sm-cell red">Longo</div>
+              <div class="sm-cell" style="color:var(--muted);font-size:10px">Reconstrução + novo projeto geométrico
+                completo</div>
+            </div>
+          </div>
+
+          <!-- ADAPTATION MEASURES -->
+          <div class="adapt-grid">
+            <div class="adapt-card c-amber">
+              <div class="adapt-eyebrow">Estressor — Temperatura</div>
+              <div class="adapt-title">Medidas para o Pavimento Asfáltico</div>
+              <div class="adapt-rows">
+                <div class="adapt-row"><span class="adapt-row-key">Projeto</span><span class="adapt-row-leader"></span><span class="adapt-row-val">Ligantes mais resistentes ao calor (SUPERPAVE PG alto)</span></div>
+                
+                <div class="adapt-row"><span class="adapt-row-key">Projeto</span><span class="adapt-row-leader"></span><span class="adapt-row-val">Cheap seal
+                    — aumenta albedo, reduz temperatura</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Operação</span><span class="adapt-row-leader"></span><span class="adapt-row-val">Restrição
+                    de carga nas horas mais quentes</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Operação</span><span class="adapt-row-leader"></span><span class="adapt-row-val">Transferir
+                    cargas pesadas para ferrovias e hidrovias</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Planejamento</span><span class="adapt-row-leader"></span><span class="adapt-row-val">Evitar
+                    novas rodovias em hotspots de temperatura</span></div>
+              </div>
+            </div>
+            <div class="adapt-card c-blue">
+              <div class="adapt-eyebrow">Estressor — Precipitação Extrema</div>
+              <div class="adapt-title">Medidas para Drenagem</div>
+              <div class="adapt-rows">
+                <div class="adapt-row"><span class="adapt-row-key">Projeto</span><span class="adapt-row-leader"></span><span class="adapt-row-val">Ampliar
+                    capacidade de bueiros e sarjetas</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Projeto</span><span class="adapt-row-leader"></span><span class="adapt-row-val">Túneis de
+                    drenagem sob grandes vias</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Operação</span><span class="adapt-row-leader"></span><span class="adapt-row-val">Mapas de
+                    enchente + rotas alternativas</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Operação</span><span class="adapt-row-leader"></span><span class="adapt-row-val">Planos de
+                    evacuação para eventos extremos</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Planejamento</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val">Restringir construção em planícies de inundação</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert-box amber-border">
+            <strong>A falácia da segurança atual:</strong> A situação presente do pavimento pode parecer satisfatória —
+            gerando falsa sensação de segurança. Mas o clima projetado para 2011–2040 é significativamente mais
+            agressivo. Os custos de manutenção preventiva são sistematicamente menores que os de reparação pós-dano. Não
+            se adaptar é a opção mais cara.
+          </div>
+
+          <div class="alert-box red-border">
+            <strong>Infraestrutura que nasce obsoleta:</strong> As 8.634 km de rodovias <em>planejadas</em> (ainda não
+            construídas) já estão inseridas nos hotspots climáticos — mas seus projetos foram elaborados com dados
+            históricos do século XX. Sem revisão imediata dos padrões construtivos, o Brasil investirá bilhões em ativos
+            projetados para um clima que não existe mais.
+          </div>
+
+          <!-- ── COMPARAÇÃO INTERNACIONAL ── -->
+          <div class="agro-divider">Malha Total e Contexto Internacional de Custos</div>
+          <div class="chart-grid">
+            <div class="chart-block">
+              <div class="chart-title">Custo adicional de manutenção por mudanças climáticas — referências internacionais</div>
+              <div class="chart-sub">Estudos da Austrália e França usados como benchmarks de validação do Produto Brasil 2040</div>
+              <div class="chart-area" id="chart-intl-maint"></div>
+            </div>
+            <div class="chart-block">
+              <div class="chart-title">Malha rodoviária brasileira — escala do problema (2015)</div>
+              <div class="chart-sub">1.713.885 km totais · apenas 11,8% pavimentada · 88% sob DNIT com menor capacidade adaptativa</div>
+              <div class="chart-area" id="chart-road-network"></div>
+            </div>
+          </div>
+
+          <div class="alert-box amber-border">
+            <strong>Custo da inação em perspectiva global:</strong> Estudos australianos projetam aumento de até <strong>57% nos custos de manutenção rodoviária</strong> após 2100 por efeitos climáticos. A França estima que as mudanças climáticas podem <strong>dobrar os custos de manutenção</strong> de infraestrutura de transportes. No Brasil, com apenas 11,8% da malha pavimentada — base de 1,71 M km totais — e 88% sob gestão DNIT (capacidade de resposta mais baixa), o risco de subutilização e deterioração acelerada é ainda mais severo do que nas economias desenvolvidas usadas como referência.
+          </div>
+
+          <div class="questions-block">
+            <div class="questions-title">Perguntas sugeridas ao assistente IA</div>
+            <div class="question-chips">
+              <span class="chip">Como o calor causa fluência plástica no pavimento asfáltico?</span>
+              <span class="chip">O que é o método SUPERPAVE e como classifica os ligantes por temperatura?</span>
+              <span class="chip">Por que as rodovias concedidas são menos vulneráveis que as do DNIT?</span>
+              <span class="chip">O que é o índice IVIR e como seus critérios foram ponderados?</span>
+              <span class="chip">Por que Santa Catarina tem o pior IGG médio apesar de ser no Sul?</span>
+              <span class="chip">Como o método MACBETH transforma julgamentos em pesos de vulnerabilidade?</span>
+              <span class="chip">O que é o cheap seal e como ele reduz a temperatura do pavimento?</span>
+              <span class="chip">Por que as rodovias planejadas são consideradas de alto risco ainda antes de serem
+                construídas?</span>
+              <span class="chip">Qual é o tempo de recorrência projetado como insuficiente para os sistemas de
+                drenagem?</span>
+              <span class="chip">Como inundações em rodovias criam efeito em cascata nos demais modais?</span>
+            </div>
+          </div>
+        </section>

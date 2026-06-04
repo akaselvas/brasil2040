@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brasil 2040 — Risco Climático no Brasil</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <!-- ══ LOADING ══ -->
+  <div id="loading">
+    <div class="loading-brand"><span class="loading-dot"></span>Brasil2040</div>
+    <div class="loading-sub">Carregando dados geoespaciais</div>
+    <div class="loading-bar-wrap">
+      <div class="loading-bar-inner"></div>
+    </div>
+  </div>
+
+  <!-- ══ TOOLTIP ══ -->
+  <div id="tooltip">
+    <div class="tt-name" id="tt-name"></div>
+    <div class="tt-row"><span>Área plantada</span><span class="tt-val" id="tt-area"></span></div>
+    <div class="tt-row"><span>% da área legal</span><span class="tt-val" id="tt-pct"></span></div>
+    <div class="tt-row"><span>Nível de risco</span><span class="tt-val" id="tt-risk"></span></div>
+  </div>
+
+  <div id="sidebar-overlay"></div>
+
+  <!-- ══════════════════════════════════
+     TOP BAR — Logo
+══════════════════════════════════ -->
+  <header id="topbar">
+    <div class="brand">
+      <span class="brand-dot"></span>
+      Brasil2040
+      <span class="brand-tagline">Risco Climático · Brasil</span>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════════
+     NAV BAR — Tabs
+══════════════════════════════════ -->
+  <nav id="navbar">
+    <button class="nav-tab active" data-view="mapa">
+      <span class="nav-tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon>
+          <line x1="9" y1="3" x2="9" y2="18"></line>
+          <line x1="15" y1="6" x2="15" y2="21"></line>
+        </svg></span>Mapa
+    </button>
+    <button class="nav-tab" data-view="agro">
+      <span class="nav-tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path>
+          <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
+        </svg></span>Agricultura
+    </button>
+    <button class="nav-tab" data-view="energia">
+      <span class="nav-tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+        </svg></span>Energia
+    </button>
+    <button class="nav-tab" data-view="hidro">
+      <span class="nav-tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path
+            d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z">
+          </path>
+        </svg></span>Recursos Hídricos
+    </button>
+    <button class="nav-tab" data-view="transp">
+      <span class="nav-tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <circle cx="6" cy="19" r="3"></circle>
+          <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path>
+          <circle cx="18" cy="5" r="3"></circle>
+        </svg></span>Transportes
+    </button>
+    <button class="nav-tab" data-view="costa">
+      <span class="nav-tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.6 2 5 2 2.3 0 2.3-2 5-2 1.3 0 1.9.5 2.5 1"></path>
+          <path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.6 2 5 2 2.3 0 2.3-2 5-2 1.3 0 1.9.5 2.5 1"></path>
+          <path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.6 2 5 2 2.3 0 2.3-2 5-2 1.3 0 1.9.5 2.5 1"></path>
+        </svg></span>Infra. Costeira
+    </button>
+    <button class="nav-tab" data-view="urb">
+      <span class="nav-tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+          <path d="M9 22v-4h6v4"></path>
+          <path d="M8 6h.01"></path>
+          <path d="M16 6h.01"></path>
+          <path d="M12 6h.01"></path>
+          <path d="M12 10h.01"></path>
+          <path d="M12 14h.01"></path>
+          <path d="M16 10h.01"></path>
+          <path d="M16 14h.01"></path>
+          <path d="M8 10h.01"></path>
+          <path d="M8 14h.01"></path>
+        </svg></span>Infra. Urbana
+    </button>
+    <button class="nav-tab" data-view="sobre">
+      <span class="nav-tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg></span>Sobre
+    </button>
+  </nav>
+
+  <!-- ══════════════════════════════════
+     WORKSPACE
+══════════════════════════════════ -->
+  <div id="workspace">
+
+    <!-- ── MAP VIEW ── -->
+    <div id="map-view">
+
+      <!-- Sidebar -->
+      <aside id="sidebar">
+        <div class="tab-bar">
+          <button class="tab-btn" data-tab="mapa">
+
+            Filtros
+          </button>
+
+        </div>
+
+        <!-- TAB: Filtros -->
+        <div class="tab-panel active" id="tab-mapa">
+          <div class="panel-scroll">
+            <div class="s-section">
+              <div class="s-label">Cultura Agrícola</div>
+              <div class="crop-grid" id="crop-grid"></div>
+            </div>
+            <div class="s-section">
+              <div class="s-label">Cenário Climático</div>
+              <div class="scenario-row" id="scenario-row"></div>
+            </div>
+            <div class="s-section">
+              <div class="s-label">Legenda — % de Área</div>
+              <div class="legend-wrap">
+                <div class="legend-row">
+                  <div class="legend-risk-label"><span class="legend-swatch"
+                      style="background:var(--green)"></span>Baixo risco</div>
+                  <canvas class="legend-bar" id="leg-green" height="12"></canvas>
+                  <div class="legend-ticks"><span>0%</span><span>50%</span><span>100%</span></div>
+                </div>
+                <div class="legend-row" style="margin-top:4px">
+                  <div class="legend-risk-label"><span class="legend-swatch" style="background:var(--red)"></span>Alto
+                    risco</div>
+                  <canvas class="legend-bar" id="leg-red" height="12"></canvas>
+                  <div class="legend-ticks"><span>0%</span><span>50%</span><span>100%</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="s-section">
+              <div class="s-label">Distribuição de Risco</div>
+              <div class="stats-grid">
+                <div class="stat-card">
+                  <div class="stat-val red" id="stat-alto">—</div>
+                  <div class="stat-lbl">Alto risco</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-val green" id="stat-baixo">—</div>
+                  <div class="stat-lbl">Baixo risco</div>
+                </div>
+              </div>
+            </div>
+            <div class="s-section" style="border-bottom:none">
+              <div class="info-title">// Município em foco</div>
+              <div id="county-info" style="color:var(--muted);font-size:10px;line-height:1.8;margin-top:10px">
+                Clique em um município no mapa para fixar os dados aqui.
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+
+
+      </aside>
+
+      <!-- Map -->
+      <div id="map-area">
+        <div id="map-header">
+          <div>
+            <div class="map-title" id="map-title">Risco Agrícola · Soja</div>
+            <div class="map-subtitle" id="map-subtitle">Cenário: Risco 90 · Municípios Brasileiros</div>
+          </div>
+          <div class="map-badge" id="map-badge">5.570 municípios</div>
+          <div class="zoom-ctrls">
+            <button class="zoom-btn" id="btn-zi" title="Aproximar">+</button>
+            <button class="zoom-btn" id="btn-zo" title="Afastar" style="font-size:20px;padding-bottom:2px">−</button>
+            <button class="zoom-btn" id="btn-zr" title="Resetar" style="font-size:11px">⊡</button>
+          </div>
+        </div>
+        <div id="map-desc-bar">
+          <span class="desc-dot"></span>
+          <span class="desc-text">
+            Selecione uma <strong>cultura</strong> e um <strong>cenário climático</strong> no painel. Scroll para zoom ·
+            arraste para navegar · dados do <strong>Brasil 2040</strong>.
+          </span>
+        </div>
+        <div id="map-svg-wrap">
+          <svg id="map-svg" width="100%" height="100%">
+            <g id="map-g"></g>
+          </svg>
+          <div id="corner-note">Fonte: ZARC/Embrapa · IBGE · Brasil 2040</div>
+        </div>
+      </div>
+
+    </div><!-- /#map-view -->
+
+    <!-- ── CONTENT VIEW (sector panels + about) ── -->
+    <div id="content-view">
+      <main id="sector-main">
+
+        <!-- ════ AGRICULTURA ════ -->
+        <section class="panel" id="panel-agro">
+          <!-- panel content loads dynamically from panels/panel-agro.html -->
+        </section>
+
+        <!-- ════ ENERGIA ════ -->
+        <section class="panel" id="panel-energia">
+          <!-- panel content loads dynamically from panels/panel-energia.html -->
+        </section>
+
+        <!-- ════ RECURSOS HÍDRICOS ════ -->
+        <section class="panel" id="panel-hidro">
+          <!-- panel content loads dynamically from panels/panel-hidro.html -->
+        </section>
+
+        <!-- ════ TRANSPORTES ════ -->
+        <section class="panel" id="panel-transp">
+          <!-- panel content loads dynamically from panels/panel-transp.html -->
+        </section>
+
+        <!-- ════ INFRA COSTEIRA ════ -->
+        <section class="panel" id="panel-costa">
+          <!-- panel content loads dynamically from panels/panel-costa.html -->
+        </section>
+
+        <!-- ════ INFRA URBANA ════ -->
+        <section class="panel" id="panel-urb">
+          <!-- panel content loads dynamically from panels/panel-urb.html -->
+        </section>
+
+        <!-- ════ SOBRE ════ -->
+        <section class="panel" id="panel-sobre">
+          <!-- panel content loads dynamically from panels/panel-sobre.html -->
+        </section>
+
+      </main>
+    </div><!-- /#content-view -->
+
+  </div><!-- /#workspace -->
+
+  <!-- ══════════════════════════════════
+     CHAT BAR — fixed bottom
+══════════════════════════════════ -->
+  <div id="chat-bar">
+    <div id="chat-bar-toolbar">
+      <span id="chat-bar-toolbar-label">Assistente IA · Brasil 2040</span>
+      <button id="chat-collapse-btn" title="Recolher chat">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+          stroke-linejoin="round" style="width:10px;height:10px">
+          <polyline points="4,6 8,10 12,6" />
+        </svg>
+        Recolher
+      </button>
+    </div>
+    <div id="chat-bar-messages">
+      <div class="chat-notice">
+        <span class="chat-notice-icon">✦</span>
+        <span>IA com contexto do relatório <strong style="color:var(--text)">Brasil 2040</strong> e do ZARC.</span>
+      </div>
+      <div class="chat-msg-wrap">
+        <div class="chat-role">Assistente</div>
+        <div class="chat-bubble assistant">Olá! Sou o assistente do Brasil2040.
+          Posso responder perguntas sobre o relatório Brasil 2040, o ZARC,
+          os cenários climáticos RCP e os riscos agrícolas por cultura.
+          Como posso ajudar?</div>
+      </div>
+      <div class="chat-suggestions" id="chat-suggestions">
+        <button class="chat-suggestion">O que é o ZARC e como ele funciona?</button>
+        <button class="chat-suggestion">Qual a diferença entre RCP 4.5 e RCP 8.5?</button>
+        <button class="chat-suggestion">Quais culturas têm maior risco até 2040?</button>
+        <button class="chat-suggestion">Como a soja é afetada pelas mudanças climáticas?</button>
+      </div>
+    </div>
+    <div id="chat-bar-input-row">
+      <div id="chat-bar-label">
+        <svg viewBox="0 0 16 16" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 3a1 1 0 011-1h10a1 1 0 011 1v7a1 1 0 01-1 1H6l-3 2.5V11H3a1 1 0 01-1-1V3z" />
+        </svg>
+        <span>Assistente IA</span>
+      </div>
+      <textarea id="chat-input" rows="1" placeholder="Pergunte sobre o Brasil 2040…"></textarea>
+      <button id="chat-send">
+        <svg viewBox="0 0 16 16" fill="none" stroke="#060809" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <line x1="14" y1="2" x2="2" y2="8" />
+          <line x1="14" y1="2" x2="8" y2="14" />
+          <line x1="2" y1="8" x2="8" y2="14" />
+        </svg>
+      </button>
+      <button id="chat-expand-btn" title="Expandir / recolher chat">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+          stroke-linejoin="round">
+          <polyline points="4,10 8,6 12,10" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- MOBILE FAB -->
+  <button id="mobile-fab" aria-label="Abrir painel">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+      <line x1="2" y1="4" x2="14" y2="4" />
+      <line x1="2" y1="8" x2="14" y2="8" />
+      <line x1="2" y1="12" x2="14" y2="12" />
+    </svg>
+    Filtros
+  </button>
+
+  <!-- ══════════════════════════════════
+     SCRIPTS
+══════════════════════════════════ -->
+  <script src="app.js"></script>
+</body>
+
+</html>

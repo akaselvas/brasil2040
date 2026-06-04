@@ -1,0 +1,283 @@
+        <section class="panel" id="panel-agro">
+          <div class="sec-header">
+            <div class="sec-title">Agricultura</div>
+            <div class="sec-sub">8 relatórios · Embrapa, Agroicone, Fundação Eliseu Alves · Projeto Brasil 3 Tempos
+            </div>
+            <div class="sec-desc">
+              Projeções de área apta para 10 culturas sob 4 cenários climáticos (2011–2040).
+              O calor crescente eleva a demanda hídrica das plantas mesmo onde as chuvas se mantêm.
+              A Região Sul, maior celeiro de grãos do país, é a mais afetada pelos "veranicos" intensificados —
+              enquanto Centro-Oeste e Norte tornam-se regiões receptoras da produção deslocada.
+            </div>
+          </div>
+
+          <!-- STAT ROW 1 -->
+          <div class="stats-row">
+            <div class="stat-card red">
+              <div class="stat-val red">−39%</div>
+              <div class="stat-lbl">Perda de área apta · Soja · HadGEM 8.5</div>
+              <div class="stat-note">Pior cenário para a principal cultura do Brasil</div>
+            </div>
+            <div class="stat-card amber">
+              <div class="stat-val amber">13,9 M ha</div>
+              <div class="stat-lbl">Soja em alto risco em 2040</div>
+              <div class="stat-note">Hoje: 3,77 M ha já plantados sob risco — salto de 3,7×</div>
+            </div>
+            <div class="stat-card green">
+              <div class="stat-val green">+5,1%</div>
+              <div class="stat-lbl">Área apta · Cana-de-açúcar · MIROC 8.5</div>
+              <div class="stat-note">Aquecimento elimina restrições de geada no Sul</div>
+            </div>
+            <div class="stat-card red">
+              <div class="stat-val red">−22%</div>
+              <div class="stat-lbl">Perda do valor da produção · Região Sul</div>
+              <div class="stat-note">Cenário HadGEM 8.5 · pecuária não compensa grãos</div>
+            </div>
+          </div>
+
+          <!-- STAT ROW 2 -->
+          <div class="stats-row">
+            <div class="stat-card blue">
+              <div class="stat-val blue">−3%</div>
+              <div class="stat-lbl">Impacto líquido nacional na oferta agrícola</div>
+              <div class="stat-note">Perdas severas regionais são mascaradas pela realocação produtiva</div>
+            </div>
+            <div class="stat-card amber">
+              <div class="stat-val amber">+7,7 M ha</div>
+              <div class="stat-lbl">Expansão da área agropecuária total · 2010–2040</div>
+              <div class="stat-note">De 221 para 228 M ha — 64% dessa expansão no Cerrado</div>
+            </div>
+            <div class="stat-card green">
+              <div class="stat-val green">−80%</div>
+              <div class="stat-lbl">Redução de perdas com irrigação · Sul</div>
+              <div class="stat-note">Adoção em larga escala: R$18 bi investidos, TIR de 30% em 10 anos</div>
+            </div>
+            <div class="stat-card red">
+              <div class="stat-val red">+40%</div>
+              <div class="stat-lbl">Aumento do valor da produção · Centro-Oeste</div>
+              <div class="stat-note">Região receptora da soja deslocada · pressionando a fronteira do Cerrado</div>
+            </div>
+            <div class="stat-card amber">
+              <div class="stat-val amber">2,7×</div>
+              <div class="stat-lbl">Crescimento da subvenção de seguro necessária</div>
+              <div class="stat-note">Só para soja: +R$595 M/ano adicionais até 2040</div>
+            </div>
+          </div>
+
+          <!-- CHART ROW 1 -->
+          <div class="chart-grid">
+            <div class="chart-block">
+              <div class="chart-title">Variação da área de baixo risco por cultura (%)</div>
+              <div class="chart-sub">Comparação entre modelos climáticos · período 2011–2040 vs. baseline 1976–2005
+              </div>
+              <div class="legend">
+                <div class="leg-item">
+                  <div class="leg-dot" style="background:#5ba3f5"></div>MIROC5 RCP 4.5
+                </div>
+                <div class="leg-item">
+                  <div class="leg-dot" style="background:#3dd98a"></div>MIROC5 RCP 8.5
+                </div>
+                <div class="leg-item">
+                  <div class="leg-dot" style="background:#f5a623"></div>HadGEM RCP 4.5
+                </div>
+                <div class="leg-item">
+                  <div class="leg-dot" style="background:#f05252"></div>HadGEM RCP 8.5
+                </div>
+              </div>
+              <div class="chart-area" id="chart-crop-loss"></div>
+            </div>
+            <div class="chart-block">
+              <div class="chart-title">Variação do valor da terra por estado (%)</div>
+              <div class="chart-sub">Modelo Ricardiano · HadGEM RCP 8.5 · Sul ganha; CO e Norte perdem</div>
+              <div class="chart-area" id="chart-land-value"></div>
+            </div>
+          </div>
+
+          <div class="alert-box red-border">
+            <strong>Colapso no Paraná:</strong> No cenário HadGEM RCP 8.5, o estado perde 5,93 milhões de ha de soja
+            (de 6,02 para apenas 88 mil ha). A produção migra para Pará (+2,51 M ha) e Rondônia (+2,18 M ha),
+            pressionando a fronteira amazônica e encarecendo o frete de ração para aves e suínos do Sul.
+          </div>
+
+          <!-- REALOCAÇÃO REGIONAL -->
+          <div class="agro-divider">Realocação Regional da Produção</div>
+          <div class="chart-grid">
+            <div class="chart-block">
+              <div class="chart-title">Variação de área de lavoura por região · HadGEM RCP 8.5</div>
+              <div class="chart-sub">Ganhos no Centro-Oeste e Norte; perdas severas no Sul e Sudeste (M ha)</div>
+              <div class="chart-area" id="chart-region-shift"></div>
+            </div>
+            <div class="chart-block">
+              <div class="chart-title">Lacuna do seguro rural · Soja em alto risco (M ha)</div>
+              <div class="chart-sub">De 4,4 M ha hoje para 13,9 M ha em 2040 — crescimento de 3,7× sem cobertura
+                proporcional</div>
+              <div class="chart-area" id="chart-insurance-gap"></div>
+            </div>
+          </div>
+
+          <div class="alert-box amber-border">
+            <strong>Efeito cascata na proteína animal:</strong> Sul e Sudeste concentravam 78% da produção de frango em
+            2013.
+            Com a realocação da soja, o custo de ração aumenta, a infraestrutura logística precisa ser refeita e o preço
+            ao consumidor sobe. O relatório projeta pressão inflacionária sobre toda a cadeia de proteína animal.
+          </div>
+
+          <!-- MEDIDAS DE ADAPTAÇÃO -->
+          <div class="agro-divider">Medidas de Adaptação Identificadas</div>
+          <div class="adapt-grid">
+
+            <div class="adapt-card c-green">
+              <div class="adapt-eyebrow">Manejo · Curto prazo</div>
+              <div class="adapt-title">Irrigação</div>
+              <div class="adapt-metric green">−80%</div>
+              <div class="adapt-metric-label">redução de perdas na Região Sul</div>
+              <div class="adapt-rows">
+                <div class="adapt-row"><span class="adapt-row-key">Custo</span><span class="adapt-row-leader"></span><span class="adapt-row-val warn">R$
+                    4.000/ha · R$ 18 bi (Sul)</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Retorno</span><span class="adapt-row-leader"></span><span class="adapt-row-val good">TIR
+                    30% · payback 3 anos</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Entrave</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val bad">Disponibilidade hídrica</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Dificuldade</span><span class="adapt-row-leader"></span><span class="adapt-row-val">
+                
+                <div class="diff-dots">
+                  <span class="diff-dot on-a"></span><span class="diff-dot on-a"></span>
+                  <span class="diff-dot on-a"></span><span class="diff-dot on-a"></span><span class="diff-dot"></span>
+                </div>
+                </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="adapt-card c-blue">
+              <div class="adapt-eyebrow">P&amp;D · Longo prazo · Prioridade muito alta</div>
+              <div class="adapt-title">Melhoramento Genético</div>
+              <div class="adapt-metric blue">+13,5%</div>
+              <div class="adapt-metric-label">produtividade da soja resistente à seca (testes 2013/14)</div>
+              <div class="adapt-rows">
+                <div class="adapt-row"><span class="adapt-row-key">Disponibilidade</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val warn">5–10 anos para o mercado</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Tolerância</span><span class="adapt-row-leader"></span><span class="adapt-row-val good">Até
+                    40°C · gene Dreb/BR16</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Entrave</span><span class="adapt-row-leader"></span><span class="adapt-row-val bad">Prazo
+                    desalinhado com urgência</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Dificuldade</span><span class="adapt-row-leader"></span><span class="adapt-row-val">
+                
+                <div class="diff-dots">
+                  <span class="diff-dot on-g"></span><span class="diff-dot on-g"></span>
+                  <span class="diff-dot on-g"></span><span class="diff-dot"></span><span class="diff-dot"></span>
+                </div>
+                </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="adapt-card c-amber">
+              <div class="adapt-eyebrow">Sistema integrado · Médio prazo</div>
+              <div class="adapt-title">iLPF — Integração Lavoura-Pecuária-Floresta</div>
+              <div class="adapt-metric amber">3×</div>
+              <div class="adapt-metric-label">ganho de produtividade pecuária por hectare</div>
+              <div class="adapt-rows">
+                <div class="adapt-row"><span class="adapt-row-key">Viabilidade</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val good">VPL R$5,9M (800 ha · 10 anos)</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">TIR</span><span class="adapt-row-leader"></span><span class="adapt-row-val warn">12% global
+                    · 26% floresta</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Entrave</span><span class="adapt-row-leader"></span><span class="adapt-row-val bad">Alta
+                    complexidade de gestão</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Dificuldade</span><span class="adapt-row-leader"></span><span class="adapt-row-val">
+                
+                <div class="diff-dots">
+                  <span class="diff-dot on-r"></span><span class="diff-dot on-r"></span>
+                  <span class="diff-dot on-r"></span><span class="diff-dot on-r"></span><span
+                    class="diff-dot on-r"></span>
+                </div>
+                </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="adapt-card c-red">
+              <div class="adapt-eyebrow">Sistêmica · Ocorre naturalmente</div>
+              <div class="adapt-title">Realocação Produtiva</div>
+              <div class="adapt-metric red">−2M ha</div>
+              <div class="adapt-metric-label">perda líquida de soja no Brasil mesmo com realocação</div>
+              <div class="adapt-rows">
+                <div class="adapt-row"><span class="adapt-row-key">CO Cerrado</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val good">+3,3 M ha lavoura</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Norte Amazônia</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val warn">+2,7 M ha (pressão florestal)</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Entrave</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val bad">Logística, pragas e infraestrutura</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Dificuldade</span><span class="adapt-row-leader"></span><span class="adapt-row-val">
+                
+                <div class="diff-dots">
+                  <span class="diff-dot on-a"></span><span class="diff-dot on-a"></span>
+                  <span class="diff-dot"></span><span class="diff-dot"></span><span class="diff-dot"></span>
+                </div>
+                </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="alert-box green-border">
+            <strong>Agricultura familiar mais vulnerável:</strong> Com 85% das propriedades rurais do Brasil (5 M no
+            total),
+            os pequenos produtores são proporcionalmente mais afetados. O modelo ricardiano mostra que o Nordeste
+            enfrentará pressão adicional sobre estabelecimentos familiares ainda dependentes de transferências
+            governamentais,
+            enquanto a adoção de iLPF e irrigação exige crédito e assistência técnica que raramente chegam a esse
+            segmento.
+          </div>
+
+          <!-- ── PRODUTIVIDADE PROJETADA ── -->
+          <div class="agro-divider">Ganhos de Produtividade Projetados até 2040 — Compensação Parcial</div>
+          <div class="chart-grid">
+            <div class="chart-block">
+              <div class="chart-title">Produtividade por lavoura — 2010 vs. 2040 (t/ha)</div>
+              <div class="chart-sub">Mesmo com perda de área, ganhos tecnológicos parcialmente compensam a produção total · Produto 5 Brasil 2040</div>
+              <div class="chart-area" id="chart-productivity-slope"></div>
+            </div>
+            <div class="chart-block">
+              <div class="chart-title">Parâmetros agronômicos — 10 culturas simuladas (SCenAgri/ZARC)</div>
+              <div class="chart-sub">ISNA mínimo menor = maior tolerância ao déficit hídrico · explica por que sorgo e feijão caupi resistem melhor</div>
+              <div class="chart-area" id="chart-crop-params"></div>
+            </div>
+          </div>
+
+          <!-- ── LAVOURAS EM ALTO RISCO HOJE ── -->
+          <div class="agro-divider">Situação de Partida — Áreas Já em Alto Risco em 2012</div>
+          <div class="chart-grid">
+            <div class="chart-block">
+              <div class="chart-title">Área plantada em alto risco climático · 2012 (base IBGE)</div>
+              <div class="chart-sub">Ponto de partida antes dos cenários futuros — produtores já operam como "tomadores de risco"</div>
+              <div class="chart-area" id="chart-current-risk"></div>
+            </div>
+            <div class="chart-block">
+              <div class="chart-title">Trajetória do seguro rural — 2005 a 2013</div>
+              <div class="chart-sub">Crescimento expressivo, mas cobertura ainda cobre menos de 20% da área de soja em risco · Produto 7</div>
+              <div class="chart-area" id="chart-insurance-history"></div>
+            </div>
+          </div>
+
+          <div class="alert-box amber-border">
+            <strong>O paradoxo da cobertura:</strong> Em 2013, 4,4 milhões de ha de soja já estavam em áreas de alto risco agroclimático — quase toda essa área deveria estar segurada, mas estava descoberta. Com a projeção HadGEM RCP 8.5, essa área salta para <strong>13,9 M ha</strong> em 2040, exigindo 2,7× mais subvenção (R$595 M adicionais/ano) — apenas para soja, sem contar a expansão da área total plantada. O sistema de seguro precisará ser transformado, não apenas ampliado.
+          </div>
+
+          <div class="questions-block">
+            <div class="questions-title">Perguntas sugeridas ao assistente IA</div>
+            <div class="question-chips">
+              <span class="chip">O que são os veranicos e por que destroem a soja no Sul?</span>
+              <span class="chip">Qual cultura tem maior potencial de adaptação ao aquecimento?</span>
+              <span class="chip">O que o relatório recomenda para o produtor familiar?</span>
+              <span class="chip">Como a irrigação pode compensar as perdas no Sul?</span>
+              <span class="chip">Por que a cana-de-açúcar ganha área com o aquecimento?</span>
+              <span class="chip">Quanto custa implantar irrigação em 175 hectares no RS?</span>
+              <span class="chip">Como o deslocamento da soja pressiona o desmatamento da Amazônia?</span>
+              <span class="chip">Por que o Nordeste Cerrado ganha valor mesmo perdendo área?</span>
+              <span class="chip">O que é o gene Dreb e como ele torna a soja resistente à seca?</span>
+              <span class="chip">Como o encarecimento da ração afeta o preço do frango no mercado?</span>
+            </div>
+          </div>
+        </section>

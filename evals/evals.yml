@@ -1,0 +1,222 @@
+name: AI Eval Suite — Brasil 2040
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_suite:
+        description: "Which tests to run"
+        required: false
+        default: "all"
+        type: choice
+        options:
+          - retrieval
+          - faithfulness
+          - latency
+          - regression
+          - all
+
+env:
+  SEARCH_ENDPOINT: "http://localhost:8000/search"
+  JUDGE_BACKEND: "gemini"
+  FAITHFULNESS_THRESHOLD: "0.6"
+  HALLUCINATION_THRESHOLD: "0.6"
+  SIMILARITY_THRESHOLD: "0.3"
+  RETRIEVAL_P95_MS: "5.0"
+
+jobs:
+  retrieval-evals:
+    name: "Retrieval Precision Tests"
+    runs-on: ubuntu-latest
+    if: |
+      github.event.inputs.test_suite == 'retrieval' ||
+      github.event.inputs.test_suite == 'all'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - name: Install dependencies
+        run: pip install -r evals/requirements.txt
+      - name: Start FastAPI server
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          uvicorn main:app --host 0.0.0.0 --port 8000 &
+          for i in $(seq 1 30); do
+            curl -s http://localhost:8000/ > /dev/null && echo "Server ready" && break
+            echo "Waiting... ($i/30)" && sleep 2
+          done
+      - name: Run retrieval tests
+        run: |
+          pytest evals/test_retrieval.py \
+            -v --tb=short \
+            --html=evals/reports/retrieval_report.html \
+            --self-contained-html -x
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: retrieval-report
+          path: evals/reports/retrieval_report.html
+
+  faithfulness-evals:
+    name: "Faithfulness & Hallucination Tests"
+    runs-on: ubuntu-latest
+    needs: retrieval-evals
+    if: |
+      (github.event.inputs.test_suite == 'faithfulness' ||
+      github.event.inputs.test_suite == 'all') &&
+      needs.retrieval-evals.result == 'success'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - name: Install dependencies
+        run: pip install -r evals/requirements.txt
+      - name: Start FastAPI server
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          uvicorn main:app --host 0.0.0.0 --port 8000 &
+          sleep 15
+      - name: Run faithfulness tests
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          JUDGE_BACKEND: "gemini"
+        run: |
+          pytest evals/test_faithfulness.py \
+            -v --tb=short \
+            --html=evals/reports/faithfulness_report.html \
+            --self-contained-html
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: faithfulness-report
+          path: evals/reports/faithfulness_report.html
+
+  latency-evals:
+    name: "Latency & Cost Tests"
+    runs-on: ubuntu-latest
+    needs: retrieval-evals
+    if: |
+      (github.event.inputs.test_suite == 'latency' ||
+      github.event.inputs.test_suite == 'all') &&
+      needs.retrieval-evals.result == 'success'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - name: Install dependencies
+        run: pip install -r evals/requirements.txt
+      - name: Start FastAPI server
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          uvicorn main:app --host 0.0.0.0 --port 8000 &
+          sleep 15
+      - name: Run latency tests
+        env:
+          RETRIEVAL_P95_MS: "5.0"
+        run: |
+          pytest evals/test_latency_cost.py \
+            -v -s --tb=short \
+            --html=evals/reports/latency_report.html \
+            --self-contained-html \
+            -k "not end_to_end"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: latency-report
+          path: evals/reports/latency_report.html
+
+  nightly-full-eval:
+    name: "Full Eval (Real LLM Judge)"
+    runs-on: ubuntu-latest
+    needs: [retrieval-evals, faithfulness-evals, latency-evals]
+    if: |
+      github.event.inputs.test_suite == 'all' &&
+      needs.retrieval-evals.result == 'success'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - name: Install dependencies
+        run: pip install -r evals/requirements.txt
+      - name: Start FastAPI server
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          uvicorn main:app --host 0.0.0.0 --port 8000 &
+          sleep 20
+      - name: Run full eval suite
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          JUDGE_BACKEND: "gemini"
+          FAITHFULNESS_THRESHOLD: "0.75"
+        run: |
+          pytest evals/ \
+            -v --tb=long \
+            --html=evals/reports/full_eval_report.html \
+            --self-contained-html \
+            --ignore=evals/test_prompt_regression.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: full-eval-report-${{ github.run_number }}
+          path: evals/reports/full_eval_report.html
+          retention-days: 30
+
+  prompt-regression:
+    name: "Prompt Regression Tests"
+    runs-on: ubuntu-latest
+    needs: retrieval-evals
+    if: |
+      (github.event.inputs.test_suite == 'regression' ||
+      github.event.inputs.test_suite == 'all') &&
+      needs.retrieval-evals.result == 'success'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - name: Install dependencies
+        run: pip install -r evals/requirements.txt
+      - name: Start FastAPI server
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          uvicorn main:app --host 0.0.0.0 --port 8000 &
+          sleep 15
+      - name: Run prompt regression tests
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_ANSWER_MODEL: "gemma-4-31b-it"
+          REGRESSION_MODE: "compare"
+          SIMILARITY_THRESHOLD: "0.3"
+        run: |
+          pytest evals/test_prompt_regression.py \
+            -v --tb=short \
+            --html=evals/reports/regression_report.html \
+            --self-contained-html
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: regression-report
+          path: evals/reports/regression_report.html
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: regression-diff
+          path: evals/reports/regression_diff.json

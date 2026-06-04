@@ -1,0 +1,246 @@
+        <section class="panel" id="panel-urb">
+          <div class="sec-header">
+            <div class="sec-title">Infraestrutura Urbana</div>
+            <div class="sec-sub">4 relatórios · ITA (Prof. Wilson Cabral Jr.) · Drenagem urbana pluvial · 5 capitais
+              brasileiras</div>
+            <div class="sec-desc">
+              Avaliação da vulnerabilidade dos sistemas de drenagem pluvial em SP, RJ, Fortaleza, Salvador e Recife
+              frente a cenários climáticos do IPCC até 2040. O problema estrutural: os planos diretores brasileiros
+              assumem <em>estacionariedade climática</em> — que o passado se repetirá no futuro. O estudo demonstra que
+              essa premissa é falsa, e que a impermeabilização crescente das cidades amplifica diretamente qualquer
+              variação nas precipitações.
+            </div>
+          </div>
+
+          <!-- KPI row -->
+          <div class="stats-row">
+            <div class="stat-card red">
+              <div class="stat-val red">+16%</div>
+              <div class="stat-lbl">Aumento da vazão de pico · Canal do Mangue (RJ) · HadGEM RCP 8.5</div>
+              <div class="stat-note">Bacia de 49,93 km² · CN 87 · inclui Maracanã, Sambódromo e sede da Prefeitura do
+                Rio</div>
+            </div>
+            <div class="stat-card amber">
+              <div class="stat-val amber">CN 87–88</div>
+              <div class="stat-lbl">Grau de impermeabilização · bacias estudadas (SP e RJ)</div>
+              <div class="stat-note">Escala 0–100 · CN 100 = solo totalmente impermeável · quase toda a chuva vira
+                escoamento direto</div>
+            </div>
+            <div class="stat-card blue">
+              <div class="stat-val blue">+38%</div>
+              <div class="stat-lbl">Expansão prevista da mancha urbana da RMSP até 2030</div>
+              <div class="stat-note">Mantido o padrão histórico · agrava enchentes, inundações e deslizamentos nas
+                bacias críticas</div>
+            </div>
+            <div class="stat-card green">
+              <div class="stat-val green">−25%</div>
+              <div class="stat-lbl">Redução do escoamento superficial com permeabilidade CN −10</div>
+              <div class="stat-note">Simulação de adaptação · RJ · redução válida para todos os cenários climáticos,
+                incluindo os mais pessimistas</div>
+            </div>
+          </div>
+
+          <!-- Charts row 1 (existing) -->
+          <div class="chart-grid">
+            <div class="chart-block">
+              <div class="chart-title">Impacto na vazão de pico por bacia (Tr = 50 anos)</div>
+              <div class="chart-sub">HadGEM2-ES vs. MIROC5 · RCP 8.5 · variação % em relação ao presente</div>
+              <div class="legend">
+                <div class="leg-item">
+                  <div class="leg-dot" style="background:#5ba3f5"></div>MIROC5 RCP 8.5
+                </div>
+                <div class="leg-item">
+                  <div class="leg-dot" style="background:#f05252"></div>HadGEM2 RCP 8.5
+                </div>
+              </div>
+              <div class="chart-area" id="chart-drain"></div>
+            </div>
+            <div class="chart-block">
+              <div class="chart-title">Principais vulnerabilidades por capital</div>
+              <div class="chart-sub">Fatores de risco e bacias críticas identificadas no diagnóstico</div>
+              <div class="chart-area" id="chart-cities"></div>
+            </div>
+          </div>
+
+          <!-- ── IMPERMEABILIZAÇÃO ── -->
+          <div class="agro-divider">IMPERMEABILIZAÇÃO E ESCOAMENTO</div>
+
+          <div class="chart-grid">
+            <div class="chart-block">
+              <div class="chart-title">Efeito da permeabilidade na precipitação excedente</div>
+              <div class="chart-sub">Chuva de projeto (T = 50 anos) · CN atual vs. CN reduzido em 10 pontos</div>
+              <div class="legend">
+                <div class="leg-item">
+                  <div class="leg-dot" style="background:#f05252"></div>CN atual (alta impermeabilização)
+                </div>
+                <div class="leg-item">
+                  <div class="leg-dot" style="background:#3dd98a"></div>CN −10 (mais permeável)
+                </div>
+              </div>
+              <div class="chart-area" id="chart-cn-sim"></div>
+            </div>
+            <div class="chart-block">
+              <div class="chart-title">Rede de drenagem de Fortaleza por bacia hidrográfica</div>
+              <div class="chart-sub">Densidade de rede (km de rede / km² de bacia) · déficit na bacia do Rio Cocó</div>
+              <div class="chart-area" id="chart-fortaleza-basins"></div>
+            </div>
+          </div>
+
+          <!-- ── PARADOXO DOS MODELOS ── -->
+          <div class="agro-divider">PARADOXO DOS MODELOS CLIMÁTICOS</div>
+
+          <div class="alert-box amber-border">
+            <strong>São Paulo — modelos projetam menos enchentes, mas a realidade piora:</strong> Os cenários climáticos
+            projetam uma <em>redução</em> de 36–49% no pico de vazão da bacia do Córrego Anhangabaú até 2040. Mas na
+            prática, inundações na Av. Nove de Julho e Praça da Bandeira ocorrem cerca de <strong>4 vezes por
+              ano</strong> e têm aumentado em frequência. O motivo: a resolução temporal mínima de 3 horas dos modelos
+            climáticos os impede de simular os eventos de curta duração (5–60 min) que causam alagamentos urbanos. As
+            curvas IDF futuras foram construídas com razões temporais de dados históricos passados — não com projeções
+            reais.
+          </div>
+
+          <div class="friction-box" style="border-left-color:var(--amber);margin-top:0">
+            <div class="friction-kpi">
+              <div class="friction-val" style="color:var(--blue)">MIROC5</div>
+              <div class="friction-lbl">Comportamento nos cenários</div>
+              <div class="friction-desc" style="border-left:none;padding-left:0;margin-top:8px">
+                <strong>Superestima</strong> o total anual de precipitação, mas <strong>subestima os picos máximos
+                  diários</strong> — distribui as chuvas de forma mais uniforme com poucos dias secos. Resultado
+                divergente: Rio de Janeiro mostra <strong style="color:var(--blue)">−14%</strong> na vazão de pico
+                (menos pressão futura).
+              </div>
+            </div>
+            <div class="friction-kpi">
+              <div class="friction-val" style="color:var(--red)">HadGEM2</div>
+              <div class="friction-lbl">Comportamento nos cenários</div>
+              <div class="friction-desc">
+                <strong>Subestima</strong> precipitações máximas diárias de forma consistente em quase todas as cidades.
+                Resultado oposto ao MIROC5: Rio de Janeiro mostra <strong style="color:var(--red)">+16%</strong> na
+                vazão de pico. A grande divergência entre os dois modelos impede projeções definitivas para o RJ.
+              </div>
+            </div>
+          </div>
+
+          <!-- ── LACUNAS DE DADOS ── -->
+          <div class="agro-divider">LACUNAS DE DADOS POR CAPITAL</div>
+
+          <div class="chart-grid single">
+            <div class="chart-block">
+              <div class="chart-title">Disponibilidade de dados para modelagem hidrológica</div>
+              <div class="chart-sub">Status levantado em dez/2014 · Recife apresenta o maior déficit · lacunas impedem
+                modelagem completa</div>
+              <div class="chart-area" id="chart-data-matrix"></div>
+            </div>
+          </div>
+
+          <!-- ── FALHA NA LEGISLAÇÃO ── -->
+          <div class="agro-divider">FALHA NA LEGISLAÇÃO</div>
+
+          <div class="alert-box red-border">
+            <strong>A "Lei das Piscininhas" (Lei Est. SP 12.526/2007):</strong> Obriga reservatórios de detenção em
+            lotes com área impermeabilizada &gt; 500 m². O problema: o volume é calculado com intensidade fixa (IP =
+            0,06 m/h) e duração de 1 hora. Para um lote típico de 1.000 m² com 75% impermeabilizado, esse reservatório
+            se esgota em <strong>apenas 11 minutos</strong> de chuva intensa. A partir do 12º minuto, o extravasor opera
+            com a mesma vazão de entrada — sem qualquer redução do pico. <strong>A lei controla volume, mas as
+              inundações são causadas pela combinação de volume e velocidade de descarga.</strong> A solução técnica é
+            dimensionar com base em uma vazão de controle (Qc) igual à capacidade do sistema municipal de drenagem,
+            usando o Método Racional Modificado.
+          </div>
+
+          <!-- ── MEDIDAS DE ADAPTAÇÃO ── -->
+          <div class="agro-divider">MEDIDAS DE ADAPTAÇÃO RECOMENDADAS</div>
+
+          <div class="adapt-grid">
+            <div class="adapt-card c-green">
+              <div class="adapt-eyebrow">Controle na fonte · escala de lote</div>
+              <div class="adapt-title">Pavimentos Porosos e Valas de Infiltração</div>
+              <div class="adapt-metric green">−25%</div>
+              <div class="adapt-metric-label">redução do escoamento superficial com CN −10 · válido em todos os cenários
+                climáticos</div>
+              <div class="adapt-rows">
+                <div class="adapt-row"><span class="adapt-row-key">Custo</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val good">Baixo–Médio</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Escala</span><span class="adapt-row-leader"></span><span class="adapt-row-val">Lote /
+                    quarteirão</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Co-benefício</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val">Recarga de aquíferos urbanos</span></div>
+              </div>
+            </div>
+            <div class="adapt-card c-blue">
+              <div class="adapt-eyebrow">Controle na fonte · edificações</div>
+              <div class="adapt-title">Telhados Verdes e Microrreservatórios</div>
+              <div class="adapt-metric blue">~30%</div>
+              <div class="adapt-metric-label">redução potencial no volume escoado por edificação</div>
+              <div class="adapt-rows">
+                <div class="adapt-row"><span class="adapt-row-key">Custo</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val warn">Médio</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Escala</span><span class="adapt-row-leader"></span><span class="adapt-row-val">Edificação
+                    individual</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Co-benefício</span><span class="adapt-row-leader"></span><span class="adapt-row-val">Reduz
+                    ilhas de calor urbanas</span></div>
+              </div>
+            </div>
+            <div class="adapt-card c-amber">
+              <div class="adapt-eyebrow">Macrodrenagem · espaço urbano</div>
+              <div class="adapt-title">Parques e Várzeas como Zonas de Amortecimento</div>
+              <div class="adapt-metric amber">2 em 1</div>
+              <div class="adapt-metric-label">função dupla: lazer urbano + buffer contra cheias</div>
+              <div class="adapt-rows">
+                <div class="adapt-row"><span class="adapt-row-key">Custo</span><span class="adapt-row-leader"></span><span class="adapt-row-val bad">Alto
+                    (desapropriação)</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Vantagem</span><span class="adapt-row-leader"></span><span class="adapt-row-val good">Alta
+                    aceitação social</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Vs. piscinões</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val good">Sem acúmulo de resíduos</span></div>
+              </div>
+            </div>
+            <div class="adapt-card c-red">
+              <div class="adapt-eyebrow">Não-estrutural · política pública</div>
+              <div class="adapt-title">Reforma Legislativa + Banco de Dados Integrado</div>
+              <div class="adapt-metric red">#1</div>
+              <div class="adapt-metric-label">prioridade: controlar vazões máximas, não apenas volumes acumulados</div>
+              <div class="adapt-rows">
+                <div class="adapt-row"><span class="adapt-row-key">Reformar</span><span class="adapt-row-leader"></span><span class="adapt-row-val bad">Lei
+                    12.526/2007 (SP)</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Integrar</span><span class="adapt-row-leader"></span><span class="adapt-row-val">Planos
+                    Diretores + drenagem + uso do solo</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Criar</span><span class="adapt-row-leader"></span><span class="adapt-row-val">Banco de
+                    dados georreferenciado municipal</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Questions block -->
+          <!-- ── ESTAÇÕES PLUVIOMÉTRICAS ── -->
+          <div class="agro-divider">DÉFICIT DE MONITORAMENTO — Estações por Capital</div>
+          <div class="chart-grid">
+            <div class="chart-block">
+              <div class="chart-title">Estações pluviométricas operacionais por capital (2014)</div>
+              <div class="chart-sub">SP e RJ têm redes razoáveis · Recife com apenas 7 estações para modelar uma cidade inteira</div>
+              <div class="chart-area" id="chart-rain-stations"></div>
+            </div>
+            <div class="chart-block">
+              <div class="chart-title">Simulador — "Lei das Piscininhas" (Lei Est. SP 12.526/2007)</div>
+              <div class="chart-sub">Ajuste a área do lote e a impermeabilização para ver em quantos minutos o reservatório se esgota</div>
+              <div class="chart-area" id="chart-piscininha-calc" style="min-height:180px"></div>
+            </div>
+          </div>
+
+          <div class="alert-box red-border">
+            <strong>O paradoxo da "Lei das Piscininhas" quantificado:</strong> Para um lote típico de 1.000 m² com 75% impermeabilizado, o reservatório de detenção obrigatório se esgota em apenas <strong>11 minutos</strong> de chuva intensa. A lei usa intensidade fixa de 0,06 m/h por 1 hora — mas não limita a <em>vazão</em> de saída. A partir do 12º minuto, o extravasor funciona como se não existisse. Ajuste os parâmetros acima para ver o efeito nos diferentes lotes.
+          </div>
+
+          <div class="questions-block">
+            <div class="questions-title">Perguntas sugeridas ao assistente IA</div>
+            <div class="question-chips">
+              <span class="chip">Por que os modelos climáticos projetam menos enchentes em SP mas a realidade
+                piora?</span>
+              <span class="chip">O que significa CN 88 e por que é crítico para drenagem urbana?</span>
+              <span class="chip">Por que a "Lei das Piscininhas" não funciona na prática?</span>
+              <span class="chip">O que são as curvas IDF e como as mudanças climáticas as afetam?</span>
+              <span class="chip">Como os "piscinões" se comparam à detenção distribuída?</span>
+              <span class="chip">Por que Recife apresenta o maior déficit de dados hidrológicos?</span>
+              <span class="chip">O que é a premissa de estacionariedade e por que ela falha?</span>
+            </div>
+          </div>
+        </section>

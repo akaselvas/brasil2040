@@ -1,0 +1,47 @@
+{
+  "_metadata": {
+    "captured_at": "2026-05-29T21:50:04.829051",
+    "prompt_hash": "7a332a54",
+    "num_cases": 5
+  },
+  "prompt_regression_001": {
+    "question": "O que é o ZARC e como ele funciona?",
+    "answer": "O Zoneamento Agrícola de Risco Climático (ZARC) é um instrumento de gestão de riscos na agricultura e de política agrícola, mantido pelo Ministério da Agricultura Pecuária e Abastecimento (MAPA). Seu objetivo é minimizar os riscos relacionados a perdas agrícolas decorrentes de fenômenos ou eventos climáticos.\n\nO ZARC funciona da seguinte forma:\n\n*   **Objetivo Principal:** Permite que cada município identifique a melhor época de plantio das culturas, considerando diferentes ciclos de cultivares e tipos de solo.\n*   **Metodologia:** É baseado na quantificação de riscos climáticos e consiste na espacialização de informações de risco. Para isso, utiliza análises de frequência que retornam a probabilidade de ocorrência de condições específicas, considerando séries de dados meteorológicos medidos por um período longo o suficiente para representar a variabilidade natural das condições locais.\n*   **Parâmetros Analisados:** São analisados parâmetros de solo, clima e ciclos de cultivares para determinar a relação de municípios indicados ao plantio de culturas específicas, juntamente com seus respectivos calendários ou épocas de plantio.\n*   **Passos para Elaboração:** O processo envolve a definição dos objetivos, a abrangência do estudo, a caracterização das exigências climáticas das culturas, o levantamento de dados climáticos da região e, por fim, o processamento dos dados e a produção dos resultados.\n\n**Informações Adicionais:**\n*   O ZARC foi utilizado pela primeira vez na safra de ",
+    "key_numbers": [],
+    "answer_length": 1503,
+    "captured_at": "2026-05-29T21:51:24.123252"
+  },
+  "prompt_regression_002": {
+    "question": "Quais culturas têm maior risco até 2040?",
+    "answer": "As culturas com maior risco até 2040 são:\n\n*   **Soja:** Apresenta os impactos mais relevantes em todos os cenários apresentados até 2040, sendo considerada uma das culturas mais afetadas nos cenários futuros, tanto para o modelo Miroc quanto para o HaGen2ES.\n*   **Milho (safrinha e de safra normal):** No modelo Hadgen2ES, são as culturas mais afetadas, em sequência à soja, em termos de porcentagem de redução de áreas de baixo risco climático.",
+    "key_numbers": [],
+    "answer_length": 447,
+    "captured_at": "2026-05-29T21:51:48.495604"
+  },
+  "agro_001": {
+    "question": "Qual é a projeção de crescimento da produção de grãos e oleaginosas do Brasil entre 2010 e 2040?",
+    "answer": "Entre 2010 e 2040, a projeção de variação na produção de grãos e oleaginosas é de 132% para o cenário de referência e de 167% nos resultados preliminares para o cenário de referência.",
+    "key_numbers": [
+      "132%",
+      "167%"
+    ],
+    "answer_length": 183,
+    "captured_at": "2026-05-29T21:52:16.046632"
+  },
+  "energia_001": {
+    "question": "Qual o custo operacional do SIN no pior cenário climático (HadGEM RCP 8.5)?",
+    "answer": "No cenário extremo de impacto (HadGEM), a probabilidade de déficit chega a ficar acima de 90%, o que levaria a custos operacionais altíssimos, variando entre um aumento de 3,5 a 16,7 vezes com relação à linha de base, nos cenários de menor/maior impacto, respectivamente.",
+    "key_numbers": [
+      "90%"
+    ],
+    "answer_length": 271,
+    "captured_at": "2026-05-29T21:52:41.436398"
+  },
+  "energia_004": {
+    "question": "Qual o risco de déficit (apagão) no subsistema Sudeste/Centro-Oeste no cenário HadGEM 8.5?",
+    "answer": "Os trechos fornecidos mencionam a existência da \"Figura 35: Risco de qualquer déficit do subsistema SE/CO HadGEM 8.5\", porém não informam explicitamente o valor numérico do risco de déficit para esse cenário.",
+    "key_numbers": [],
+    "answer_length": 208,
+    "captured_at": "2026-05-29T21:53:04.969596"
+  }
+}

@@ -1,0 +1,329 @@
+        <section class="panel" id="panel-hidro">
+          <div class="sec-header">
+            <div class="sec-title">Recursos Hídricos</div>
+            <div class="sec-sub">4 relatórios · FCPC/PNUD/SAE · Sistema Interligado Nacional · horizonte 2011–2099</div>
+            <div class="sec-desc">
+              A matriz elétrica brasileira é predominantemente hidrelétrica — tornando cada gota de chuva uma questão de
+              política energética.
+              Os modelos climáticos projetam reduções severas na disponibilidade hídrica no Norte, Nordeste e
+              Centro-Oeste ao longo do século XXI,
+              enquanto o Sul é a única região com tendência consistente de aumento de vazão. O resultado é um Brasil
+              partido ao meio pela água.
+            </div>
+          </div>
+
+          <!-- STAT ROW 1 -->
+          <div class="stats-row">
+            <div class="stat-card red">
+              <div class="stat-val red">−72,8%</div>
+              <div class="stat-lbl">Queda de ENA · Jequitinhonha · HadGEM 8.5</div>
+              <div class="stat-note">2071–2099 · caso extremo do Sudeste</div>
+            </div>
+            <div class="stat-card red">
+              <div class="stat-val red">−57%</div>
+              <div class="stat-lbl">Redução de vazão · Sobradinho (NE) · HadGEM 8.5</div>
+              <div class="stat-note">Rio São Francisco — irrigação, abastecimento e energia</div>
+            </div>
+            <div class="stat-card green">
+              <div class="stat-val green">+79,6%</div>
+              <div class="stat-lbl">Aumento de ENA · Jacuí (Sul) · MIROC 8.5</div>
+              <div class="stat-note">2071–2099 · maior ganho projetado no país</div>
+            </div>
+            <div class="stat-card blue">
+              <div class="stat-val blue">−10%</div>
+              <div class="stat-lbl">Queda mínima da ENA do SIN por período</div>
+              <div class="stat-note">Todos os cenários · todos os períodos de 30 anos</div>
+            </div>
+          </div>
+
+          <!-- STAT ROW 2 — temperatura -->
+          <div class="stats-row">
+            <div class="stat-card red">
+              <div class="stat-val red">+6 °C</div>
+              <div class="stat-lbl">Aquecimento máximo · HadGEM 8.5 · 2071–2099</div>
+              <div class="stat-note">Grande parte do Brasil · amplifica evapotranspiração</div>
+            </div>
+            <div class="stat-card amber">
+              <div class="stat-val amber">+2,5 °C</div>
+              <div class="stat-lbl">Aquecimento · Centro-Oeste · HadGEM 8.5 · 2010–2040</div>
+              <div class="stat-note">Maior aquecimento no 1º período — já nos próximos 15 anos</div>
+            </div>
+            <div class="stat-card amber">
+              <div class="stat-val amber">+5%</div>
+              <div class="stat-lbl">Aumento mínimo de evapotranspiração por período</div>
+              <div class="stat-note">Todo o domínio do SIN · agrava a seca mesmo sem redução de chuva</div>
+            </div>
+            <div class="stat-card red">
+              <div class="stat-val red">−50%</div>
+              <div class="stat-lbl">Anomalia de precipitação · HadGEM 8.5 · litoral · 2071–2099</div>
+              <div class="stat-note">Modelo amplifica o sinal seco em até 2× vs. modelos globais</div>
+            </div>
+          </div>
+
+          <!-- CHART ROW 1 -->
+          <div class="chart-grid">
+            <div class="chart-block">
+              <div class="chart-title">Redução de ENA por subsistema — HadGEM 8.5 (%)</div>
+              <div class="chart-sub">Três períodos de 30 anos · Energia Natural Afluente vs. climatologia 1961–2000
+              </div>
+              <div class="chart-area" id="chart-ena"></div>
+            </div>
+            <div class="chart-block">
+              <div class="chart-title">Anomalia de temperatura projetada por região (ºC)</div>
+              <div class="chart-sub">Aquecimento médio · 2010–2040 (HadGEM2-ES) — início do problema</div>
+              <div class="chart-area" id="chart-temp"></div>
+            </div>
+          </div>
+
+          <!-- TEMPERATURE TIMELINE — 3 periods -->
+          <div class="agro-divider">Trajetória do Aquecimento — Três Gerações</div>
+          <div class="chart-grid single">
+            <div class="chart-block">
+              <div class="chart-title">Projeção de temperatura por período e modelo (ºC acima da média histórica)</div>
+              <div class="chart-sub">HadGEM2-ES é consistentemente mais pessimista que o MIROC5 · RCP 8.5 sem mitigação
+              </div>
+              <div class="chart-area" id="chart-temp-timeline"></div>
+            </div>
+          </div>
+
+          <!-- ENA ANOMALY TABLE -->
+          <div class="agro-divider">Mapa de Anomalias de ENA por Bacia</div>
+          <div class="scenario-matrix">
+            <div class="sm-row sm-header" style="grid-template-columns:1.6fr 1fr 1fr 1fr 1fr">
+              <div class="sm-cell">Bacia / Subsistema</div>
+              <div class="sm-cell">MIROC RCP 4.5</div>
+              <div class="sm-cell">MIROC RCP 8.5</div>
+              <div class="sm-cell">HadGEM RCP 4.5</div>
+              <div class="sm-cell">HadGEM RCP 8.5</div>
+            </div>
+            <div class="sm-row" style="grid-template-columns:1.6fr 1fr 1fr 1fr 1fr">
+              <div class="sm-cell sm-label">Amazonas (Norte)</div>
+              <div class="sm-cell amber">−18%</div>
+              <div class="sm-cell red">−25%</div>
+              <div class="sm-cell red">−40%</div>
+              <div class="sm-cell red">−71,6%</div>
+            </div>
+            <div class="sm-row" style="grid-template-columns:1.6fr 1fr 1fr 1fr 1fr">
+              <div class="sm-cell sm-label">Tocantins (Norte)</div>
+              <div class="sm-cell green">+5%</div>
+              <div class="sm-cell green">+3%</div>
+              <div class="sm-cell green">+4%</div>
+              <div class="sm-cell amber">−8%</div>
+            </div>
+            <div class="sm-row" style="grid-template-columns:1.6fr 1fr 1fr 1fr 1fr">
+              <div class="sm-cell sm-label">São Francisco · Sobradinho (NE)</div>
+              <div class="sm-cell amber">−20%</div>
+              <div class="sm-cell red">−35%</div>
+              <div class="sm-cell red">−45%</div>
+              <div class="sm-cell red">−57%</div>
+            </div>
+            <div class="sm-row" style="grid-template-columns:1.6fr 1fr 1fr 1fr 1fr">
+              <div class="sm-cell sm-label">Grande / Tietê (Sudeste)</div>
+              <div class="sm-cell amber">−12%</div>
+              <div class="sm-cell amber">−20%</div>
+              <div class="sm-cell red">−35%</div>
+              <div class="sm-cell red">−54,5%</div>
+            </div>
+            <div class="sm-row" style="grid-template-columns:1.6fr 1fr 1fr 1fr 1fr">
+              <div class="sm-cell sm-label">Paraguai (Sudeste/CO)</div>
+              <div class="sm-cell green">+5%</div>
+              <div class="sm-cell green">+8%</div>
+              <div class="sm-cell green">+10%</div>
+              <div class="sm-cell green">+12%</div>
+            </div>
+            <div class="sm-row" style="grid-template-columns:1.6fr 1fr 1fr 1fr 1fr">
+              <div class="sm-cell sm-label">Uruguai / Jacuí (Sul)</div>
+              <div class="sm-cell green">+30%</div>
+              <div class="sm-cell green">+74,2%</div>
+              <div class="sm-cell amber">−15%</div>
+              <div class="sm-cell amber">−18%</div>
+            </div>
+            <div class="sm-row" style="grid-template-columns:1.6fr 1fr 1fr 1fr 1fr">
+              <div class="sm-cell sm-label">Jequitinhonha (Sudeste)</div>
+              <div class="sm-cell red">−30%</div>
+              <div class="sm-cell red">−45%</div>
+              <div class="sm-cell red">−60%</div>
+              <div class="sm-cell red">−72,8%</div>
+            </div>
+          </div>
+
+          <div class="alert-box red-border">
+            <strong>O Sul diverge dos modelos:</strong> A divergência entre MIROC e HadGEM é máxima no Sul — o MIROC
+            projeta +74% de ENA no Uruguai enquanto o HadGEM projeta −18% no mesmo período. Isso reflete incerteza real
+            dos modelos, não erro de cálculo. Políticas energéticas precisam ser robustas a <em>ambos</em> os futuros.
+          </div>
+
+          <!-- CITY VULNERABILITY -->
+          <div class="agro-divider">Vulnerabilidade Hídrica das Grandes Cidades</div>
+          <div class="adapt-grid">
+            <div class="adapt-card c-red">
+              <div class="adapt-eyebrow">Nordeste · Semiárido</div>
+              <div class="adapt-title">Fortaleza</div>
+              <div class="adapt-metric red">Alta</div>
+              <div class="adapt-metric-label">Vulnerabilidade hídrica</div>
+              <div class="adapt-rows">
+                <div class="adapt-row"><span class="adapt-row-key">Risco principal</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val warn">Escassez prolongada</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Proteção relativa</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val good">Transposição do S. Francisco</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Tensão futura</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val bad">Conflito com regiões doadoras</span></div>
+              </div>
+            </div>
+            <div class="adapt-card c-amber">
+              <div class="adapt-eyebrow">Amazônia · Cheias</div>
+              <div class="adapt-title">Manaus</div>
+              <div class="adapt-metric amber">Média-Alta</div>
+              <div class="adapt-metric-label">Vulnerabilidade hídrica</div>
+              <div class="adapt-rows">
+                <div class="adapt-row"><span class="adapt-row-key">Risco principal</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val bad">Cheias prolongadas · Solimões</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Anomalia projetada</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val bad">ENA −25% (MIROC) a −71% (HadGEM)</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Paradoxo</span><span class="adapt-row-leader"></span><span class="adapt-row-val warn">Mais
+                    cheias E mais secas extremas</span></div>
+              </div>
+            </div>
+            <div class="adapt-card c-red">
+              <div class="adapt-eyebrow">Nordeste · São Francisco</div>
+              <div class="adapt-title">Recife</div>
+              <div class="adapt-metric red">Muito Alta</div>
+              <div class="adapt-metric-label">Vulnerabilidade hídrica</div>
+              <div class="adapt-rows">
+                <div class="adapt-row"><span class="adapt-row-key">Risco hídrico</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val bad">Redução &gt;50% nos rios regionais</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Risco costeiro</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val bad">Planície + marés + rios</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Dado crítico</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val bad">Maior déficit de dados do país</span></div>
+              </div>
+            </div>
+            <div class="adapt-card c-amber">
+              <div class="adapt-eyebrow">Sudeste · Cantareira</div>
+              <div class="adapt-title">São Paulo</div>
+              <div class="adapt-metric amber">Média-Alta</div>
+              <div class="adapt-metric-label">Vulnerabilidade hídrica</div>
+              <div class="adapt-rows">
+                <div class="adapt-row"><span class="adapt-row-key">Risco principal</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val warn">Estiagens (caso Cantareira 2014)</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Risco secundário</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val warn">Alagamentos · mancha urbana +38%</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Bacia do Tietê</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val bad">ENA −20% a −54% (HadGEM 8.5)</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- HISTORICAL TRENDS -->
+          <div class="agro-divider">Tendências Históricas e Forçantes Climáticas</div>
+          <div class="chart-grid">
+            <div class="chart-block">
+              <div class="chart-title">Tendência histórica de vazão por região (Mann-Kendall)</div>
+              <div class="chart-sub">Direção das tendências observadas · Sul/SE/CO versus Norte/NE</div>
+              <div class="chart-area" id="chart-mk-trend"></div>
+            </div>
+            <div class="chart-block">
+              <div class="chart-title">Anomalia de precipitação projetada por cenário (%)</div>
+              <div class="chart-sub">Extremo Sul vs. Nordeste · 2071–2099 · divergência máxima entre regiões</div>
+              <div class="chart-area" id="chart-precip-contrast"></div>
+            </div>
+          </div>
+
+          <div class="alert-box amber-border">
+            <strong>Oscilação Decadal do Pacífico (ODP):</strong> A análise de ondeletas identificou uma mudança de fase
+            climática na década de 1970, associada à ODP. Períodos de fase fria da ODP geram vazões menores no Nordeste.
+            O pico de baixa frequência observado na bacia de Furnas nos anos 1980 sugere que o sistema pode estar
+            entrando em um ciclo de menor afluência — <em>independentemente das mudanças climáticas</em>. Os dois
+            efeitos se somam.
+          </div>
+
+          <!-- ADAPTATION MEASURES -->
+          <div class="agro-divider">Medidas de Adaptação — Portfólio</div>
+          <div class="adapt-grid">
+            <div class="adapt-card c-blue">
+              <div class="adapt-eyebrow">Adaptação Incremental</div>
+              <div class="adapt-title">Ajustes na estrutura atual</div>
+              <div class="adapt-rows adapt-rows--list">
+                <div class="adapt-row--item">
+                  <span class="adapt-step-num">01</span>
+                  <span class="adapt-step-bar" style="--bar-color: var(--c-blue)"></span>
+                  <span class="adapt-step-label">Transposição de bacias</span>
+                </div>
+                <div class="adapt-row--item">
+                  <span class="adapt-step-num">02</span>
+                  <span class="adapt-step-bar" style="--bar-color: var(--c-blue)"></span>
+                  <span class="adapt-step-label">Sistemas de alerta precoce de seca</span>
+                </div>
+                <div class="adapt-row--item">
+                  <span class="adapt-step-num">03</span>
+                  <span class="adapt-step-bar" style="--bar-color: var(--c-blue)"></span>
+                  <span class="adapt-step-label">Ajuste da matriz energética</span>
+                </div>
+                <div class="adapt-row--item">
+                  <span class="adapt-step-num">04</span>
+                  <span class="adapt-step-bar" style="--bar-color: var(--c-blue)"></span>
+                  <span class="adapt-step-label">Identificação de novos mananciais</span>
+                </div>
+                <div class="adapt-row--item">
+                  <span class="adapt-step-num">05</span>
+                  <span class="adapt-step-bar" style="--bar-color: var(--c-blue)"></span>
+                  <span class="adapt-step-label">Adaptação da drenagem urbana</span>
+                </div>
+              </div>
+            </div>
+            <div class="adapt-card c-amber">
+              <div class="adapt-eyebrow">Adaptação Transformacional</div>
+              <div class="adapt-title">Mudanças estruturais profundas</div>
+              <div class="adapt-rows adapt-rows--list">
+                <div class="adapt-row--item">
+                  <span class="adapt-step-num">01</span>
+                  <span class="adapt-step-bar" style="--bar-color: var(--c-amber)"></span>
+                  <span class="adapt-step-label">Planos de contingência de cheias e secas por bacia</span>
+                </div>
+                <div class="adapt-row--item">
+                  <span class="adapt-step-num">02</span>
+                  <span class="adapt-step-bar" style="--bar-color: var(--c-amber)"></span>
+                  <span class="adapt-step-label">Modelos de previsão climática aprimorados</span>
+                </div>
+                <div class="adapt-row--item">
+                  <span class="adapt-step-num">03</span>
+                  <span class="adapt-step-bar" style="--bar-color: var(--c-amber)"></span>
+                  <span class="adapt-step-label">Programas de conservação e uso racional da água</span>
+                </div>
+                <div class="adapt-row--item">
+                  <span class="adapt-step-num">04</span>
+                  <span class="adapt-step-bar" style="--bar-color: var(--c-amber)"></span>
+                  <span class="adapt-step-label">Investimento em hidroeletricidade + renováveis</span>
+                </div>
+                <div class="adapt-row--item">
+                  <span class="adapt-step-num">05</span>
+                  <span class="adapt-step-bar" style="--bar-color: var(--c-amber)"></span>
+                  <span class="adapt-step-label">Gestão integrada: oferta + demanda + conflitos</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert-box" style="border-color:rgba(91,163,245,.25);background:rgba(91,163,245,.04)">
+            <strong>O paradoxo de Giddens:</strong> Os riscos hídricos não são visíveis no cotidiano — o que leva à
+            inércia dos tomadores de decisão. Mas esperar que a seca se torne "palpável" para agir será, por definição,
+            tarde demais. A infraestrutura hídrica tem horizonte de décadas: um reservatório planejado hoje só estará
+            operacional quando os impactos já estiverem em curso.
+          </div>
+
+          <div class="questions-block">
+            <div class="questions-title">Perguntas sugeridas ao assistente IA</div>
+            <div class="question-chips">
+              <span class="chip">O que é Energia Natural Afluente e como ela é calculada?</span>
+              <span class="chip">Por que o Sul terá mais água enquanto o Nordeste terá menos?</span>
+              <span class="chip">Como a Oscilação Decadal do Pacífico afeta as vazões brasileiras?</span>
+              <span class="chip">Por que a bacia do Paraguai é exceção positiva no Sudeste?</span>
+              <span class="chip">O que causa a divergência extrema entre MIROC e HadGEM no Sul?</span>
+              <span class="chip">Como o aumento de evapotranspiração piora a seca mesmo sem menos chuva?</span>
+              <span class="chip">Por que o Jequitinhonha pode perder quase 73% da sua ENA?</span>
+              <span class="chip">Quais são os princípios de Ostrom para gestão de recursos hídricos?</span>
+              <span class="chip">Qual a diferença entre adaptação incremental e transformacional?</span>
+              <span class="chip">Como a transposição do São Francisco protege Fortaleza mas cria novos conflitos?</span>
+            </div>
+          </div>
+        </section>

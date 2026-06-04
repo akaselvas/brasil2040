@@ -1,0 +1,336 @@
+        <section class="panel" id="panel-costa">
+          <div class="sec-header">
+            <div class="sec-title">Infraestrutura Costeira</div>
+            <div class="sec-sub">4 relatórios · ITA (Wilson Cabral Jr.) · 17 portos · IVCB aplicado ao RJ e Santos · até
+              2050</div>
+            <div class="sec-desc">
+              Os portos brasileiros movimentam mais de 90% das exportações nacionais — e todos os 17 analisados
+              já operam com bordas livres de cais abaixo das recomendações internacionais. A elevação do nível do mar
+              a 4 mm/ano, combinada ao aumento das ondas e ao assoreamento acelerado dos canais, configurará uma crise
+              operacional sistêmica. Santos e Rio de Janeiro concentram R$ 224 bilhões em ativos imobiliários em alto
+              risco.
+            </div>
+          </div>
+
+          <!-- STAT ROW 1 -->
+          <div class="stats-row">
+            <div class="stat-card red">
+              <div class="stat-val red">+97%</div>
+              <div class="stat-lbl">Assoreamento · Porto de Rio Grande · até 2050</div>
+              <div class="stat-note">Duplica o custo de dragagem de manutenção</div>
+            </div>
+            <div class="stat-card red">
+              <div class="stat-val red">4 mm/ano</div>
+              <div class="stat-lbl">Elevação relativa do nível do mar (desde 1950)</div>
+              <div class="stat-note">40 cm/século · Recife: 65,6 cm — o maior do país</div>
+            </div>
+            <div class="stat-card red">
+              <div class="stat-val red">+35,2%</div>
+              <div class="stat-lbl">Crescimento de ondas · Rio Grande (RS) · até 2050</div>
+              <div class="stat-note">Maior crescimento da costa · modelo ERA-40</div>
+            </div>
+            <div class="stat-card blue">
+              <div class="stat-val blue">90%+</div>
+              <div class="stat-lbl">Exportações nacionais via modal marítimo (2013)</div>
+              <div class="stat-note">931 milhões de toneladas movimentadas</div>
+            </div>
+          </div>
+
+          <!-- STAT ROW 2 -->
+          <div class="stats-row">
+            <div class="stat-card amber">
+              <div class="stat-val amber">R$ 7,25 bi</div>
+              <div class="stat-lbl">Custo de adaptação portuária até 2050</div>
+              <div class="stat-note">Inclui 3 Storm Surge Barriers · Recife, Santos e Vitória</div>
+            </div>
+            <div class="stat-card red">
+              <div class="stat-val red">R$ 224 bi</div>
+              <div class="stat-lbl">Ativos imobiliários em alto risco · RJ + Santos</div>
+              <div class="stat-note">RJ: R$ 124 bi · Santos: R$ 100+ bi · cenário IPCC 8.5</div>
+            </div>
+            <div class="stat-card amber">
+              <div class="stat-val amber">+33%</div>
+              <div class="stat-lbl">Aumento médio de sedimentos nos canais · até 2050</div>
+              <div class="stat-note">Exige ampliação de capacidade de dragagem em todos os portos</div>
+            </div>
+            <div class="stat-card blue">
+              <div class="stat-val blue">R$ 13 M</div>
+              <div class="stat-lbl">Custo de adaptação imediata (emergencial)</div>
+              <div class="stat-note">Vs. R$ 1,66 bi até 2030 e R$ 7,25 bi até 2050</div>
+            </div>
+          </div>
+
+          <!-- CHART ROW 1 — existing -->
+          <div class="chart-grid">
+            <div class="chart-block">
+              <div class="chart-title">Crescimento da altura das ondas por porto (% até 2050)</div>
+              <div class="chart-sub">Modelo ERA-40 · tendência linear · padrão crescente de Norte para Sul</div>
+              <div class="chart-area" id="chart-waves"></div>
+            </div>
+            <div class="chart-block">
+              <div class="chart-title">Custo de adaptação portuária (R$ bilhões)</div>
+              <div class="chart-sub">Escalonamento por prazo · quanto mais se adia, mais caro fica</div>
+              <div class="chart-area" id="chart-port-cost"></div>
+            </div>
+          </div>
+
+          <!-- SEA LEVEL RISE TABLE -->
+          <div class="agro-divider">Projeção de Elevação do Nível do Mar por Porto (cm acumulados desde 1950)</div>
+          <div class="scenario-matrix">
+            <div class="sm-row sm-header" style="grid-template-columns:1.4fr 1fr 1fr 1fr 1fr">
+              <div class="sm-cell">Porto / Região</div>
+              <div class="sm-cell">Taxa histórica</div>
+              <div class="sm-cell">Elevação 2015</div>
+              <div class="sm-cell">Elevação 2030</div>
+              <div class="sm-cell">Elevação 2050</div>
+            </div>
+            <div class="sm-row" style="grid-template-columns:1.4fr 1fr 1fr 1fr 1fr">
+              <div class="sm-cell sm-label">Recife / Maceió</div>
+              <div class="sm-cell red">65,6 cm/séc</div>
+              <div class="sm-cell amber">43 cm</div>
+              <div class="sm-cell amber">53 cm</div>
+              <div class="sm-cell red">70 cm</div>
+            </div>
+            <div class="sm-row" style="grid-template-columns:1.4fr 1fr 1fr 1fr 1fr">
+              <div class="sm-cell sm-label">Rio de Janeiro / Niterói</div>
+              <div class="sm-cell red">42,5 cm/séc</div>
+              <div class="sm-cell amber">28 cm</div>
+              <div class="sm-cell amber">36 cm</div>
+              <div class="sm-cell red">53 cm</div>
+            </div>
+            <div class="sm-row" style="grid-template-columns:1.4fr 1fr 1fr 1fr 1fr">
+              <div class="sm-cell sm-label">Paranaguá</div>
+              <div class="sm-cell amber">37,5 cm/séc</div>
+              <div class="sm-cell blue">25 cm</div>
+              <div class="sm-cell amber">33 cm</div>
+              <div class="sm-cell amber">50 cm</div>
+            </div>
+            <div class="sm-row" style="grid-template-columns:1.4fr 1fr 1fr 1fr 1fr">
+              <div class="sm-cell sm-label">Belém</div>
+              <div class="sm-cell amber">36,5 cm/séc</div>
+              <div class="sm-cell blue">24 cm</div>
+              <div class="sm-cell amber">31 cm</div>
+              <div class="sm-cell amber">47 cm</div>
+            </div>
+            <div class="sm-row" style="grid-template-columns:1.4fr 1fr 1fr 1fr 1fr">
+              <div class="sm-cell sm-label">Santos</div>
+              <div class="sm-cell amber">35,3 cm/séc</div>
+              <div class="sm-cell blue">23 cm</div>
+              <div class="sm-cell amber">30 cm</div>
+              <div class="sm-cell amber">46 cm</div>
+            </div>
+            <div class="sm-row" style="grid-template-columns:1.4fr 1fr 1fr 1fr 1fr">
+              <div class="sm-cell sm-label">São Sebastião / Ubatuba</div>
+              <div class="sm-cell green">23,2 cm/séc</div>
+              <div class="sm-cell blue">16 cm</div>
+              <div class="sm-cell blue">22 cm</div>
+              <div class="sm-cell amber">36 cm</div>
+            </div>
+          </div>
+
+          <div class="alert-box red-border">
+            <strong>Perda de borda livre:</strong> Todos os 17 portos analisados já operam com borda livre abaixo das
+            recomendações internacionais (Japan Association of Ports and Harbours e ROM). Recife cairá de 1,40 m para
+            ~0,70 m em 2050 — comprometendo atracação segura. Com estruturas em contato contínuo com a água do mar, a
+            corrosão será acelerada em toda a costa.
+          </div>
+
+          <!-- CHART ROW 2 — sediment + city IVCB -->
+          <div class="agro-divider">Assoreamento dos Canais e Vulnerabilidade Urbana Costeira</div>
+          <div class="chart-grid">
+            <div class="chart-block">
+              <div class="chart-title">Aumento do transporte de sedimentos por porto (%)</div>
+              <div class="chart-sub">Proporção ao quadrado da altura de onda · projeções até 2050</div>
+              <div class="chart-area" id="chart-sediment"></div>
+            </div>
+            <div class="chart-block">
+              <div class="chart-title">IVCB — Distribuição por nível de vulnerabilidade (%)</div>
+              <div class="chart-sub">Rio de Janeiro vs. Santos · cenário IPCC 8.5 · escala 1–5</div>
+              <div class="chart-area" id="chart-ivcb-compare"></div>
+            </div>
+          </div>
+
+          <!-- CITY VULNERABILITY CARDS -->
+          <div class="agro-divider">Vulnerabilidade Urbana por Cidade — RJ e Santos</div>
+          <div class="adapt-grid">
+            <div class="adapt-card c-amber">
+              <div class="adapt-eyebrow">Rio de Janeiro — IVCB predominante: nível 3–4</div>
+              <div class="adapt-title">Infraestrutura crítica em risco</div>
+              <div class="adapt-rows">
+                <div class="adapt-row"><span class="adapt-row-key">VLT</span><span class="adapt-row-leader"></span><span class="adapt-row-val bad">Quase todo
+                    o percurso em alta vulnerabilidade</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">ETE Alegria</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val bad">Alta vuln. · 2,5 m³/s · ~1,5 mi de pessoas</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Hospitais</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val warn">Maioria em terrenos baixos sujeitos a alagamento</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Av. Brasil</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val warn">Risco de interrupção — principal eixo da cidade</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Ilha do Fundão</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val bad">Área plana, baixa — alta vulnerabilidade consistente</span></div>
+              </div>
+            </div>
+            <div class="adapt-card c-red">
+              <div class="adapt-eyebrow">Santos — IVCB predominante: nível 4–5</div>
+              <div class="adapt-title">Situação mais grave que o RJ</div>
+              <div class="adapt-rows">
+                <div class="adapt-row"><span class="adapt-row-key">Área insular</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val bad">Quase toda em alta ou muito alta vulnerabilidade</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Zona portuária</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val bad">Nível 5 — máxima vulnerabilidade</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Solo</span><span class="adapt-row-leader"></span><span class="adapt-row-val bad">Sedimento
+                    marinho e lagunar — instável (nível 5)</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Chuvas 2030–40</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val bad">~125 eventos críticos (100 mm/72h) projetados</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Relocação</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val bad">Impossível — não há área insular de baixa vulnerabilidade</span></div>
+              </div>
+            </div>
+            <div class="adapt-card c-blue">
+              <div class="adapt-eyebrow">Porto de Santos — maior do Brasil</div>
+              <div class="adapt-title">Escala do risco econômico</div>
+              <div class="adapt-metric blue">10.046 m</div>
+              <div class="adapt-metric-label">Extensão total de cais</div>
+              <div class="adapt-rows">
+                <div class="adapt-row"><span class="adapt-row-key">Área</span><span class="adapt-row-leader"></span><span class="adapt-row-val">77.000
+                    ha</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Movimentação</span><span class="adapt-row-leader"></span><span class="adapt-row-val">~100
+                    mi t/ano</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Borda livre projeto</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val warn">1,18 m — já abaixo do mínimo</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Ativos em risco</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val bad">R$ 100+ bi (IPCC 8.5)</span></div>
+              </div>
+            </div>
+            <div class="adapt-card c-red">
+              <div class="adapt-eyebrow">Eventos históricos já documentados</div>
+              <div class="adapt-title">Colapsos reais — não projeções</div>
+              <div class="adapt-rows">
+                <div class="adapt-row"><span class="adapt-row-key">2006</span><span class="adapt-row-leader"></span><span class="adapt-row-val bad">Molhe de
+                    Tubarão (ES) — deslizamento de blocos</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">2005</span><span class="adapt-row-leader"></span><span class="adapt-row-val bad">Molhe de
+                    Imbituba (SC) — galgamento</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">2003–05</span><span class="adapt-row-leader"></span><span class="adapt-row-val bad">Molhe
+                    de Saquarema (RJ) — colapso estrutural</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Tendência</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val bad">Eventos como esses serão mais frequentes e intensos</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- IVCB INDICATORS -->
+          <div class="agro-divider">O IVCB — Sete Indicadores de Vulnerabilidade Costeira</div>
+          <div class="chart-grid single">
+            <div class="chart-block">
+              <div class="chart-title">Peso de cada indicador no Índice de Vulnerabilidade da Costa Brasileira</div>
+              <div class="chart-sub">Calculado por média ponderada com AHP · Tipo de Ocupação tem maior peso (22%)</div>
+              <div class="chart-area" id="chart-ivcb-weights"></div>
+            </div>
+          </div>
+
+          <!-- ADAPTATION MEASURES -->
+          <div class="agro-divider">Estratégias de Adaptação Portuária</div>
+          <div class="adapt-grid">
+            <div class="adapt-card c-blue">
+              <div class="adapt-eyebrow">Proteção — obras rígidas e híbridas</div>
+              <div class="adapt-title">Estruturas de contenção</div>
+              <div class="adapt-rows">
+                <div class="adapt-row"><span class="adapt-row-key">Curto prazo</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val">Envelopamento de maciços com blocos de concreto</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Médio prazo</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val">Alteamento de paramentos de cais + microdrenagem</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Médio prazo</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val">Sistemas de dique + drenagem forçada (pôlderes)</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Longo prazo</span><span class="adapt-row-leader"></span><span class="adapt-row-val">Storm
+                    Surge Barriers — Recife, Santos e Vitória</span></div>
+              </div>
+            </div>
+            <div class="adapt-card c-green">
+              <div class="adapt-eyebrow">Acomodação — soluções naturais</div>
+              <div class="adapt-title">Gestão ecossistêmica</div>
+              <div class="adapt-rows">
+                <div class="adapt-row"><span class="adapt-row-key">Manguezais</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val good">Preservação como barreira natural contra tempestades</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Sedimentos</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val">Reaproveitamento de dragagem para engordamento de praias</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Bypass</span><span class="adapt-row-leader"></span><span class="adapt-row-val">Transposição
+                    artificial de areia em canais assoreados</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Alimentação</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val">Reposição periódica de sedimentos em praias urbanas</span></div>
+              </div>
+            </div>
+            <div class="adapt-card c-amber">
+              <div class="adapt-eyebrow">Planejamento urbano costeiro</div>
+              <div class="adapt-title">Medidas regulatórias</div>
+              <div class="adapt-rows">
+                <div class="adapt-row"><span class="adapt-row-key">Plano Diretor</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val">Incorporar IVCB ao zoneamento municipal</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Exclusão</span><span class="adapt-row-leader"></span><span class="adapt-row-val">Zonas de
+                    não-ocupação em áreas de alta vulnerabilidade</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Construção</span><span class="adapt-row-leader"></span><span class="adapt-row-val">Elevar
+                    recepções ao nível do 1º andar; evitar subsolos</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Relocação</span><span class="adapt-row-leader"></span><span class="adapt-row-val">Hospitais
+                    e ETEs — prioridade máxima</span></div>
+              </div>
+            </div>
+            <div class="adapt-card c-red">
+              <div class="adapt-eyebrow">Governança — o nó crítico</div>
+              <div class="adapt-title">Barreiras institucionais</div>
+              <div class="adapt-rows">
+                <div class="adapt-row"><span class="adapt-row-key">Geodesia</span><span class="adapt-row-leader"></span><span class="adapt-row-val bad">Datum
+                    altimétrico e batimétrico incompatíveis no Brasil</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Dados</span><span class="adapt-row-leader"></span><span class="adapt-row-val warn">Recife e
+                    Fortaleza quase excluídos por falta de dados</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Licenciamento</span><span class="adapt-row-leader"></span><span class="adapt-row-val">IBAMA
+                    pode exigir adaptação como condicionante</span></div>
+                <div class="adapt-row"><span class="adapt-row-key">Diagnóstico</span><span class="adapt-row-leader"></span><span
+                    class="adapt-row-val bad">Nenhuma instituição analisada incorporou PNMC à prática</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert-box amber-border">
+            <strong>O paradoxo do planejamento de longo prazo:</strong> Até os anos 1960, projetos portuários assumiam o
+            nível do mar como estático. Portos têm vida útil de 50–100 anos. Os projetos aprovados hoje serão operados
+            em 2075 — quando o nível do mar pode estar 60–70 cm acima do de 1950. Cada ano sem revisão das normas
+            técnicas é um ano de investimento em infraestrutura climaticamente obsoleta.
+          </div>
+
+          <!-- ── BORDA LIVRE E PRECIPITAÇÃO ── -->
+          <div class="agro-divider">Borda Livre dos Cais — Todos Abaixo do Mínimo Internacional</div>
+          <div class="chart-grid">
+            <div class="chart-block">
+              <div class="chart-title">Altura da borda livre dos cais e elevação projetada do nível do mar</div>
+              <div class="chart-sub">Padrão PIANC: mínimo 1,5–2,0 m · já superado ou em risco em todos os portos analisados</div>
+              <div class="chart-area" id="chart-borda-livre"></div>
+            </div>
+            <div class="chart-block">
+              <div class="chart-title">Santos — eventos críticos de precipitação projetados (2030–2040)</div>
+              <div class="chart-sub">≥100 mm / 72h (Coef. Precipitação Crítica · Dec. Est. SP 42565/97) · ~125 eventos na década</div>
+              <div class="chart-area" id="chart-santos-events"></div>
+            </div>
+          </div>
+
+          <div class="alert-box red-border">
+            <strong>Storm Surge Barriers — custo de oportunidade:</strong> As três barreiras de contenção de marés de tempestade (Recife, Santos e Vitória) têm custo estimado incluído nos R$7,25 bi até 2050. Mas o custo de manutenção anual desses sistemas varia de <strong>0,5% a 2% do investimento inicial</strong> ao ano — ou seja, R$36 a 145 M/ano adicionais de forma permanente. A inação, porém, expõe R$224 bi em ativos imobiliários ao risco de inundação. A relação custo-benefício é clara: o custo de adaptação é uma fração do custo do dano evitado.
+          </div>
+
+          <div class="questions-block">
+            <div class="questions-title">Perguntas sugeridas ao assistente IA</div>
+            <div class="question-chips">
+              <span class="chip">O que é o IVCB e quais são seus sete indicadores?</span>
+              <span class="chip">Por que Santos é mais vulnerável que o Rio de Janeiro no IVCB?</span>
+              <span class="chip">O que são as Storm Surge Barriers e por que Recife, Santos e Vitória foram
+                escolhidas?</span>
+              <span class="chip">Como o assoreamento cresce proporcionalmente ao quadrado da altura das ondas?</span>
+              <span class="chip">Por que a incompatibilidade entre datums geodésicos limita o mapeamento
+                costeiro?</span>
+              <span class="chip">O que é borda livre de cais e quando ela se torna operacionalmente crítica?</span>
+              <span class="chip">Por que a ETE Alegria é considerada de alto risco para 1,5 milhão de pessoas?</span>
+              <span class="chip">Como a elevação do nível do mar afoga manguezais e intensifica o assoreamento?</span>
+              <span class="chip">O que são eventos na-tech e por que a zona portuária de Santos representa risco
+                industrial?</span>
+              <span class="chip">Por que o licenciamento ambiental do IBAMA pode ser o principal instrumento de
+                adaptação?</span>
+            </div>
+          </div>
+        </section>
