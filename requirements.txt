@@ -1,5 +1,4 @@
 fastapi
 uvicorn
-sentence-transformers
 supabase
 google-genai>=1.0.0

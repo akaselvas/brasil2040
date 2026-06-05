@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
-from sentence_transformers import SentenceTransformer
+# from sentence_transformers import SentenceTransformer
 from supabase import create_client
 from google import genai
 from google.genai import types
@@ -17,7 +17,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-model = SentenceTransformer("intfloat/multilingual-e5-large")
+# model = SentenceTransformer("intfloat/multilingual-e5-large")
+
+def get_embedding(text: str) -> list:
+    result = gemini_client.models.embed_content(
+        model="models/text-embedding-004",
+        contents=text,
+    )
+    return result.embeddings[0].values
+
 supabase = create_client(
     os.environ["SUPABASE_URL"],
     os.environ["SUPABASE_KEY"]
@@ -62,10 +70,7 @@ class ChatRequest(BaseModel):
 
 @app.post("/search")
 def search(req: QueryRequest):
-    embedding = model.encode(
-        ["query: " + req.question],
-        normalize_embeddings=True
-    )[0].tolist()
+    embedding = get_embedding(req.question)
     result = supabase.rpc(
         "match_documents",
         {"query_embedding": embedding, "match_count": req.top_k}
@@ -75,10 +80,7 @@ def search(req: QueryRequest):
 @app.post("/chat")
 async def chat(req: ChatRequest):
     # 1. Retrieve context
-    embedding = model.encode(
-        ["query: " + req.question],
-        normalize_embeddings=True
-    )[0].tolist()
+    embedding = get_embedding(req.question)
     result = supabase.rpc(
         "match_documents",
         {"query_embedding": embedding, "match_count": req.top_k}
