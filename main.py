@@ -7,6 +7,7 @@ from supabase import create_client
 from google import genai
 from google.genai import types
 import os
+import httpx
 
 app = FastAPI()
 
@@ -17,14 +18,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+HF_API_URL = "https://api-inference.huggingface.co/models/intfloat/multilingual-e5-large"
+HF_TOKEN = os.environ.get("HF_TOKEN", "")
+
+
 # model = SentenceTransformer("intfloat/multilingual-e5-large")
 
-def get_embedding(text: str) -> list:
-    result = gemini_client.models.embed_content(
-        model="models/text-embedding-004",
-        contents=text,
-    )
-    return result.embeddings[0].values
+async def get_embedding(text: str) -> list:
+    async with httpx.AsyncClient(timeout=30) as client:
+        response = await client.post(
+            HF_API_URL,
+            headers={"Authorization": f"Bearer {HF_TOKEN}"},
+            json={"inputs": "query: " + text}
+        )
+        response.raise_for_status()
+        return response.json()[0]  # returns list of 1024 floats
 
 supabase = create_client(
     os.environ["SUPABASE_URL"],
@@ -69,8 +77,9 @@ class ChatRequest(BaseModel):
     top_k: int = 5
 
 @app.post("/search")
-def search(req: QueryRequest):
-    embedding = get_embedding(req.question)
+async def search(req: QueryRequest):  # ← add async
+    embedding = await get_embedding(req.question)  # ← was model.encode(...)
+
     result = supabase.rpc(
         "match_documents",
         {"query_embedding": embedding, "match_count": req.top_k}
@@ -80,7 +89,7 @@ def search(req: QueryRequest):
 @app.post("/chat")
 async def chat(req: ChatRequest):
     # 1. Retrieve context
-    embedding = get_embedding(req.question)
+    embedding = await get_embedding(req.question)
     result = supabase.rpc(
         "match_documents",
         {"query_embedding": embedding, "match_count": req.top_k}
