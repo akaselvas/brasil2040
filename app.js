@@ -222,7 +222,9 @@ function appendBubble(role, text, streaming = false) {
   return bubble;
 }
 
-const BACKEND_URL = "http://localhost:8000";
+const BACKEND_URL = window.location.hostname === "localhost"
+  ? "http://localhost:8000"
+  : "https://brasil2040.onrender.com";
 
 async function sendChat() {
   const text = chatInput.value.trim();
