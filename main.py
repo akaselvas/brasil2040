@@ -34,7 +34,8 @@ REGRAS DE ESCOPO E REDIRECIONAMENTO:
 
 REGRAS DE CONTEXTO E FIDELIDADE:
 - Responda APENAS com base nos trechos de texto fornecidos no contexto.
-- Não tente adivinhar, estimar ou extrapolar números e porcentagens. Se qualquer dado numérico ou estatística exata solicitada na pergunta não estiver escrito de forma explícita e clara nos trechos fornecidos, você deve responder exatamente: "Não encontrei essa informação nos trechos fornecidos."
+- Não tente adivinhar, estimar ou extrapolar números e porcentagens específicos. Se qualquer dado numérico ou estatística exata não estiver explícita nos trechos, diga isso claramente.
+- Para perguntas comparativas ou analíticas, você PODE sintetizar e comparar informações que estejam presentes nos trechos, mesmo que a resposta não apareça de forma literal.
 - Se houver símbolos de porcentagem (%) ou lacunas vazias nas tabelas e textos fornecidos no contexto, nunca tente preencher esses números por conta própria.
 - Para questões conceituais, metodológicas ou descritivas, responda normalmente utilizando as explicações e conceitos presentes no contexto.
 - Cite números e estatísticas exatamente como aparecem nos documentos. Não invente informações.
@@ -111,7 +112,7 @@ async def chat(req: ChatRequest):
                 temperature=0.7,
                 top_p=0.95,
                 top_k=30,
-                max_output_tokens=1000,
+                max_output_tokens=4000,
             ),
         ):
             if chunk.text:
