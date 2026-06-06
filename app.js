@@ -396,7 +396,10 @@ document.body.addEventListener("click", e => {
 });
 
 /* ─── MAP INITIALIZATION ───────────────────────────── */
-Promise.all([d3.json("mapaMunicipiosBR.json"), d3.csv("culturasRiscoBr2040.csv")]).then(([brm, csv]) => {
+Promise.all([
+  d3.json("https://huggingface.co/spaces/aka-selvas/brasil2040/resolve/main/mapaMunicipiosBR.json"),
+  d3.csv("culturasRiscoBr2040.csv")
+]).then(([brm, csv]) => {
   csv.forEach(row => rowMap.set(row.id, row));
   document.getElementById("map-badge").textContent = brm.features.length.toLocaleString("pt-BR") + " municípios";
 
