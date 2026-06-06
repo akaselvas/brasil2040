@@ -120,4 +120,8 @@ async def chat(req: ChatRequest):
 
     return StreamingResponse(stream(), media_type="text/plain")
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
 app.mount("/", StaticFiles(directory=".", html=True), name="static")
