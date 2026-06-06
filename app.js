@@ -19,6 +19,7 @@ const SCENARIOS = [
 ];
 let activeCrop = CROPS[0];
 let activeScenario = SCENARIOS[0];
+let chatHistory = [];
 const rowMap = new Map();
 
 /* ─── COLOR SCALES ─────────────────────────────────── */
