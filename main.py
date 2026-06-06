@@ -1,15 +1,13 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
-# from sentence_transformers import SentenceTransformer
+from sentence_transformers import SentenceTransformer
 from supabase import create_client
 from google import genai
 from google.genai import types
 import os
-import httpx
-import asyncio
-from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
 
@@ -20,28 +18,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-HF_API_URL = "https://api-inference.huggingface.co/models/intfloat/multilingual-e5-large"
-HF_TOKEN = os.environ.get("HF_TOKEN", "")
-
-
-# model = SentenceTransformer("intfloat/multilingual-e5-large")
-
-async def get_embedding(text: str) -> list:
-    async with httpx.AsyncClient(timeout=60) as client:
-        for attempt in range(3):
-            try:
-                response = await client.post(
-                    HF_API_URL,
-                    headers={"Authorization": f"Bearer {HF_TOKEN}"},
-                    json={"inputs": "query: " + text}
-                )
-                response.raise_for_status()
-                return response.json()[0]
-            except (httpx.ConnectError, httpx.TimeoutException) as e:
-                if attempt == 2:
-                    raise
-                await asyncio.sleep(2 ** attempt)  # 1s, 2s backoff
-
+model = SentenceTransformer("intfloat/multilingual-e5-large")
 supabase = create_client(
     os.environ["SUPABASE_URL"],
     os.environ["SUPABASE_KEY"]
@@ -81,17 +58,15 @@ class QueryRequest(BaseModel):
 
 class ChatRequest(BaseModel):
     question: str
-    history: list[dict] = []   # [{"role": "user"|"model", "parts": "..."}]
+    history: list[dict] = []
     top_k: int = 5
 
-# @app.get("/")
-# async def root():
-#     return {"status": "ok", "message": "Brasil 2040 API is running"}
-
 @app.post("/search")
-async def search(req: QueryRequest):  # ← add async
-    embedding = await get_embedding(req.question)  # ← was model.encode(...)
-
+def search(req: QueryRequest):
+    embedding = model.encode(
+        ["query: " + req.question],
+        normalize_embeddings=True
+    )[0].tolist()
     result = supabase.rpc(
         "match_documents",
         {"query_embedding": embedding, "match_count": req.top_k}
@@ -100,8 +75,10 @@ async def search(req: QueryRequest):  # ← add async
 
 @app.post("/chat")
 async def chat(req: ChatRequest):
-    # 1. Retrieve context
-    embedding = await get_embedding(req.question)
+    embedding = model.encode(
+        ["query: " + req.question],
+        normalize_embeddings=True
+    )[0].tolist()
     result = supabase.rpc(
         "match_documents",
         {"query_embedding": embedding, "match_count": req.top_k}
@@ -110,14 +87,10 @@ async def chat(req: ChatRequest):
     context = "\n\n".join(
         f"[{c['file']} — pág. {c['page']}]\n{c['text']}" for c in chunks
     )
-
-    # 2. Build message with context injected
     user_message = (
         f"Contexto extraído dos documentos Brasil 2040:\n\n{context}\n\n"
         f"Pergunta do usuário: {req.question}"
     )
-
-    # 3. Rebuild history + new message for Gemini
     contents = []
     for msg in req.history:
         contents.append(types.Content(
@@ -129,7 +102,6 @@ async def chat(req: ChatRequest):
         parts=[types.Part(text=user_message)]
     ))
 
-    # 4. Stream response back
     async def stream():
         for chunk in gemini_client.models.generate_content_stream(
             model=GEMINI_MODEL,

@@ -3,3 +3,4 @@ uvicorn
 supabase
 google-genai>=1.0.0
 httpx
+sentence-transformers
