@@ -83,6 +83,10 @@ class ChatRequest(BaseModel):
     history: list[dict] = []   # [{"role": "user"|"model", "parts": "..."}]
     top_k: int = 5
 
+@app.get("/")
+async def root():
+    return {"status": "ok", "message": "Brasil 2040 API is running"}
+
 @app.post("/search")
 async def search(req: QueryRequest):  # ← add async
     embedding = await get_embedding(req.question)  # ← was model.encode(...)
