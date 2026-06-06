@@ -8,6 +8,7 @@ from google import genai
 from google.genai import types
 import os
 import httpx
+import asyncio
 
 app = FastAPI()
 
@@ -25,14 +26,20 @@ HF_TOKEN = os.environ.get("HF_TOKEN", "")
 # model = SentenceTransformer("intfloat/multilingual-e5-large")
 
 async def get_embedding(text: str) -> list:
-    async with httpx.AsyncClient(timeout=30) as client:
-        response = await client.post(
-            HF_API_URL,
-            headers={"Authorization": f"Bearer {HF_TOKEN}"},
-            json={"inputs": "query: " + text}
-        )
-        response.raise_for_status()
-        return response.json()[0]  # returns list of 1024 floats
+    async with httpx.AsyncClient(timeout=60) as client:
+        for attempt in range(3):
+            try:
+                response = await client.post(
+                    HF_API_URL,
+                    headers={"Authorization": f"Bearer {HF_TOKEN}"},
+                    json={"inputs": "query: " + text}
+                )
+                response.raise_for_status()
+                return response.json()[0]
+            except (httpx.ConnectError, httpx.TimeoutException) as e:
+                if attempt == 2:
+                    raise
+                await asyncio.sleep(2 ** attempt)  # 1s, 2s backoff
 
 supabase = create_client(
     os.environ["SUPABASE_URL"],
