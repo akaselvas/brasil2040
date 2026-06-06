@@ -9,6 +9,7 @@ from google.genai import types
 import os
 import httpx
 import asyncio
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
 
@@ -145,3 +146,5 @@ async def chat(req: ChatRequest):
                 yield chunk.text
 
     return StreamingResponse(stream(), media_type="text/plain")
+
+app.mount("/", StaticFiles(directory=".", html=True), name="static")

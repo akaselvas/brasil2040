@@ -224,7 +224,7 @@ function appendBubble(role, text, streaming = false) {
 
 const BACKEND_URL = window.location.hostname === "localhost"
   ? "http://localhost:8000"
-  : "https://brasil2040.onrender.com";
+  : "https://aka-selvas-brasil2040.hf.space"; 
 
 async function sendChat() {
   const text = chatInput.value.trim();
