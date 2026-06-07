@@ -44,16 +44,17 @@ jobs:
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
         run: |
           uvicorn main:app --host 0.0.0.0 --port 8000 &
-          for i in $(seq 1 30); do
-            curl -s http://localhost:8000/ > /dev/null && echo "Server ready" && break
-            echo "Waiting... ($i/30)" && sleep 2
+          for i in $(seq 1 60); do
+            curl -sf http://localhost:8000/health > /dev/null 2>&1 && echo "✓ Server ready" && break
+            echo "  attempt $i/60..." && sleep 3
           done
+          curl -sf http://localhost:8000/health || (echo "Server failed to start" && cat output.log && exit 1)
       - name: Run retrieval tests
         run: |
           pytest evals/test_retrieval.py \
             -v --tb=short \
             --html=evals/reports/retrieval_report.html \
-            --self-contained-html -x
+            --self-contained-html 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
