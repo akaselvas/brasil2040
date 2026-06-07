@@ -74,10 +74,9 @@ jobs:
       - name: Run retrieval tests
         run: |
           pytest evals/test_retrieval.py \
-            -v --tb=short \
-            --html=evals/reports/retrieval_report.html \
-            --self-contained-html -x
-
+          -v --tb=short \
+          --html=evals/reports/retrieval_report.html \
+          --self-contained-html
       - uses: actions/upload-artifact@v4
         if: always()
         with:

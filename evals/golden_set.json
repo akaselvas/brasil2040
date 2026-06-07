@@ -19,7 +19,7 @@
   },
   {
     "id": "agro_003",
-    "question": "Qual é a redução projetada na área de pastagens no Brasil até 2040?",
+     "question": "Qual é a redução projetada na área de pastagens no Brasil até 2040?",
     "expected_answer_contains": ["pastagens", "redução", "20,6", "milhões"],
     "expected_chunk_sources": ["Agricultura - Produto 8 final.pdf"],
     "category": "agricultura",
