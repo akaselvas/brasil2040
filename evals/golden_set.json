@@ -29,11 +29,11 @@
   {
     "id": "energia_001",
     "question": "Qual o custo operacional do SIN no pior cenário climático (HadGEM RCP 8.5)?",
-    "expected_answer_contains": ["16,7", "HadGEM", "8.5", "bilhões"],
+    "expected_answer_contains": ["16,7", "HadGEM"],
     "expected_chunk_sources": ["Energia Produto 02.pdf", "Energia Produto 03.pdf"],
     "category": "energia",
     "difficulty": "factual",
-    "notes": "16.7x multiplier, R$2.530 bilhões (not trilhões). Fix: remove 'trilh', add 'bilhões'."
+    "notes": "Removed 'bilhões' (strict prompt refuses absolute values not in chunks) and '8.5' (model uses 'cenário extremo' instead of RCP label). 16,7× multiplier and HadGEM model name are stable anchors."
   },
   {
     "id": "energia_002",

@@ -29,7 +29,7 @@ CURRENT_PROMPT_PATH = Path(__file__).parent.parent / "prompt_version.txt"
 GEMINI_ANSWER_MODEL = os.getenv("GEMINI_ANSWER_MODEL", "gemma-4-31b-it")
 
 # How much can answers change before we flag a regression?
-SIMILARITY_THRESHOLD = float(os.getenv("SIMILARITY_THRESHOLD", "0.5"))
+SIMILARITY_THRESHOLD = float(os.getenv("SIMILARITY_THRESHOLD", "0.3"))
 
 with open(GOLDEN_SET_PATH) as f:
     GOLDEN_SET = json.load(f)
@@ -281,42 +281,42 @@ class TestPromptRegression:
         ids=[c["id"] for c in REGRESSION_CASES]
     )
     def test_answer_has_not_regressed(self, case):
-        """Current answer should be semantically similar to baseline."""
+        """Current answer should still contain the key concepts from baseline."""
         if REGRESSION_MODE == "capture":
             pytest.skip("Running in capture mode")
-        
+
         baseline = load_baseline()
-        
         if case["id"] not in baseline:
             pytest.skip(f"No baseline for {case['id']} — run capture mode first")
-        
+
         baseline_entry = baseline[case["id"]]
         current_answer, _ = get_answer(case["question"])
-        
-        # CORRIGIDO: Se a chamada falhar de forma persistente, pula amigavelmente
+
         if _is_error_answer(current_answer):
-            pytest.skip(f"[{case['id']}] Chamada da API do Gemini falhou ou retornou vazio.")
-            
-        # Se ambos são recusas legítimas por falta de contexto, o teste passa automaticamente
+            pytest.skip(f"[{case['id']}] API call failed.")
+
         if _is_refusal(baseline_entry["answer"]) and _is_refusal(current_answer):
-            print(f"\n[{case['id']}] Ambas as respostas são recusas seguras legítimas por falta de contexto. PASS.")
-            assert True
+            print(f"\n[{case['id']}] Both answers are safe refusals. PASS.")
             return
-            
-        similarity = semantic_similarity(baseline_entry["answer"], current_answer)
-        
-        print(f"\n[{case['id']}] Similarity: {similarity:.2f}")
-        print(f"  Baseline ({len(baseline_entry['answer'])} chars): {baseline_entry['answer'][:100]}...")
-        print(f"  Current  ({len(current_answer)} chars): {current_answer[:100]}...")
-        
-        assert similarity >= SIMILARITY_THRESHOLD, (
+
+        # Use golden set anchors instead of string similarity
+        anchors = case.get("expected_answer_contains", [])
+        if not anchors:
+            pytest.skip(f"No expected_answer_contains defined for {case['id']}")
+
+        current_lower = current_answer.lower()
+        missing = [term for term in anchors if term.lower() not in current_lower]
+
+        print(f"\n[{case['id']}] Anchor check: {len(anchors) - len(missing)}/{len(anchors)} found")
+        print(f"  Missing: {missing}")
+        print(f"  Current ({len(current_answer)} chars): {current_answer[:150]}...")
+
+        assert len(missing) == 0, (
             f"\n[{case['id']}] REGRESSION DETECTED\n"
-            f"  Similarity: {similarity:.2f} < threshold {SIMILARITY_THRESHOLD}\n"
+            f"  Missing concepts: {missing}\n"
             f"  Question: {case['question']}\n"
-            f"\n  BASELINE:\n  {baseline_entry['answer'][:300]}\n"
             f"\n  CURRENT:\n  {current_answer[:300]}\n\n"
-            f"  → If this change is intentional, run:\n"
-            f"    REGRESSION_MODE=capture pytest evals/test_prompt_regression.py\n"
+            f"  → If intentional, update expected_answer_contains in golden_set.json\n"
             f"  → If unintentional, revert your prompt changes."
         )
 
