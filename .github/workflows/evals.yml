@@ -18,8 +18,8 @@ on:
 env:
   SEARCH_ENDPOINT: "http://localhost:8000/search"
   JUDGE_BACKEND: "gemini"
-  JUDGE_MODEL: "gemma-4-31b-it"
-  GEMINI_ANSWER_MODEL: "gemma-4-31b-it"
+  JUDGE_MODEL: "gemini-3.5-flash-lite"
+  GEMINI_ANSWER_MODEL: "gemini-3.5-flash-lite"
   FAITHFULNESS_THRESHOLD: "0.6"
   HALLUCINATION_THRESHOLD: "0.6"
   SIMILARITY_THRESHOLD: "0.3"

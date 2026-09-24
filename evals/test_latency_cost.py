@@ -25,7 +25,7 @@ RETRIEVAL_P50_THRESHOLD_SEC = float(os.getenv("RETRIEVAL_P50_MS", "3.0"))
 MAX_TOKENS_PER_QUERY = int(os.getenv("MAX_TOKENS_PER_QUERY", "4000"))
 
 # Model used to GENERATE test answers
-GEMINI_ANSWER_MODEL = os.getenv("GEMINI_ANSWER_MODEL", "gemma-4-31b-it")
+GEMINI_ANSWER_MODEL = os.getenv("GEMINI_ANSWER_MODEL", "gemini-3.5-flash-lite")
 
 # Gemini pricing (per 1M tokens)
 GEMINI_INPUT_COST_PER_1M = 0.075
