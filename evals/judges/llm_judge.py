@@ -14,7 +14,7 @@ from enum import Enum
 from typing import Optional
 
 JUDGE_BACKEND = os.getenv("JUDGE_BACKEND", "gemini")
-JUDGE_MODEL   = os.getenv("JUDGE_MODEL",   "gemma-4-31b-it")
+JUDGE_MODEL   = os.getenv("JUDGE_MODEL",   "gemini-3.5-flash-lite")
 
 
 # ── DATA CLASSES ──────────────────────────────────────────────────────────────

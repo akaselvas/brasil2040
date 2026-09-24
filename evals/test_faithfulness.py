@@ -23,7 +23,7 @@ FAITHFULNESS_THRESHOLD  = float(os.getenv("FAITHFULNESS_THRESHOLD",  "0.7"))
 HALLUCINATION_THRESHOLD = float(os.getenv("HALLUCINATION_THRESHOLD", "0.7"))
 
 # Model used to GENERATE test answers
-GEMINI_ANSWER_MODEL = os.getenv("GEMINI_ANSWER_MODEL", "gemma-4-31b-it")
+GEMINI_ANSWER_MODEL = os.getenv("GEMINI_ANSWER_MODEL", "gemini-3.5-flash-lite")
 
 with open(GOLDEN_SET_PATH) as f:
     GOLDEN_SET = json.load(f)
@@ -107,7 +107,7 @@ def _count_hedge_matches(answer: str) -> int:
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
 def _generate_answer_with_gemini(question: str, context_chunks: list[str]) -> str:
-    """Generate an answer using gemma-4-31b-it with auto-retry."""
+    """Generate an answer using gemini-3.5-flash-lite with auto-retry."""
     gemini_key = os.getenv("GEMINI_API_KEY")
     if not gemini_key:
         return f"[MOCK ANSWER] Baseado nos documentos Brasil 2040 sobre: {question[:50]}..."

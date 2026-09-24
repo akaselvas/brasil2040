@@ -203,7 +203,7 @@ jobs:
       - name: Run prompt regression tests
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GEMINI_ANSWER_MODEL: "gemma-4-31b-it"
+          GEMINI_ANSWER_MODEL: "gemini-3.5-flash-lite"
           REGRESSION_MODE: "compare"
           SIMILARITY_THRESHOLD: "0.3"
         run: |

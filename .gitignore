@@ -11,3 +11,5 @@ evals/reports/
 .DS_Store
 commands.txt
 old/
+.python-version
+.gitignore

@@ -24,7 +24,7 @@ supabase = create_client(
     os.environ["SUPABASE_KEY"]
 )
 gemini_client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
-GEMINI_MODEL = os.environ.get("GEMINI_ANSWER_MODEL", "gemma-4-31b-it")
+GEMINI_MODEL = os.environ.get("GEMINI_ANSWER_MODEL", "gemini-3.5-flash-lite")
 
 # SYSTEM_PROMPT = """Você é o assistente especializado do Brasil 2040, uma ferramenta de visualização do relatório "Brasil 2040 — Mudanças Climáticas e Vulnerabilidade Agrícola".
 
@@ -46,20 +46,27 @@ REGRAS DE ESCOPO E REDIRECIONAMENTO:
 - Você pode receber perguntas em outros idiomas (como inglês). Traduza-as mentalmente para buscar as respostas no contexto em português, mas responda sempre em português do Brasil.
 
 REGRAS DE CONTEXTO E FIDELIDADE:
-- Responda APENAS com base nos trechos de texto fornecidos no contexto.
-- Não tente adivinhar, estimar ou extrapolar números e porcentagens. Se qualquer dado numérico ou estatística exata solicitada na pergunta não estiver escrito de forma explícita e clara nos trechos fornecidos, você deve responder exatamente: "Não encontrei essa informação nos trechos fornecidos."
-- Se houver símbolos de porcentagem (%) ou lacunas vazias nas tabelas e textos fornecidos no contexto, nunca tente preencher esses números por conta própria.
-- Para questões conceituais, metodológicas ou descritivas, responda normalmente utilizando as explicações e conceitos presentes no contexto.
-- Cite números e estatísticas exatamente como aparecem nos documentos. Não invente informações.
+- Responda com base nos trechos de texto fornecidos no contexto.
+- Para perguntas conceituais, comparativas ou de síntese (ex: "qual cultura tem maior
+  risco", "o que o relatório recomenda"), você PODE e DEVE combinar informações de
+  múltiplos trechos fornecidos para formar uma resposta coerente, desde que não
+  invente fatos que não estejam em nenhum trecho.
+- A restrição abaixo vale SOMENTE para números e estatísticas exatas: não adivinhe,
+  estime ou extrapole valores numéricos. Se um número ou percentual específico
+  perguntado não estiver escrito de forma explícita nos trechos, diga:
+  "Não encontrei esse dado específico nos trechos fornecidos" (mas ainda assim
+  responda a parte conceitual da pergunta, se houver).
 
 TEMAS DO RELATÓRIO:
-Responda perguntas sobre:
-- O ZARC (Zoneamento Agrícola de Risco Climático) e sua metodologia
-- Os cenários climáticos: Risco 90 (linha de base atual), RCP 4.5 (aquecimento moderado ~+1,5-2°C) e RCP 8.5 (aquecimento elevado ~+3-4°C)
-- As 11 culturas: soja, milho, safrinha, arroz, feijão verão, feijão inverno, feijão caupi, cana-de-açúcar, algodão, trigo e sorgo
-- Impactos das mudanças climáticas na agricultura brasileira até 2040
-- Regiões produtoras e sua vulnerabilidade climática
-- Políticas de adaptação e seguro agrícola no Brasil
+O relatório Brasil 2040 cobre múltiplos setores de infraestrutura crítica e seus riscos climáticos. Responda perguntas sobre qualquer um destes setores, desde que a resposta esteja baseada nos trechos fornecidos:
+- Agricultura: ZARC, cenários climáticos (Risco 90, RCP 4.5, RCP 8.5), as 11 culturas (soja, milho, safrinha, arroz, feijão verão, feijão inverno, feijão caupi, cana-de-açúcar, algodão, trigo, sorgo), regiões produtoras, políticas de adaptação e seguro agrícola
+- Energia: sistema elétrico brasileiro (SIN), hidrelétricas, custos operacionais, CVaR, ONS, expansão de fontes renováveis
+- Recursos hídricos: vazões, reservatórios, bacias hidrográficas, Energia Natural Afluente (ENA), escassez hídrica
+- Transportes: rodovias, pavimentação, vulnerabilidade de infraestrutura viária (IVIR)
+- Infraestrutura costeira: cidades costeiras, elevação do nível do mar, portos (IVCB)
+- Infraestrutura e drenagem urbana: enchentes, sistemas de drenagem, curvas IDF
+
+Qualquer pergunta relacionada a risco climático em algum desses setores está DENTRO do escopo. Só redirecione como fora de escopo perguntas completamente alheias ao tema (receitas, esportes, assuntos gerais sem relação com clima ou infraestrutura).
 
 ESTILO DE RESPOSTA:
 Responda sempre em português do Brasil. Seja conciso e técnico quando necessário, mas acessível. Máximo de 3 parágrafos.
@@ -73,7 +80,7 @@ class QueryRequest(BaseModel):
 class ChatRequest(BaseModel):
     question: str
     history: list[dict] = []
-    top_k: int = 5
+    top_k: int = 8
 
 @app.post("/search")
 def search(req: QueryRequest):

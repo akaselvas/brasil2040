@@ -26,7 +26,7 @@ GOLDEN_SET_PATH = Path(__file__).parent / "golden_set.json"
 CURRENT_PROMPT_PATH = Path(__file__).parent.parent / "prompt_version.txt"
 
 # Model used to GENERATE test answers
-GEMINI_ANSWER_MODEL = os.getenv("GEMINI_ANSWER_MODEL", "gemma-4-31b-it")
+GEMINI_ANSWER_MODEL = os.getenv("GEMINI_ANSWER_MODEL", "gemini-3.5-flash-lite")
 
 # How much can answers change before we flag a regression?
 SIMILARITY_THRESHOLD = float(os.getenv("SIMILARITY_THRESHOLD", "0.3"))
