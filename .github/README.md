@@ -8,12 +8,21 @@ Feito para quem quer consultar os dados do relatório sem ler 42 PDFs e, do lado
 
 [![AI Evals](https://github.com/akaselvas/brasil2040/actions/workflows/evals.yml/badge.svg?branch=main)](https://github.com/akaselvas/brasil2040/actions/workflows/evals.yml)
 
+## TL;DR
+
+- **O que é:** RAG construído do zero sobre 42 PDFs de relatórios climáticos do governo brasileiro, com mapa D3 de 5.570 municípios, painéis setoriais e chatbot que só responde com base nos documentos.
+- **Stack:** FastAPI, `multilingual-e5-large`, Supabase (pgvector, HNSW), Gemini, D3.js, deploy em Docker no HuggingFace Spaces.
+- **Foco em qualidade:** suíte de evals em GitHub Actions com 30 perguntas no golden set e 5 jobs (retrieval, fidelidade com LLM-as-judge, latência e custo, regressão de prompt e execução completa).
+- **Achados reais:** 36% dos chunks eram ruído (802 de 2.203) e o prompt tratava a lista de temas como exaustiva, o que causava falsa recusa em 33 de 86 perguntas. Depois da correção, restaram 2, ambas lacunas reais do corpus.
+- **Teste exploratório:** um agente ScoutQA achou o que a suíte não enxerga, como o contador de municípios oscilando entre 5.570 e 5.563.
+- **Rodar:** `docker build -t brasil2040 .` e `docker run -p 7860:7860` com `SUPABASE_URL`, `SUPABASE_KEY` e `GEMINI_API_KEY`.
+
 ## Demo
 
 - **Aplicação:** https://huggingface.co/spaces/aka-selvas/brasil2040
 - **Workflow de evals:** https://github.com/akaselvas/brasil2040/actions/workflows/evals.yml
 - **Relatório do agente ScoutQA (teste exploratório de 30 min):** https://app.scoutqa.ai/r/019eb901-dbdc-776a-80a8-867e9988ed96
-
+- **Kaggle Notebook para o embedding:** (docs/brasil2040-embeddings.ipynb)
 <!-- Troque pelo caminho real do screenshot ou GIF -->
 ![Mapa de risco agrícola](docs/screenshot-mapa.png)
 
@@ -275,6 +284,7 @@ Um dos achados mais úteis veio de uma pergunta sugerida pela própria UI que re
 Um agente ScoutQA explorou a UI por 30 minutos sem script e encontrou o que a suíte não vê, como o contador de municípios oscilando entre 5.570 e 5.563 (5 perdidos no join com o CSV de risco e 2 na validação de geometria) e entradas que retornavam resposta vazia sem feedback ao usuário. O contrário também vale: nenhum agente de browser consegue avaliar fidelidade ao contexto.
 
 Lacunas conhecidas, ainda sem cobertura: prompt injection, red-team adversarial, rate limit e quota de tokens, eventos de toque no mobile e verificação do streaming em E2E.
+
 
 ## Estrutura do repositório
 
