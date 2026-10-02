@@ -16,10 +16,6 @@ from typing import Optional
 JUDGE_BACKEND = os.getenv("JUDGE_BACKEND", "gemini")
 JUDGE_MODEL   = os.getenv("JUDGE_MODEL",   "gemini-3.5-flash-lite")
 
-# Quantos chunks o juiz enxerga. Deve ser >= top_k usado pelo /chat de produção (10),
-# senão o juiz marca como "infiel" afirmações que vieram de chunks que ele não viu.
-JUDGE_MAX_CHUNKS = int(os.getenv("JUDGE_MAX_CHUNKS", "10"))
-
 
 # ── DATA CLASSES ──────────────────────────────────────────────────────────────
 
@@ -204,16 +200,16 @@ def _call_gemini(prompt: str) -> str:
             )
             if response.text:
                 return response.text
-
+                
             raise ValueError("Empty response text from model")
-
+            
         except Exception as e:
             if attempt < max_retries - 1:
                 sleep_time = backoff_factor * (attempt + 1)
                 print(f"\n  [JUIZ ATTEMPT {attempt+1}/{max_retries}] Falha de rede: {e}. Retentando em {sleep_time}s...")
                 time.sleep(sleep_time)
             else:
-                # Se todas as retentativas falharem, retorna string vazia para tratamento gracioso
+                # Se todas as retentativas falharem, retorna None para tratamento gracioso
                 return ""
 
 
@@ -283,7 +279,7 @@ def _parse_judge_response(raw: str, dimension: str) -> dict:
             "reasoning": f"Judge returned empty/None response for {dimension}.",
             "evidence":  "empty_response",
         }
-
+        
     clean = re.sub(r"```json\s*|\s*```", "", raw).strip()
     try:
         return json.loads(clean)
@@ -310,7 +306,7 @@ def judge_faithfulness(
     context_chunks: list[str],
 ) -> JudgeScore:
     """Is every claim in the answer supported by the retrieved context?"""
-    context = "\n\n---\n\n".join(context_chunks[:JUDGE_MAX_CHUNKS])
+    context = "\n\n---\n\n".join(context_chunks[:5])
     raw     = _call_judge_llm(FAITHFULNESS_PROMPT.format(
         context=context, question=question, answer=answer
     ))
@@ -331,7 +327,7 @@ def judge_hallucination(
     is_trap: bool = False,
 ) -> JudgeScore:
     """Did the AI fabricate specific facts not present in the context?"""
-    context = "\n\n---\n\n".join(context_chunks[:JUDGE_MAX_CHUNKS])
+    context = "\n\n---\n\n".join(context_chunks[:5])
     raw     = _call_judge_llm(HALLUCINATION_PROMPT.format(
         context=context, question=question, answer=answer
     ))
