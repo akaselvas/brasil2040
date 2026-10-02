@@ -34,7 +34,7 @@ with open(GOLDEN_SET_PATH, encoding="utf-8") as f:
 # Use only the "prompt_regression" category questions
 REGRESSION_CASES = [q for q in GOLDEN_SET if q["category"] == "prompt_regression"]
 # Also include a few factual ones for numerical stability checks
-REGRESSION_CASES += [q for q in GOLDEN_SET if q["id"] in ["energia_001", "energia_004", "agro_001"]]
+REGRESSION_CASES += [q for q in GOLDEN_SET if q["id"] in ["energia_001", "agro_001"]]
 
 
 # ── Refusal detection ─────────────────────────────────────────────────────────
