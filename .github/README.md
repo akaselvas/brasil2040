@@ -22,9 +22,9 @@ Feito para quem quer consultar os dados do relatório sem ler 42 PDFs e, do lado
 - **Aplicação:** https://huggingface.co/spaces/aka-selvas/brasil2040
 - **Workflow de evals:** https://github.com/akaselvas/brasil2040/actions/workflows/evals.yml
 - **Relatório do agente ScoutQA (teste exploratório de 30 min):** https://app.scoutqa.ai/r/019eb901-dbdc-776a-80a8-867e9988ed96
-- **Kaggle Notebook para o embedding:** (docs/brasil2040-embeddings.ipynb)
+- **Kaggle Notebook para o embedding:** [(docs/brasil2040-embeddings.ipynb)](https://github.com/akaselvas/brasil2040/blob/main/docs/brasil2040-embeddings.ipynb)
 <!-- Troque pelo caminho real do screenshot ou GIF -->
-![Mapa de risco agrícola](docs/screenshot-mapa.png)
+![Mapa de risco agrícola](https://github.com/akaselvas/brasil2040/blob/main/docs/screenshot-mapa.png)
 
 ## Funcionalidades
 
