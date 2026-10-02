@@ -1,4 +1,4 @@
-name: AI Eval Suite — Brasil 2040
+name: AI Eval Suite — Brasil 2040 v2
 
 on:
   workflow_dispatch:
