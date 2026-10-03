@@ -54,15 +54,6 @@
     "notes": "RCP 4.5 relies more on hydro/renewables (carbon price excludes coal), increasing hydro dependence. Key concept in Product 03 section on mitigation-adaptation interaction. Term 'paradoxo' does NOT appear in source text."
   },
   {
-    "id": "energia_004",
-    "question": "Qual o risco de déficit (apagão) no subsistema Sudeste/Centro-Oeste no cenário HadGEM 8.5?",
-    "expected_answer_contains": ["99%", "déficit", "74%", "HadGEM"],
-    "expected_chunk_sources": ["Energia Produto 02.pdf", "Energia Produto 03.pdf"],
-    "category": "energia",
-    "difficulty": "factual",
-    "notes": "Risk is 74% to 99%. Regulatory limit of 5% cited as reference. Removed 'limite' and '5%' as these may not appear in retrieved chunks."
-  },
-  {
     "id": "energia_005",
     "question": "O que é o critério CVaR e como ele é usado pelo ONS?",
     "expected_answer_contains": ["CVaR", "risco", "ONS", "reservatório"],

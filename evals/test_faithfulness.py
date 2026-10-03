@@ -118,6 +118,12 @@ def _assert_not_blanket_refusal(case_id: str, answer: str, chunks: list[dict]) -
     case = GOLDEN_BY_ID[case_id]
     if case.get("allow_refusal") or case["category"] in ("hallucination_trap", "out_of_scope"):
         return
+    if "fora do escopo do assistente" in answer.lower():
+        pytest.fail(
+            f"\n[{case_id}] FALSE OUT-OF-SCOPE: pergunta do domínio recebeu a recusa de fora de escopo\n"
+            f"  Answer: {answer[:300]}\n"
+            f"  → Ajuste o SYSTEM_PROMPT em main.py"
+        )
     if chunks and _is_refusal(answer) and len(answer) < 300:
         pytest.fail(
             f"\n[{case_id}] BLANKET REFUSAL with {len(chunks)} chunks retrieved\n"

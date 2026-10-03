@@ -68,6 +68,8 @@ O relatório Brasil 2040 cobre múltiplos setores de infraestrutura crítica e s
 
 Qualquer pergunta relacionada a risco climático em algum desses setores está DENTRO do escopo. Só redirecione como fora de escopo perguntas completamente alheias ao tema (receitas, esportes, assuntos gerais sem relação com clima ou infraestrutura).
 
+- Perguntas que comparam setores ou pedem uma visão geral do relatório (ex.: "qual setor é mais vulnerável?") estão DENTRO do escopo. Responda combinando os trechos disponíveis.
+
 ESTILO DE RESPOSTA:
 Responda sempre em português do Brasil. Seja conciso e técnico quando necessário, mas acessível. Máximo de 3 parágrafos.
 """

@@ -1,40 +1,40 @@
 {
   "_metadata": {
-    "captured_at": "2026-10-02T20:35:57.672070",
-    "prompt_hash": "091156cd",
+    "captured_at": "2026-10-02T21:18:42.526172",
+    "prompt_hash": "5737147e",
     "num_cases": 4
   },
   "prompt_regression_001": {
     "question": "O que é o ZARC e como ele funciona?",
-    "answer": "O Zoneamento Agrícola de Risco Climático (ZARC) é um instrumento de política agrícola e de gestão de riscos criado pelo Ministério da Agricultura, Pecuária e Abastecimento (MAPA) em 1996. Seu principal objetivo é minimizar as perdas agrícolas decorrentes de eventos climáticos extremos, auxiliando os produtores a identificar a melhor época de plantio para diferentes culturas, tipos de solo e ciclos de cultivares em cada município.\n\nO ZARC funciona por meio da espacialização e análise estatística de dados meteorológicos de longo prazo, combinando parâmetros de clima, solo e exigências das plantas. Com base em critérios de risco de deficiência hídrica e perdas de safra, o zoneamento define calendários agrícolas e aponta quais municípios e épocas apresentam condições adequadas para o plantio.\n\nAlém de orientar o planejamento agrícola, o ZARC serve como requisito de conformidade: o produtor deve seguir suas recomendações para ter acesso a programas de seguro agrícola, à subvenção federal do seguro rural (PSR) e ao Programa de Garantia da Atividade Agropecuária (Proagro), sendo também utilizado por muitos agentes financeiros como condição para a concessão de crédito rural.",
+    "answer": "O Zoneamento Agrícola de Risco Climático (ZARC) é um instrumento de política agrícola e gestão de riscos mantido pelo Ministério da Agricultura, Pecuária e Abastecimento (MAPA) no Brasil, utilizado desde a safra de 1996. Seu principal objetivo é minimizar as perdas agrícolas decorrentes de eventos climáticos extremos e fenômenos adversos.\n\nEle funciona mapeando as áreas propícias e identificando, para cada município, a melhor época de plantio das culturas com base em parâmetros de clima, solo e ciclos de cultivares. Para realizar esse mapeamento, o ZARC utiliza análises de frequência de dados meteorológicos para determinar a probabilidade de ocorrência de condições específicas e deficiência hídrica.\n\nAlém de orientar o produtor quanto ao calendário agrícola, o ZARC serve como requisito obrigatório: para ter acesso a programas de seguro agrícola, à subvenção federal do seguro rural e, em muitos casos, à concessão de crédito rural e participação no programa Proagro, o produtor deve seguir rigorosamente as recomendações desse zoneamento.",
     "key_numbers": [],
-    "answer_length": 1185,
-    "captured_at": "2026-10-02T20:36:07.334515"
+    "answer_length": 1050,
+    "captured_at": "2026-10-02T21:18:55.476109"
   },
   "prompt_regression_002": {
     "question": "Quais culturas têm maior risco até 2040?",
-    "answer": "Com base no relatório Brasil 2040, a cultura mais afetada e que sofre os impactos mais relevantes nos cenários futuros até 2040 é a **soja**, apresentando reduções expressivas de áreas de baixo risco climático em todos os cenários avaliados. \n\nAlém da soja, o **milho** (especialmente o **milho safrinha**, além do milho de safra normal) também figura entre os mais afetados em termos de porcentagem de redução de áreas de baixo risco climático, sobretudo nas simulações do modelo HadGEM2 ES. O milho safrinha é particularmente vulnerável porque a disponibilidade de temperatura e, principalmente, de água nos últimos meses do ciclo é reduzida nos cenários futuros, impactando significativamente essa segunda safra.",
+    "answer": "Com base nos trechos fornecidos, a cultura de **soja** é apontada consistentemente como uma das mais afetadas (ou a que sofre impactos mais relevantes) em todos os cenários até 2040, apresentando reduções significativas nas áreas de baixo risco climático e perdas expressivas de área alocada em estados importantes (como no Sul e Sudeste). \n\nAlém da soja, o **milho safrinha** (e o milho de safra normal) também figura entre os mais afetados em termos de percentual de redução de áreas de baixo risco climático no modelo HadGEM2 ES. O relatório destaca que o milho safrinha sofre impactos significativos porque as restrições futuras de temperatura e disponibilidade de água reduzem as condições ideais para essa segunda safra. De modo geral, as simulações indicam um aumento do risco agroclimático para quase todas as lavouras, sendo o modelo climático *HadGEM2 ES* o que projeta os efeitos mais severos.",
     "key_numbers": [],
-    "answer_length": 715,
-    "captured_at": "2026-10-02T20:36:24.374478"
+    "answer_length": 904,
+    "captured_at": "2026-10-02T21:19:08.849873"
   },
   "agro_001": {
     "question": "Qual é a projeção de crescimento da produção de grãos e oleaginosas do Brasil entre 2010 e 2040?",
-    "answer": "Com base nos trechos fornecidos, a variação esperada na produção de grãos e oleaginosas no Brasil entre 2010 e 2040 é de 132% (conforme os dados do Produto 8 e do Produto 5) ou de 167% (conforme os dados preliminares apresentados no Produto 1).",
+    "answer": "Com base nos trechos fornecidos, a variação esperada na produção de grãos e oleaginosas no Brasil entre 2010 e 2040 é de 132% (conforme os dados apresentados para o cenário de referência nos Produtos 5 e 8). Um dos trechos (Produto 1) também menciona o valor de 167% em estimativas preliminares, refletindo o forte crescimento contínuo do agronegócio brasileiro puxado tanto pelo consumo doméstico quanto pelas exportações.",
     "key_numbers": [
       "167%",
       "132%"
     ],
-    "answer_length": 244,
-    "captured_at": "2026-10-02T20:36:39.063599"
+    "answer_length": 423,
+    "captured_at": "2026-10-02T21:19:21.166188"
   },
   "energia_001": {
     "question": "Qual o custo operacional do SIN no pior cenário climático (HadGEM RCP 8.5)?",
-    "answer": "Com base nos trechos fornecidos, no cenário de impactos mais severos (HadGEM 8.5), o custo total de operação do SIN resulta em um valor **16,7 vezes maior** que no caso de linha de base. Esse aumento expressivo nos custos com combustíveis ocorre porque as usinas termelétricas precisam trabalhar a plena capacidade e de forma ininterrupta para compensar a dramática redução da disponibilidade de energia hidrelétrica.",
+    "answer": "Com base nos trechos fornecidos, no cenário de impactos mais severos (modelo HadGEM), o custo total de operação atinge um valor de 16,7 vezes maior que no caso de linha de base (ou de referência). \n\nEsse aumento drástico nos custos operacionais ocorre porque a queda acentuada na disponibilidade hídrica e na geração hidrelétrica obriga as usinas termelétricas a operarem de forma ininterrupta e a plena capacidade durante todo o período, elevando significativamente os gastos com combustíveis e desestruturando o sistema.",
     "key_numbers": [
       "16,7 vezes"
     ],
-    "answer_length": 417,
-    "captured_at": "2026-10-02T20:37:03.326063"
+    "answer_length": 522,
+    "captured_at": "2026-10-02T21:19:34.172482"
   }
 }
