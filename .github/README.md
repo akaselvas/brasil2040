@@ -80,7 +80,7 @@ Pontos de design que valem a leitura:
 
 ## Pipeline de ingestão
 
-O notebook `docs/brasil2040-embeddings.ipynb` roda no Kaggle (GPU) e gera a base vetorial a partir dos 42 PDFs. Credenciais vêm de Kaggle Secrets (`SUPABASE_URL`, `SUPABASE_KEY`) e o modelo é carregado de um dataset local do Kaggle.
+O notebook `docs/brasil2040-embeddings.ipynb` roda no Kaggle (GPU) e gera a base vetorial a partir dos 42 PDFs (cerca de 400 MB). Credenciais vêm de Kaggle Secrets (`SUPABASE_URL`, `SUPABASE_KEY`) e o modelo é carregado de um dataset local do Kaggle.
 
 | Etapa | Implementação |
 |---|---|
@@ -115,7 +115,9 @@ Algumas perguntas sugeridas na UI respondiam "não encontrei essa informação" 
 - A heurística de dígitos (> 0,25) pode apagar chunks numéricos legítimos, que são justamente o foco do projeto. Depois da limpeza, vale reexecutar o diagnóstico de termos críticos (`16,7`, `74%`, `99%`, `112,3`, `34%`, `20,6`) contra o banco.
 - `export_junk_delete_sql.py` duplica a lógica de `find_junk_chunks.py`. A heurística deveria virar um módulo único e depois um filtro no notebook.
 
-Para repetir o diagnóstico* (servidor rodando em outro terminal):
+**Achado posterior, vindo da auditoria dos evals.** O baseline do caso `energia_004` (risco de déficit do SE/CO no HadGEM 8.5, esperado 74%–99%) era uma recusa. `find_terms_in_corpus.py` (chunks do banco) e `find_terms_in_pdf.py` (PDFs, texto e tabelas) não acharam o número em nenhum dos dois. A explicação mais provável é que ele aparece só numa figura (o relatório tem uma legenda "Figura 35" para esse gráfico), que a extração de texto não enxerga. A pergunta foi removida do golden set.
+
+Para repetir o diagnóstico (servidor rodando em outro terminal, o último script precisa do `pymupdf` e dos PDFs originais, que não são versionados):
 
 ```bash
 python evals/diagnose_ui_questions.py            # --filter agro para um subconjunto
@@ -124,7 +126,6 @@ python evals/find_junk_chunks.py                 # precisa de SUPABASE_URL e SUP
 python evals/find_terms_in_corpus.py
 python evals/find_terms_in_pdf.py /caminho/dos/pdfs
 ```
-*(precisa de pymupdf e dos PDFs originais, que não são versionados)
 
 ## Tecnologias
 
@@ -259,7 +260,7 @@ O backend usa `file`, `page` e `text` do retorno. A distância é cosseno, e com
 
 ## Testes e evals
 
-A suíte vive em `evals/` e roda no GitHub Actions via `workflow_dispatch`, com seleção do grupo de testes (`retrieval`, `faithfulness`, `latency`, `regression` ou `all`).
+A suíte vive em `evals/` e roda no GitHub Actions via `workflow_dispatch`, com um seletor de grupo (`retrieval`, `faithfulness`, `latency`, `regression` ou `all`). Como fidelidade, latência e regressão dependem do job de retrieval, que só roda em `retrieval` ou `all`, na prática use `all`.
 
 | Job | O que valida | Critério |
 |---|---|---|
@@ -271,7 +272,7 @@ A suíte vive em `evals/` e roda no GitHub Actions via `workflow_dispatch`, com 
 
 Os jobs de fidelidade, latência e regressão dependem do sucesso do retrieval. Não faz sentido julgar uma resposta se o contexto recuperado está errado.
 
-Última execução completa: 49 testes de retrieval, 32 de fidelidade e 7 de latência (88 no `all`), mais 10 de regressão, todos verdes.
+Última execução completa: 47 testes de retrieval, 31 de fidelidade e 7 de latência (85 no job de execução completa), mais 10 de regressão, todos verdes. O teste end-to-end de latência é pulado no job de latência (o step não recebe a chave do Gemini) e roda só no job de execução completa.
 
 ### O que os testes realmente exercitam
 
@@ -340,7 +341,7 @@ Um dos achados mais úteis veio de perguntas sugeridas pela própria UI que reto
 
 Das 28 falsas recusas, restaram 2, ambas lacunas reais do corpus (a informação não está nos PDFs). Foram removidas das perguntas sugeridas na UI.
 
-A auditoria dos evals mostrou também o que o juiz sozinho não vê: com a recusa padrão ("fora do escopo") ele dá nota 1,00 de fidelidade, porque uma recusa não afirma nada falso. Foi assim que uma pergunta legítima ("qual o setor mais vulnerável?") recebeu a resposta de fora de escopo sem reprovar. Checagens programáticas (recusa seca, termos esperados, `must_not_contain`) cobrem esse buraco.
+A auditoria dos evals mostrou também o que o juiz sozinho não vê: com a recusa padrão ("fora do escopo") ele dá nota 1,00 de fidelidade, porque uma recusa não afirma nada falso. Foi assim que uma pergunta legítima ("qual o setor mais vulnerável?") recebeu a resposta de fora de escopo e passou. A correção foi dupla: o `SYSTEM_PROMPT` ganhou a regra de que perguntas que comparam setores estão dentro do escopo, e o teste de fidelidade passou a reprovar a recusa de fora de escopo em perguntas do domínio. As demais checagens programáticas (recusa seca, âncoras na regressão, `must_not_contain` nas armadilhas) cobrem o resto do buraco.
 
 Um agente ScoutQA explorou a UI por 30 minutos sem script e encontrou o que a suíte não vê, como o contador de municípios oscilando entre 5.570 e 5.563 (5 perdidos no join com o CSV de risco e 2 na validação de geometria) e entradas que retornavam resposta vazia sem feedback ao usuário. O contrário também vale: nenhum agente de browser consegue avaliar fidelidade ao contexto.
 
@@ -392,11 +393,10 @@ Lacunas conhecidas, ainda sem cobertura: prompt injection, red-team adversarial,
 
 - CORS está aberto (`allow_origins=["*"]`) e não há rate limit nem autenticação nos endpoints. Aceitável para demo, não para produção.
 - A resposta é limitada a 3 parágrafos e o prompt proíbe extrapolar números que não estejam nos trechos. Isso reduz alucinação, mas gera recusas em perguntas numéricas quando o chunk certo não é recuperado.
-- Números que só existem em figuras dos PDFs não entram no RAG, porque a extração pega texto e tabelas. Exemplo: o risco de déficit de 74%–99% do SE/CO (HadGEM 8.5) aparece no painel de Energia, mas o chat não consegue confirmá-lo.
-- O juiz é um LLM, compartilha modos de falha com o sistema testado e é leniente: todas as notas de fidelidade registradas foram 1,00, e uma recusa sempre passa em fidelidade. Por isso o gate combina o juiz com checagens programáticas, e os limiares são tratados como estimativa de confiança e não como veredito binário.
+- Números que só existem em figuras dos PDFs não entram no RAG, porque a extração pega texto e tabelas. Exemplo provável: o risco de déficit de 74%–99% do SE/CO (HadGEM 8.5), que o chat não consegue confirmar enquanto o painel de Energia exibe 99% de risco de déficit nesse cenário.
+- O juiz é um LLM, compartilha modos de falha com o sistema testado e é leniente: todas as notas de fidelidade impressas nos logs foram 1,00, e uma recusa sempre passa em fidelidade. Por isso o gate combina o juiz com checagens programáticas, e os limiares são tratados como estimativa de confiança e não como veredito binário.
 - Com temperatura 0,7, o mesmo prompt gera respostas com similaridade de texto de só 0,26 a 0,40. O gate de regressão usa âncoras, não similaridade, e o `regression_diff.json` é apenas informativo. Uma âncora pode falhar ocasionalmente por variação do modelo, e não por regressão.
-- O teste end-to-end de latência usa um prompt simplificado próprio, então mede tempo e não qualidade.
-- Perguntas que comparam setores ("qual o setor mais vulnerável?") podem receber a recusa de fora de escopo.
+- O teste end-to-end de latência usa um prompt simplificado próprio, então mede tempo e não qualidade, e só roda no job de execução completa.
 - A qualidade do retrieval depende da qualidade da ingestão. Tabelas complexas dos PDFs ainda podem gerar chunks ruidosos, e a remoção dos 802 chunks de ruído foi manual, sem filtro automático no pipeline.
 - O chunking é por página: um fato que começa no fim de uma página e termina na seguinte fica dividido em dois chunks.
 - A limpeza de texto usa whitelist de caracteres e remove símbolos como `×`, `−` e `–`. Isso pode apagar o sinal de números (por exemplo `−30%`) e deve ser verificado contra o conteúdo do banco.
