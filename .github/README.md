@@ -389,19 +389,6 @@ Lacunas conhecidas, ainda sem cobertura: prompt injection, red-team adversarial,
 └── requirements.txt
 ```
 
-## Limitações conhecidas
-
-- CORS está aberto (`allow_origins=["*"]`) e não há rate limit nem autenticação nos endpoints. Aceitável para demo, não para produção.
-- A resposta é limitada a 3 parágrafos e o prompt proíbe extrapolar números que não estejam nos trechos. Isso reduz alucinação, mas gera recusas em perguntas numéricas quando o chunk certo não é recuperado.
-- Números que só existem em figuras dos PDFs não entram no RAG, porque a extração pega texto e tabelas. Exemplo provável: o risco de déficit de 74%–99% do SE/CO (HadGEM 8.5), que o chat não consegue confirmar enquanto o painel de Energia exibe 99% de risco de déficit nesse cenário.
-- O juiz é um LLM, compartilha modos de falha com o sistema testado e é leniente: todas as notas de fidelidade impressas nos logs foram 1,00, e uma recusa sempre passa em fidelidade. Por isso o gate combina o juiz com checagens programáticas, e os limiares são tratados como estimativa de confiança e não como veredito binário.
-- Com temperatura 0,7, o mesmo prompt gera respostas com similaridade de texto de só 0,26 a 0,40. O gate de regressão usa âncoras, não similaridade, e o `regression_diff.json` é apenas informativo. Uma âncora pode falhar ocasionalmente por variação do modelo, e não por regressão.
-- O teste end-to-end de latência usa um prompt simplificado próprio, então mede tempo e não qualidade, e só roda no job de execução completa.
-- A qualidade do retrieval depende da qualidade da ingestão. Tabelas complexas dos PDFs ainda podem gerar chunks ruidosos, e a remoção dos 802 chunks de ruído foi manual, sem filtro automático no pipeline.
-- O chunking é por página: um fato que começa no fim de uma página e termina na seguinte fica dividido em dois chunks.
-- A limpeza de texto usa whitelist de caracteres e remove símbolos como `×`, `−` e `–`. Isso pode apagar o sinal de números (por exemplo `−30%`) e deve ser verificado contra o conteúdo do banco.
-- O upload usa `insert`, não `upsert`. Rodar o notebook duas vezes duplica os chunks, e duplicatas ocupam vagas no top-k.
-
 ## Fontes de dados e créditos
 
 - **ZARC (Zoneamento Agrícola de Risco Climático)**: Embrapa / MAPA. Classificação de risco por município, cultura e cenário
