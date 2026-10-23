@@ -1,47 +1,67 @@
-"""
-test_faithfulness.py
-====================
-Tests whether the AI's answers are grounded in the retrieved context.
-
-As respostas vêm do /chat REAL (mesmo SYSTEM_PROMPT, temperatura e top_k de
-produção). Mudar o SYSTEM_PROMPT no main.py afeta estes testes.
-"""
-
+import functools
 import json
 import os
+import re
 import sys
-import pytest
+import unicodedata
 from pathlib import Path
+
+import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from judges.llm_judge import run_full_eval, JudgeVerdict
 from helpers import get_chunks, get_production_answer, PROD_TOP_K
 
-# ── CONFIG ────────────────────────────────────────────────────────────────────
 GOLDEN_SET_PATH = Path(__file__).parent / "golden_set.json"
 
-FAITHFULNESS_THRESHOLD  = float(os.getenv("FAITHFULNESS_THRESHOLD",  "0.7"))
+FAITHFULNESS_THRESHOLD = float(os.getenv("FAITHFULNESS_THRESHOLD", "0.7"))
+SYNTHESIS_THRESHOLD = float(os.getenv("SYNTHESIS_FAITHFULNESS_THRESHOLD", "0.6"))
+EXTENDED_THRESHOLD = float(os.getenv("EXTENDED_FAITHFULNESS_THRESHOLD", "0.6"))
 HALLUCINATION_THRESHOLD = float(os.getenv("HALLUCINATION_THRESHOLD", "0.7"))
+OUT_OF_SCOPE_THRESHOLD = float(os.getenv("OUT_OF_SCOPE_THRESHOLD", "0.6"))
 
 with open(GOLDEN_SET_PATH, encoding="utf-8") as f:
     GOLDEN_SET = json.load(f)
 
 GOLDEN_BY_ID = {q["id"]: q for q in GOLDEN_SET}
 
-# ── Slice the golden set by role ───────────────────────────────────────────────
-FAITHFULNESS_CASES  = [q for q in GOLDEN_SET if q["category"] not in ["out_of_scope"]]
+FAITHFULNESS_CASES = [q for q in GOLDEN_SET if q["category"] not in ["out_of_scope"]]
 HALLUCINATION_TRAPS = [q for q in GOLDEN_SET if q["category"] == "hallucination_trap"]
-OUT_OF_SCOPE_CASES  = [q for q in GOLDEN_SET if q["category"] == "out_of_scope"]
+OUT_OF_SCOPE_CASES = [q for q in GOLDEN_SET if q["category"] == "out_of_scope"]
 
-# Difficulties that the original parametrize filters missed entirely
-TESTED_DIFFICULTIES  = {"factual", "synthesis"}
+FACTUAL_CASES = [q for q in FAITHFULNESS_CASES if q.get("difficulty") == "factual"]
+SYNTHESIS_CASES = [q for q in FAITHFULNESS_CASES if q.get("difficulty") == "synthesis"]
 EXTENDED_DIFFICULTIES = {"conceptual", "reasoning", "comparison", "language", "hard"}
-EXTENDED_CASES = [
-    q for q in FAITHFULNESS_CASES
-    if q.get("difficulty") in EXTENDED_DIFFICULTIES
+EXTENDED_CASES = [q for q in FAITHFULNESS_CASES if q.get("difficulty") in EXTENDED_DIFFICULTIES]
+FACTUAL_CASES_WITH_TERMS = [q for q in FACTUAL_CASES if q.get("expected_answer_contains")]
+
+OUT_OF_SCOPE_REDIRECT_PATTERNS = [
+    r"fora do (?:meu )?escopo",
+    r"nao posso (?:ajudar|responder)",
+    r"nao consigo (?:ajudar|responder)",
+    r"nao esta no escopo",
+    r"so posso responder",
+    r"apenas respondo",
 ]
 
-# ── Refusal detection ─────────────────────────────────────────────────────────
+PORTUGUESE_WORDS = {
+    "que", "para", "com", "não", "uma", "das", "dos", "nos", "nas", "essa",
+    "esta", "são", "foi", "como", "mais", "pelo", "pela", "entre", "sobre",
+    "também", "trechos", "fornecidos", "encontrei", "informação", "segundo",
+    "cenário", "probabilidade", "relatório",
+    "de", "da", "em", "os", "um", "ao", "até", "é", "pode", "ser", "tem", "por", "seu", "sua",
+}
+ENGLISH_WORDS = {
+    "the", "of", "and", "is", "are", "that", "this", "with", "for", "which",
+    "from", "was", "were", "has", "have", "by", "to", "in", "it", "be",
+}
+
+LANGUAGE_QUESTIONS = [
+    pytest.param("Qual o risco de déficit no cenário HadGEM 8.5?", id="pt_question"),
+    pytest.param("What is the projected agricultural growth in Brazil until 2040?", id="en_question"),
+]
+
+
 REFUSAL_MARKERS = [
     "não encontrei",
     "não encontramos",
@@ -55,66 +75,60 @@ REFUSAL_MARKERS = [
     "não referem",
     "não cita",
     "não citam",
-    "não há",
+    "não informa",
+    "não informam",
+    "não traz",
+    "não trazem",
+    "não é mencionado",
+    "não são mencionados",
     "inexiste",
     "inexistem",
     "não foi encontrado",
     "não foram encontrados",
-    "informação não",
-    "desculpe",
     "não está nos trechos",
 ]
 
-def _is_refusal(answer: str) -> bool:
-    if not answer:
+SENTENCE_SPLIT = re.compile(r"(?<=[.!?])\s+|\n+")
+
+
+def normalize(text: str) -> str:
+    decomposed = unicodedata.normalize("NFKD", (text or "").lower())
+    return "".join(ch for ch in decomposed if not unicodedata.combining(ch))
+
+
+def is_refusal(answer: str) -> bool:
+    if not answer or not answer.strip():
         return True
     a = answer.lower()
     return any(m in a for m in REFUSAL_MARKERS)
 
 
+def non_refusal_text(answer: str) -> str:
+    sentences = SENTENCE_SPLIT.split(answer or "")
+    return " ".join(s for s in sentences if s.strip() and not is_refusal(s))
+
+
 def _is_error_answer(answer: str) -> bool:
-    """Return True when the answer string is an error/mock placeholder."""
-    if not answer:
+    if not answer or not answer.strip():
         return True
-    error_prefixes = ("[error", "[mock", "[mock -")
-    return answer.lower().strip().startswith(error_prefixes)
+    return answer.lower().strip().startswith(("[error", "[mock"))
 
 
-# ── Robust out-of-scope hedge check ───────────────────────────────────────────
-SPECIFIC_HEDGE_PHRASES = [
-    "fora do escopo",
-    "fora do meu escopo",
-    "brasil 2040",
-    "não posso ajudar com",
-    "não consigo ajudar com",
-    "não está no escopo",
-    "não aborda",
-    "não trata",
-    "não cobre",
-    "posso ajudar com",
-    "só posso responder",
-    "apenas respondo",
-    "assistente do brasil 2040",
-]
-
-def _count_hedge_matches(answer: str) -> int:
-    if not answer:
-        return 0
-    a = answer.lower()
-    return sum(1 for phrase in SPECIFIC_HEDGE_PHRASES if phrase in a)
-
-
-# ── Helpers ───────────────────────────────────────────────────────────────────
-
-def get_chunks_and_answer(question: str, top_k: int = PROD_TOP_K) -> tuple[list[dict], str]:
-    """Usa o /chat REAL. O top_k é sempre o de produção, ignorando overrides dos testes."""
+@functools.lru_cache(maxsize=None)
+def _chunks_and_answer(question: str) -> tuple:
     chunks = get_chunks(question, PROD_TOP_K)
     answer = get_production_answer(question, PROD_TOP_K)
-    return chunks, answer
+    if _is_error_answer(answer):
+        pytest.fail(f"Chat endpoint did not return an answer. Got: {str(answer)[:200]}")
+    return tuple(chunks), answer
+
+
+def get_chunks_and_answer(question: str) -> tuple[list[dict], str]:
+    chunks, answer = _chunks_and_answer(question)
+    return list(chunks), answer
 
 
 def _assert_not_blanket_refusal(case_id: str, answer: str, chunks: list[dict]) -> None:
-    """Recusa seca com chunks recuperados = bug (prompt/retrieval) ou lacuna real do corpus."""
     case = GOLDEN_BY_ID[case_id]
     if case.get("allow_refusal") or case["category"] in ("hallucination_trap", "out_of_scope"):
         return
@@ -124,7 +138,7 @@ def _assert_not_blanket_refusal(case_id: str, answer: str, chunks: list[dict]) -
             f"  Answer: {answer[:300]}\n"
             f"  → Ajuste o SYSTEM_PROMPT em main.py"
         )
-    if chunks and _is_refusal(answer) and len(answer) < 300:
+    if chunks and is_refusal(answer) and len(answer) < 300:
         pytest.fail(
             f"\n[{case_id}] BLANKET REFUSAL with {len(chunks)} chunks retrieved\n"
             f"  Answer: {answer[:300]}\n"
@@ -133,161 +147,91 @@ def _assert_not_blanket_refusal(case_id: str, answer: str, chunks: list[dict]) -
 
 
 def _assert_judge_ok(score, threshold, case_id, extra=""):
-    """Veredito do juiz E score precisam passar. Erros de infraestrutura do juiz viram skip."""
-    if score.evidence in ("empty_response", "parse_error"):
-        pytest.skip(f"[{case_id}] judge infrastructure error: {score.reasoning[:150]}")
-    assert score.verdict != JudgeVerdict.FAIL and score.score >= threshold, (
+    if score.evidence == "parse_error":
+        pytest.fail(f"[{case_id}] judge returned an unparseable response: {score.reasoning[:200]}")
+    assert score.verdict == JudgeVerdict.PASS and score.score >= threshold, (
         f"\n[{case_id}] {score.dimension.upper()} FAIL\n"
         f"  Verdict: {score.verdict} | Score: {score.score:.2f} (threshold {threshold})\n"
         f"  Evidence: {score.evidence}\n  Reasoning: {score.reasoning}\n{extra}"
     )
 
 
-# ── TESTS ─────────────────────────────────────────────────────────────────────
+def _run_faithfulness_case(case: dict, threshold: float, extra: str = "") -> None:
+    chunks, answer = get_chunks_and_answer(case["question"])
+    _assert_not_blanket_refusal(case["id"], answer, chunks)
+
+    result = run_full_eval(
+        question_id=case["id"],
+        question=case["question"],
+        answer=answer,
+        context_chunks=[c.get("text", "") for c in chunks],
+        dimensions=["faithfulness"],
+    )
+    faith_score = result.scores[0]
+
+    print(f"\n[{case['id']}] difficulty={case.get('difficulty')} faithfulness={faith_score.score:.2f}")
+    print(f"  Answer (first 150 chars): {answer[:150]}")
+    print(f"  Reasoning: {faith_score.reasoning[:200]}")
+
+    _assert_judge_ok(
+        faith_score, threshold, case["id"],
+        extra=f"  Answer: {answer[:300]}\n  Notes: {case.get('notes', '')}\n{extra}",
+    )
+
+
+def _term_in_text(term: str, normalized_text: str) -> bool:
+    normalized_term = normalize(term).strip()
+    if not normalized_term:
+        return False
+    if len(re.sub(r"\W", "", normalized_term)) <= 3:
+        return re.search(rf"(?<!\w){re.escape(normalized_term)}(?!\w)", normalized_text) is not None
+    return normalized_term in normalized_text
+
 
 class TestFaithfulness:
-    """Core faithfulness: is every answer grounded in retrieved chunks?"""
-
-    @pytest.mark.parametrize(
-        "case",
-        [q for q in FAITHFULNESS_CASES if q["difficulty"] == "factual"],
-        ids=[q["id"] for q in FAITHFULNESS_CASES if q["difficulty"] == "factual"],
-    )
+    @pytest.mark.parametrize("case", FACTUAL_CASES, ids=[q["id"] for q in FACTUAL_CASES])
     def test_factual_answers_are_faithful(self, case):
-        chunks, answer = get_chunks_and_answer(case["question"])
-
-        if _is_error_answer(answer):
-            pytest.skip(f"[{case['id']}] Gemini call failed — check GEMINI_API_KEY. Got: {str(answer)[:120]}")
-
-        _assert_not_blanket_refusal(case["id"], answer, chunks)
-
-        chunk_texts = [c.get("text", "") for c in chunks]
-        result = run_full_eval(
-            question_id=case["id"],
-            question=case["question"],
-            answer=answer,
-            context_chunks=chunk_texts,
-            dimensions=["faithfulness"],
-        )
-        faith_score = result.scores[0]
-
-        print(f"\n[{case['id']}] Faithfulness: {faith_score.score:.2f}")
-        print(f"  Answer (first 150 chars): {answer[:150]}")
-        print(f"  Reasoning: {faith_score.reasoning[:200]}")
-
-        _assert_judge_ok(
-            faith_score, FAITHFULNESS_THRESHOLD, case["id"],
-            extra=f"  Answer: {answer[:300]}\n  → Fix: tighten the SYSTEM_PROMPT in main.py\n",
+        _run_faithfulness_case(
+            case, FAITHFULNESS_THRESHOLD,
+            extra="  → Fix: tighten the SYSTEM_PROMPT in main.py\n",
         )
 
-    @pytest.mark.parametrize(
-        "case",
-        [q for q in FAITHFULNESS_CASES if q["difficulty"] == "synthesis"],
-        ids=[q["id"] for q in FAITHFULNESS_CASES if q["difficulty"] == "synthesis"],
-    )
+    @pytest.mark.parametrize("case", SYNTHESIS_CASES, ids=[q["id"] for q in SYNTHESIS_CASES])
     def test_synthesis_answers_are_faithful(self, case):
-        chunks, answer = get_chunks_and_answer(case["question"])
-
-        if _is_error_answer(answer):
-            pytest.skip(f"[{case['id']}] Gemini call failed — check GEMINI_API_KEY. Got: {str(answer)[:120]}")
-
-        _assert_not_blanket_refusal(case["id"], answer, chunks)
-
-        chunk_texts = [c.get("text", "") for c in chunks]
-        result = run_full_eval(
-            question_id=case["id"],
-            question=case["question"],
-            answer=answer,
-            context_chunks=chunk_texts,
-            dimensions=["faithfulness", "relevance"],
-        )
-        faith_score = next(s for s in result.scores if s.dimension == "faithfulness")
-        synthesis_threshold = FAITHFULNESS_THRESHOLD - 0.1
-
-        _assert_judge_ok(
-            faith_score, synthesis_threshold, case["id"],
+        _run_faithfulness_case(
+            case, SYNTHESIS_THRESHOLD,
             extra="  → For synthesis questions, check retrieval diversity (top_k)\n",
         )
 
 
-# ── Extended difficulties ─────────────────────────────────────────────
-
 class TestExtendedDifficulties:
-    """
-    Covers the golden-set cases that the original parametrize filters missed.
-    """
-
-    EXTENDED_THRESHOLD = FAITHFULNESS_THRESHOLD - 0.1
-
-    @pytest.mark.parametrize(
-        "case",
-        EXTENDED_CASES,
-        ids=[c["id"] for c in EXTENDED_CASES],
-    )
+    @pytest.mark.parametrize("case", EXTENDED_CASES, ids=[c["id"] for c in EXTENDED_CASES])
     def test_extended_difficulty_answers_are_faithful(self, case):
-        chunks, answer = get_chunks_and_answer(case["question"])
+        _run_faithfulness_case(case, EXTENDED_THRESHOLD)
 
-        if _is_error_answer(answer):
-            pytest.skip(
-                f"[{case['id']}] Gemini call failed — check GEMINI_API_KEY. Got: {str(answer)[:120]}"
-            )
-
-        _assert_not_blanket_refusal(case["id"], answer, chunks)
-
-        chunk_texts = [c.get("text", "") for c in chunks]
-        result = run_full_eval(
-            question_id=case["id"],
-            question=case["question"],
-            answer=answer,
-            context_chunks=chunk_texts,
-            dimensions=["faithfulness", "relevance"],
-        )
-        faith_score = next(s for s in result.scores if s.dimension == "faithfulness")
-
-        print(f"\n[{case['id']}] difficulty={case['difficulty']} faithfulness={faith_score.score:.2f}")
-        print(f"  Answer: {answer[:150]}")
-
-        _assert_judge_ok(
-            faith_score, self.EXTENDED_THRESHOLD, case["id"],
-            extra=f"  difficulty: {case['difficulty']}\n  Notes: {case.get('notes', '')}\n",
-        )
-
-
-# ── Hallucination traps ────────────────────────────────────────────────────────
 
 class TestHallucinationTraps:
-    """Questions designed to elicit hallucination — model must hedge, not invent."""
-
-    @pytest.mark.parametrize(
-        "case",
-        HALLUCINATION_TRAPS,
-        ids=[c["id"] for c in HALLUCINATION_TRAPS],
-    )
+    @pytest.mark.parametrize("case", HALLUCINATION_TRAPS, ids=[c["id"] for c in HALLUCINATION_TRAPS])
     def test_trap_questions_are_not_hallucinated(self, case):
         chunks, answer = get_chunks_and_answer(case["question"])
 
-        if _is_error_answer(answer):
-            pytest.skip(f"[{case['id']}] Gemini call failed. Got: {str(answer)[:120]}")
-
-        # Só executa must_not_contain se a resposta não for uma recusa de contexto legítima
         forbidden_terms = case.get("must_not_contain", [])
-        if forbidden_terms and not _is_refusal(answer):
-            answer_lower = answer.lower()
-            found_forbidden = [t for t in forbidden_terms if t.lower() in answer_lower]
+        if forbidden_terms:
+            asserted_text = normalize(non_refusal_text(answer))
+            found_forbidden = [t for t in forbidden_terms if _term_in_text(t, asserted_text)]
             assert not found_forbidden, (
                 f"\n[{case['id']}] HARD HALLUCINATION DETECTED (must_not_contain)\n"
-                f"  Forbidden term(s) found in answer: {found_forbidden}\n"
+                f"  Forbidden term(s) found outside refusal sentences: {found_forbidden}\n"
                 f"  Answer: {answer[:300]}\n"
                 f"  Notes: {case.get('notes', '')}\n\n"
                 f"  → Fix: tighten system prompt; the model is fabricating forbidden content."
             )
 
-        chunk_texts = [c.get("text", "") for c in chunks]
         result = run_full_eval(
             question_id=case["id"],
             question=case["question"],
             answer=answer,
-            context_chunks=chunk_texts,
+            context_chunks=[c.get("text", "") for c in chunks],
             is_trap=True,
             dimensions=["hallucination"],
         )
@@ -303,118 +247,73 @@ class TestHallucinationTraps:
         )
 
 
-# ── Out-of-scope ───────────────────────────────────────────────────────────────
-
 class TestOutOfScope:
-    """Out-of-scope questions must be redirected, not fabricated."""
-
-    @pytest.mark.parametrize(
-        "case",
-        OUT_OF_SCOPE_CASES,
-        ids=[c["id"] for c in OUT_OF_SCOPE_CASES],
-    )
+    @pytest.mark.parametrize("case", OUT_OF_SCOPE_CASES, ids=[c["id"] for c in OUT_OF_SCOPE_CASES])
     def test_out_of_scope_questions_are_redirected(self, case):
         chunks, answer = get_chunks_and_answer(case["question"])
 
-        if _is_error_answer(answer):
-            pytest.skip(f"[{case['id']}] Gemini call failed. Got: {str(answer)[:120]}")
+        normalized_answer = normalize(answer)
+        redirect_matches = [
+            p for p in OUT_OF_SCOPE_REDIRECT_PATTERNS if re.search(p, normalized_answer)
+        ]
+        assert redirect_matches, (
+            f"\n[{case['id']}] OUT-OF-SCOPE NOT REDIRECTED\n"
+            f"  Answer: {answer[:200]}\n"
+            f"  No redirect phrase found.\n\n"
+            f"  → Fix: update SYSTEM_PROMPT in main.py"
+        )
 
-        chunk_texts = [c.get("text", "") for c in chunks]
         result = run_full_eval(
             question_id=case["id"],
             question=case["question"],
             answer=answer,
-            context_chunks=chunk_texts,
-            dimensions=["safety", "hallucination"],
+            context_chunks=[c.get("text", "") for c in chunks],
+            dimensions=["safety"],
         )
-        safety_score = next(s for s in result.scores if s.dimension == "safety")
+        safety_score = result.scores[0]
 
-        hedge_count = _count_hedge_matches(answer)
-        has_specific_hedge = hedge_count >= 2
-
-        assert safety_score.passed() or safety_score.score >= 0.6 or has_specific_hedge, (
-            f"\n[{case['id']}] OUT-OF-SCOPE HANDLING FAIL\n"
-            f"  Answer: {answer[:200]}\n"
-            f"  Safety score: {safety_score.score:.2f}\n"
-            f"  Specific hedge phrases matched: {hedge_count} (need ≥ 2)\n\n"
-            f"  → Fix: update SYSTEM_PROMPT in main.py"
+        _assert_judge_ok(
+            safety_score, OUT_OF_SCOPE_THRESHOLD, case["id"],
+            extra=f"  Answer: {answer[:200]}\n  → Fix: update SYSTEM_PROMPT in main.py\n",
         )
 
-
-# ── Response quality ───────────────────────────────────────────────────────────
 
 class TestResponseQuality:
-    """Broader quality checks — cheap heuristics run before the LLM judge."""
+    @pytest.mark.parametrize(
+        "case",
+        FACTUAL_CASES_WITH_TERMS,
+        ids=[c["id"] for c in FACTUAL_CASES_WITH_TERMS],
+    )
+    def test_expected_terms_appear_in_factual_answers(self, case):
+        if case.get("allow_refusal"):
+            pytest.skip(f"[{case['id']}] case allows refusal")
 
-    def test_expected_numbers_appear_in_factual_answers(self):
-        """
-        Key terms from golden_set expected_answer_contains must appear in answers.
-        """
-        factual_cases = [q for q in GOLDEN_SET if q["difficulty"] == "factual"]
-        failures = []
-        skipped = []
-
-        for case in factual_cases[:5]:
-            if not case.get("expected_answer_contains"):
-                continue
-
-            chunks, answer = get_chunks_and_answer(case["question"])
-
-            if _is_error_answer(answer):
-                skipped.append(case["id"])
-                continue
-
-            if _is_refusal(answer):
-                continue
-
-            answer_lower = answer.lower()
-            missing = [
-                t for t in case["expected_answer_contains"]
-                if t.lower() not in answer_lower
-            ]
-
-            if len(missing) > len(case["expected_answer_contains"]) * 0.6:
-                failures.append({
-                    "id": case["id"],
-                    "question": case["question"][:80],
-                    "missing_terms": missing,
-                    "answer_preview": answer[:150],
-                })
-
-        if skipped:
-            print(f"\n  Skipped {len(skipped)} cases due to Gemini errors: {skipped}")
-
-        if failures:
-            msg = "\n".join(
-                f"  [{f['id']}] Missing: {f['missing_terms']}\n"
-                f"    Q: {f['question']}\n"
-                f"    A: {f['answer_preview']}"
-                for f in failures
-            )
-            pytest.fail(
-                f"\nFACTUAL ANSWERS MISSING EXPECTED TERMS ({len(failures)} cases):\n{msg}\n\n"
-                f"→ Check: (1) retrieval precision, (2) SYSTEM_PROMPT, (3) top_k value"
-            )
-
-    def test_answer_language_is_portuguese(self):
-        """All answers should be in Portuguese (pt-BR)."""
-        portuguese_markers = [
-            "que", "com", "para", "não", "uma", "os", "das", "do", "no",
-            "nos", "essa", "esta", "em", "de", "da", "se", "por", "um",
-            "encontrei", "informação", "trechos", "fornecidos", "a", "o",
-            "e", "é", "cenário", "probabilidade", "chega", "ficar", "acima"
+        chunks, answer = get_chunks_and_answer(case["question"])
+        normalized_answer = normalize(answer)
+        missing = [
+            t for t in case["expected_answer_contains"]
+            if not _term_in_text(t, normalized_answer)
         ]
-        test_question = "Qual o risco de déficit no cenário HadGEM 8.5?"
+        assert not missing, (
+            f"\n[{case['id']}] FACTUAL ANSWER MISSING EXPECTED TERMS: {missing}\n"
+            f"  Q: {case['question'][:120]}\n"
+            f"  A: {answer[:200]}\n\n"
+            f"→ Check: (1) retrieval precision, (2) SYSTEM_PROMPT, (3) top_k value"
+        )
 
-        chunks, answer = get_chunks_and_answer(test_question)
+    @pytest.mark.parametrize("question", LANGUAGE_QUESTIONS)
+    def test_answer_language_is_portuguese(self, question):
+        chunks, answer = get_chunks_and_answer(question)
 
-        if _is_error_answer(answer):
-            pytest.skip("Gemini error — cannot check language.")
+        tokens = re.findall(r"[a-záàâãéêíóôõúç]+", answer.lower())
+        pt_count = sum(1 for t in tokens if t in PORTUGUESE_WORDS)
+        en_count = sum(1 for t in tokens if t in ENGLISH_WORDS)
+        total = pt_count + en_count
+        pt_ratio = pt_count / total if total else 0.0
 
-        found_markers = [w for w in portuguese_markers if w in answer.lower().split()]
-
-        assert len(found_markers) >= 3, (
+        assert pt_count >= 3 and pt_ratio >= 0.8, (
             f"Answer does not appear to be in Portuguese.\n"
+            f"  Question: {question}\n"
             f"  Answer: {answer[:200]}\n"
-            f"  Found PT markers: {found_markers}\n"
+            f"  PT markers: {pt_count} | EN markers: {en_count} | PT ratio: {pt_ratio:.2f}\n"
         )

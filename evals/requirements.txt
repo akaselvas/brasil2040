@@ -17,6 +17,7 @@ pytest-asyncio>=0.23.0        # For async tests (if needed later)
 
 # ── LLM JUDGE BACKENDS (install at least one) ─────────────────────────────────
 google-genai>=1.0.0    # For Gemini judge
+groq
 
 # ── OPTIONAL ──────────────────────────────────────────────────────────────────
 # python-dotenv>=1.0.0        # Load .env files automatically

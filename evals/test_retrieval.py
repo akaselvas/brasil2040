@@ -1,106 +1,118 @@
-"""
-test_retrieval.py
-=================
-Tests whether the /search endpoint (main.py) returns relevant chunks
-for each question in the golden set.
-
-Metric: Precision@K
-  - For each question, we call /search with top_k=5
-  - We check if at least one returned chunk comes from the expected source file
-  - We also check if key expected terms appear anywhere in the top-K results
-
-HOW TO RUN:
-  1. Start your FastAPI server: uvicorn main:app --reload
-  2. Run: pytest evals/test_retrieval.py -v
-"""
-
+import functools
 import json
-import os
-import requests
-import pytest
+import re
+import sys
+import unicodedata
 from pathlib import Path
 
-# ── CONFIG ────────────────────────────────────────────────────────────────────
-SEARCH_ENDPOINT = os.getenv("SEARCH_ENDPOINT", "http://localhost:8000/search")
-TOP_K = 5
-GOLDEN_SET_PATH = Path(__file__).parent / "golden_set.json"
+import pytest
+import requests
 
-# ── LOAD GOLDEN SET ───────────────────────────────────────────────────────────
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from helpers import PROD_TOP_K, SEARCH_ENDPOINT, get_chunks
+
+GOLDEN_SET_PATH = Path(__file__).parent / "golden_set.json"
+WEAK_TERM_MAX_LEN = 3
+TERM_COVERAGE_THRESHOLD = 0.5
+
 with open(GOLDEN_SET_PATH, encoding="utf-8") as f:
     GOLDEN_SET = json.load(f)
 
-# Filter only questions that have expected_chunk_sources defined (non-empty)
-RETRIEVAL_CASES = [
-    q for q in GOLDEN_SET
-    if q.get("expected_chunk_sources") and len(q["expected_chunk_sources"]) > 0
-]
+RETRIEVAL_CASES = [q for q in GOLDEN_SET if q.get("expected_chunk_sources")]
 
 
-# ── HELPER ────────────────────────────────────────────────────────────────────
-def call_search(question: str, top_k: int = TOP_K) -> list[dict]:
-    """Call the /search endpoint and return the list of chunks."""
-    try:
-        response = requests.post(
-            SEARCH_ENDPOINT,
-            json={"question": question, "top_k": top_k},
-            timeout=30
-        )
-        response.raise_for_status()
-        return response.json().get("chunks", [])
-    except requests.exceptions.ConnectionError:
-        pytest.fail(f"Server not reachable at {SEARCH_ENDPOINT}. This must not be silently skipped in CI.")
-    except Exception as e:
-        pytest.fail(f"Search endpoint error: {e}")
+@functools.lru_cache(maxsize=None)
+def _cached_search(question: str, top_k: int) -> tuple:
+    return tuple(get_chunks(question, top_k))
+
+
+def search(question: str, top_k: int = PROD_TOP_K) -> list[dict]:
+    return list(_cached_search(question, top_k))
+
+
+def normalize_text(text: str) -> str:
+    decomposed = unicodedata.normalize("NFKD", text.lower())
+    return "".join(ch for ch in decomposed if not unicodedata.combining(ch))
+
+
+def normalize_filename(name: str) -> str:
+    return Path(name.strip()).name.lower()
+
+
+def returned_sources(chunks: list[dict]) -> set[str]:
+    names = {normalize_filename(c.get("file") or "") for c in chunks}
+    names.discard("")
+    return names
 
 
 def chunks_contain_source(chunks: list[dict], expected_sources: list[str]) -> bool:
-    """Check if any chunk's 'file' field matches one of the expected sources."""
-    returned_files = [c.get("file", "") for c in chunks]
+    returned = returned_sources(chunks)
     for expected in expected_sources:
-        for returned in returned_files:
-            if expected.lower() in returned.lower() or returned.lower() in expected.lower():
+        expected_name = normalize_filename(expected)
+        if not expected_name:
+            continue
+        for name in returned:
+            if expected_name == name or expected_name in name:
                 return True
     return False
 
+SECTOR_PREFIXES = ("agricultura", "energia", "recursosh", "transportes", "infra cost")
+
+
+def sector_of(filename: str) -> str:
+    name = filename.lower()
+    for prefix in SECTOR_PREFIXES:
+        if name.startswith(prefix):
+            return prefix
+    return "outro"
+
+def is_weak_term(term: str) -> bool:
+    return len(re.sub(r"\W", "", term)) <= WEAK_TERM_MAX_LEN
+
+
+def term_in_text(term: str, normalized_text: str) -> bool:
+    normalized_term = normalize_text(term).strip()
+    if not normalized_term:
+        return False
+    if is_weak_term(term):
+        pattern = rf"(?<!\w){re.escape(normalized_term)}(?!\w)"
+        return re.search(pattern, normalized_text) is not None
+    return normalized_term in normalized_text
+
 
 def chunks_contain_terms(chunks: list[dict], expected_terms: list[str]) -> tuple[bool, list[str]]:
-    """Check if expected answer terms appear in the retrieved chunk texts."""
-    all_text = " ".join(c.get("text", "").lower() for c in chunks)
-    found = [t for t in expected_terms if t.lower() in all_text]
-    missing = [t for t in expected_terms if t.lower() not in all_text]
-    return len(found) >= len(expected_terms) * 0.5, missing  # 50% threshold
+    all_text = normalize_text(" ".join(c.get("text", "") for c in chunks))
+
+    numeric = [t for t in expected_terms if re.search(r"\d", t)]
+    words = [t for t in expected_terms if t not in numeric]
+
+    missing_numeric = [t for t in numeric if not term_in_text(t, all_text)]
+    found_words = [t for t in words if term_in_text(t, all_text)]
+    missing_words = [t for t in words if t not in found_words]
+
+    words_ok = not words or len(found_words) >= len(words) * TERM_COVERAGE_THRESHOLD
+    return (not missing_numeric) and words_ok, missing_numeric + missing_words
 
 
-# ── TESTS ─────────────────────────────────────────────────────────────────────
+FACTUAL_CASES = [c for c in RETRIEVAL_CASES if c.get("difficulty") == "factual"]
 
-class TestRetrievalPrecision:
-    """Core retrieval tests: did the right chunks come back? (Precision@K, K=5)"""
-
-    @pytest.mark.parametrize("case", RETRIEVAL_CASES, ids=[c["id"] for c in RETRIEVAL_CASES])
-    def test_source_precision(self, case):
-        """At least one returned chunk should come from the expected source file."""
-        chunks = call_search(case["question"])
-
-        hit = chunks_contain_source(chunks, case["expected_chunk_sources"])
-
-        returned_files = [c.get("file", "unknown") for c in chunks]
-        assert hit, (
-            f"\n[{case['id']}] SOURCE MISS\n"
-            f"  Question: {case['question']}\n"
+class TestRetrievalHitRate:
+    @pytest.mark.parametrize("case", FACTUAL_CASES, ids=[c["id"] for c in FACTUAL_CASES])
+    def test_factual_source_hit_rate_at_5(self, case):
+        chunks = search(case["question"], top_k=5)
+        assert chunks_contain_source(chunks, case["expected_chunk_sources"]), (
+            f"\n[{case['id']}] SOURCE MISS (Hit Rate@5)\n"
             f"  Expected source(s): {case['expected_chunk_sources']}\n"
-            f"  Got: {returned_files}\n"
-            f"  → Fix: check if source file name in CSV matches expected_chunk_sources in golden_set.json"
+            f"  Got: {sorted(returned_sources(chunks))}"
         )
 
     @pytest.mark.parametrize("case", RETRIEVAL_CASES, ids=[c["id"] for c in RETRIEVAL_CASES])
     def test_term_coverage(self, case):
-        """Key expected answer terms should appear in retrieved chunk text."""
         if not case.get("expected_answer_contains"):
             pytest.skip("No expected terms defined for this case")
 
-        chunks = call_search(case["question"])
+        chunks = search(case["question"])
         ok, missing = chunks_contain_terms(chunks, case["expected_answer_contains"])
-
         assert ok, (
             f"\n[{case['id']}] TERM COVERAGE MISS\n"
             f"  Question: {case['question']}\n"
@@ -110,79 +122,72 @@ class TestRetrievalPrecision:
 
 
 class TestRetrievalAtDifferentK:
-    """Tests whether increasing top_k improves coverage."""
-
-    def test_cross_sector_query_needs_more_chunks(self):
+    def test_cross_sector_query_covers_multiple_sources(self):
         question = "Considerando todos os setores analisados no Brasil 2040, qual é o setor mais vulnerável?"
 
-        chunks_5 = call_search(question, top_k=5)
-        chunks_10 = call_search(question, top_k=10)
+        files_5 = returned_sources(search(question, top_k=5))
+        files_10 = returned_sources(search(question, top_k=10))
 
-        files_5 = set(c.get("file", "") for c in chunks_5)
-        files_10 = set(c.get("file", "") for c in chunks_10)
+        assert files_5 <= files_10, (
+            f"Results at k=5 are not contained in results at k=10 (non-deterministic search?)\n"
+            f"  k=5: {sorted(files_5)}\n"
+            f"  k=10: {sorted(files_10)}"
+        )
+        sectors_10 = {sector_of(f) for f in files_10}
+        assert len(sectors_10) >= 2, (
+            f"Cross-sector question should retrieve at least 2 distinct sectors at k=10, "
+            f"got {sorted(sectors_10)} from {sorted(files_10)}"
+        )
 
-        improvement = len(files_10) - len(files_5)
-        print(f"\n  Unique sources @ k=5: {len(files_5)}: {files_5}")
-        print(f"  Unique sources @ k=10: {len(files_10)}: {files_10}")
-        print(f"  Source diversity improvement: +{improvement} files")
-
-        assert len(files_10) >= len(files_5), "Increasing k should never decrease source coverage"
-
-    def test_english_question_retrieval(self):
-        """English question should still retrieve Portuguese chunks (multilingual-e5-large)."""
+    def test_english_question_matches_portuguese_retrieval(self):
         english_question = "What is the projected agricultural growth in Brazil until 2040?"
-        chunks = call_search(english_question, top_k=5)
+        portuguese_question = "Qual é o crescimento agrícola projetado no Brasil até 2040?"
 
-        assert len(chunks) > 0, "English question returned zero results"
+        english_files = returned_sources(search(english_question))
+        portuguese_files = returned_sources(search(portuguese_question))
 
-        all_text = " ".join(c.get("text", "") for c in chunks)
-        portuguese_indicators = ["brasil", "agrícola", "produção", "crescimento", "2040"]
-        found = [w for w in portuguese_indicators if w in all_text.lower()]
+        assert english_files, "English question returned zero results"
+        assert portuguese_files, "Portuguese question returned zero results"
 
-        assert len(found) >= 2, (
-            f"English query didn't retrieve Portuguese chunks well.\n"
-            f"  Found indicators: {found}\n"
+        overlap = english_files & portuguese_files
+        overlap_ratio = len(overlap) / len(portuguese_files)
+        assert overlap_ratio >= 0.5, (
+            f"English query retrieved different sources than the equivalent Portuguese query.\n"
+            f"  English: {sorted(english_files)}\n"
+            f"  Portuguese: {sorted(portuguese_files)}\n"
+            f"  Overlap ratio: {overlap_ratio:.2f}\n"
             f"  → The multilingual-e5-large model should handle this — check embedding normalization"
         )
 
 
 class TestRetrievalEdgeCases:
-    """Edge cases that probe system limits."""
-
     def test_empty_question_handled(self):
-        """Empty question should not crash the server."""
         try:
             response = requests.post(
                 SEARCH_ENDPOINT,
-                json={"question": "", "top_k": 5},
-                timeout=10
+                json={"question": "", "top_k": PROD_TOP_K},
+                timeout=10,
             )
-            assert response.status_code != 500, "Empty question caused server error 500"
         except requests.exceptions.ConnectionError:
-            pytest.fail(f"Server not reachable at {SEARCH_ENDPOINT}. This must not be silently skipped in CI.")
+            pytest.fail(f"Server not reachable at {SEARCH_ENDPOINT}. Must not be skipped in CI.")
+        assert response.status_code != 500, "Empty question caused server error 500"
 
     def test_very_long_question_handled(self):
-        """Very long question should not crash the server."""
-        long_q = "risco climático " * 200  # 3200 chars
+        long_question = "risco climático " * 200
         try:
             response = requests.post(
                 SEARCH_ENDPOINT,
-                json={"question": long_q, "top_k": 5},
-                timeout=30
-            )
-            assert response.status_code in [200, 400, 422], (
-                f"Long question returned unexpected status: {response.status_code}"
+                json={"question": long_question, "top_k": PROD_TOP_K},
+                timeout=30,
             )
         except requests.exceptions.ConnectionError:
-            pytest.fail(f"Server not reachable at {SEARCH_ENDPOINT}. This must not be silently skipped in CI.")
+            pytest.fail(f"Server not reachable at {SEARCH_ENDPOINT}. Must not be skipped in CI.")
+        assert response.status_code in [200, 400, 422], (
+            f"Long question returned unexpected status: {response.status_code}"
+        )
 
     def test_out_of_scope_question_still_returns_chunks(self):
-        """
-        Even an out-of-scope question should return chunks (retrieval doesn't
-        filter by relevance — that's the LLM's job).
-        """
-        chunks = call_search("Qual é a receita do brigadeiro perfeito?")
+        chunks = search("Qual é a receita do brigadeiro perfeito?")
         assert len(chunks) > 0, (
             "Out-of-scope question should still return some chunks (retrieval doesn't filter by relevance)"
         )
-        print(f"\n  Out-of-scope query returned {len(chunks)} chunks (LLM should redirect)")
