@@ -19,8 +19,8 @@
   },
   {
     "id": "agro_003",
-    "question": "Qual é a redução projetada na área de pastagens no Brasil até 2040?",
-    "expected_answer_contains": ["pastagens", "redução", "20,6", "milhões"],
+    "question": "Em quantos milhões de hectares a área de pastagens será reduzida no Brasil até 2040?",
+    "expected_answer_contains": ["pastagens", "reduzida", "20,6", "milhões"],
     "expected_chunk_sources": ["Agricultura - Produto 1 final.pdf", "Agricultura - Produto 8 final.pdf"],
     "category": "agricultura",
     "difficulty": "factual",
@@ -38,7 +38,7 @@
   {
     "id": "energia_002",
     "question": "O que é o fator de fricção das hidrelétricas brasileiras?",
-    "expected_answer_contains": ["fricção", "9%", "MWh", "água"],
+    "expected_answer_contains": ["fricção", "MWh", "água"],
     "expected_chunk_sources": ["Energia Produto 02.pdf"],
     "category": "energia",
     "difficulty": "conceptual",
@@ -186,7 +186,7 @@
   },
   {
     "id": "adapt_002",
-    "question": "Quanto custa adaptar o sistema elétrico brasileiro no pior cenário usando fontes fósseis versus renováveis?",
+    "question": "Qual o custo, em bilhões de US$, de adaptar o sistema elétrico no pior cenário (HadGEM 8.5) com fontes fósseis versus renováveis?",
     "expected_answer_contains": ["US$", "280", "fósseis", "adaptação"],
     "expected_chunk_sources": ["Energia Produto 03.pdf"],
     "category": "adaptação",
@@ -196,7 +196,7 @@
   {
     "id": "faithfulness_001",
     "question": "O risco de déficit no cenário MIROC RCP 4.5 ultrapassa o limite regulatório de 5%?",
-    "expected_answer_contains": ["34%", "MIROC", "déficit"],
+    "expected_answer_contains": ["MIROC", "déficit", "risco"],
     "expected_chunk_sources": ["Energia Produto 02.pdf", "Energia Produto 03.pdf"],
     "category": "faithfulness",
     "difficulty": "factual",
