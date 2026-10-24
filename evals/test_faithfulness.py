@@ -152,6 +152,11 @@ def get_chunks_and_answer(question: str) -> tuple[list[dict], str]:
     chunks, answer = _chunks_and_answer(question)
     return list(chunks), answer
 
+def _judge_context(chunks: list[dict]) -> list[str]:
+    return [
+        f"[{c.get('file', '')} — pág. {c.get('page', '')}]\n{c.get('text', '')}"
+        for c in chunks
+    ]
 
 def _assert_not_blanket_refusal(case_id: str, answer: str, chunks: list[dict]) -> None:
     case = GOLDEN_BY_ID[case_id]
@@ -189,7 +194,7 @@ def _run_faithfulness_case(case: dict, threshold: float, extra: str = "") -> Non
         question_id=case["id"],
         question=case["question"],
         answer=answer,
-        context_chunks=[c.get("text", "") for c in chunks],
+        context_chunks=_judge_context(chunks),
         dimensions=["faithfulness"],
     )
     faith_score = result.scores[0]
@@ -260,7 +265,7 @@ class TestHallucinationTraps:
             question_id=case["id"],
             question=case["question"],
             answer=answer,
-            context_chunks=[c.get("text", "") for c in chunks],
+            context_chunks=_judge_context(chunks),
             is_trap=True,
             dimensions=["hallucination"],
         )
@@ -296,7 +301,7 @@ class TestOutOfScope:
             question_id=case["id"],
             question=case["question"],
             answer=answer,
-            context_chunks=[c.get("text", "") for c in chunks],
+            context_chunks=_judge_context(chunks),
             dimensions=["safety"],
         )
         safety_score = result.scores[0]
