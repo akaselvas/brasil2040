@@ -48,6 +48,11 @@ REFUSAL_MARKERS = [
     "não foi encontrado",
     "não foram encontrados",
     "não está nos trechos",
+    "não há menção",
+    "não há informação",
+    "não há informações",
+    "não há dados",
+    "não há registro",
 ]
 
 

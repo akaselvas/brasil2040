@@ -96,6 +96,8 @@ The AI must NOT add facts not in the context (even if those facts are generally 
 
 IMPORTANT: If the AI answers with "{refusal_phrase}" (or an equivalent refusal) because the specific figure or fact requested is indeed missing from the provided context chunks, you MUST mark this as a PASS with a score of 1.0, because the AI is correctly refusing to make things up.
 
+NOTE: The assistant is instructed to say it is answering based on the "Brasil 2040" report. Do NOT treat the report name, phrases like "com base nos trechos", or generic topic names as unsupported claims. Judge only specific factual claims (numbers, names, findings, causal statements).
+
 Return ONLY a valid JSON object, with no markdown code fences and no text outside the JSON.
 
 Fields:
