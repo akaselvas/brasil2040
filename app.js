@@ -245,7 +245,7 @@ async function sendChat() {
       body: JSON.stringify({
         question: text,
         history: chatHistory,   // send conversation so far
-        top_k: 15
+        top_k: 10
       })
     });
 
