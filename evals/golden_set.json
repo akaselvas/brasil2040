@@ -3,7 +3,7 @@
     "id": "agro_001",
     "question": "Qual é a projeção de crescimento da produção de grãos e oleaginosas do Brasil entre 2010 e 2040?",
     "expected_answer_contains": ["132%", "grãos", "oleaginosas", "2040"],
-    "expected_chunk_sources": ["Agricultura - Produto 1 final.pdf"],
+    "expected_chunk_sources": ["Agricultura - Produto 1 final.pdf", "Agricultura - Produto 5 final.pdf", "Agricultura - Produto 8 final.pdf"],
     "category": "agricultura",
     "difficulty": "factual",
     "notes": "Corpus tem dois valores: 167% (Produto 1) e 132% (Produtos 5 e 8). O chatbot deve mostrar os dois."

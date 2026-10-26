@@ -35,7 +35,7 @@ EXTENDED_DIFFICULTIES = {"conceptual", "reasoning", "comparison", "language", "h
 EXTENDED_CASES = [q for q in FAITHFULNESS_CASES if q.get("difficulty") in EXTENDED_DIFFICULTIES]
 FACTUAL_CASES_WITH_TERMS = [q for q in FACTUAL_CASES if q.get("expected_answer_contains")]
 
-ANSWER_GAPS = {"agro_003"}
+ANSWER_GAPS = set()
 
 TERM_PARAMS = [
     pytest.param(

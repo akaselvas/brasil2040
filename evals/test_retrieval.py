@@ -97,7 +97,7 @@ def chunks_contain_terms(chunks: list[dict], expected_terms: list[str]) -> tuple
 
 FACTUAL_CASES = [c for c in RETRIEVAL_CASES if c.get("difficulty") == "factual"]
 
-RETRIEVAL_GAPS = {"agro_003", "adapt_002"}
+RETRIEVAL_GAPS = set()
 
 TERM_COVERAGE_PARAMS = [
     pytest.param(

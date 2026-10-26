@@ -80,8 +80,8 @@ def search(req: QueryRequest):
         normalize_embeddings=True
     )[0].tolist()
     result = supabase.rpc(
-        "match_documents",
-        {"query_embedding": embedding, "match_count": req.top_k}
+        "match_documents_hybrid",
+        {"query_embedding": embedding, "query_text": req.question, "match_count": req.top_k}
     ).execute()
     return {"chunks": result.data}
 
@@ -92,8 +92,8 @@ async def chat(req: ChatRequest):
         normalize_embeddings=True
     )[0].tolist()
     result = supabase.rpc(
-        "match_documents",
-        {"query_embedding": embedding, "match_count": req.top_k}
+        "match_documents_hybrid",
+        {"query_embedding": embedding, "query_text": req.question, "match_count": req.top_k}
     ).execute()
     chunks = result.data
     context = "\n\n".join(
