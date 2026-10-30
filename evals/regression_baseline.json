@@ -1,9 +1,9 @@
 {
   "_metadata": {
-    "captured_at": "2026-10-23T22:38:55.899901",
-    "config_hash": "1e657be4",
+    "captured_at": "2026-10-28T23:50:10.332175",
+    "config_hash": "ded959ac",
     "config": {
-      "prompt": "9b787159",
+      "prompt": "bdccf454",
       "model": "gemini-3.5-flash-lite",
       "temperature": "0.7",
       "top_k": "10"
@@ -12,38 +12,41 @@
   },
   "prompt_regression_001": {
     "question": "O que é o ZARC e como ele funciona?",
-    "answer": "O Zoneamento Agrícola de Risco Climático (ZARC) é um instrumento de política agrícola e gestão de riscos mantido pelo Ministério da Agricultura, Pecuária e Abastecimento (MAPA) no Brasil. Seu principal objetivo é minimizar as perdas agrícolas decorrentes de eventos climáticos adversos, permitindo que cada município identifique a melhor época de plantio para diferentes culturas, considerando tipos de solo e ciclos de cultivares. \n\nO ZARC funciona por meio da espacialização de riscos climáticos baseada em análises de frequência de séries históricas de dados meteorológicos. O processo envolve a definição de objetivos, o levantamento das exigências climáticas das culturas, o estudo de dados da região e o processamento para determinar os municípios indicados ao plantio e seus calendários agrícolas. Atualmente, o ZARC contempla dezenas de culturas anuais e permanentes, além de consórcios, como o de milho com braquiária.\n\nAlém de orientar o manejo agrícola, o ZARC serve como requisito de política pública: para ter acesso a programas de seguro agrícola (como a subvenção federal do seguro rural) e ao Programa de Garantia da Atividade Agropecuária (Proagro), o produtor deve obrigatoriamente seguir as recomendações do zoneamento. O cumprimento de suas diretrizes também pode ser exigido por agentes financeiros para a concessão de crédito rural.",
+    "answer": "O Zoneamento Agrícola de Risco Climático (ZARC) é um instrumento de política agrícola e gestão de riscos na agricultura, mantido pelo Ministério da Agricultura, Pecuária e Abastecimento (MAPA) e utilizado no Brasil desde 1996. Seu objetivo principal é minimizar os riscos relacionados a perdas agrícolas decorrentes de eventos climáticos adversos.\n\nO ZARC funciona permitindo que cada município identifique a melhor época de plantio para diferentes culturas, considerando os tipos de solo e os ciclos de cultivares. Para elaborar o zoneamento, são analisados parâmetros de clima, solo e ciclos de plantas para determinar quais municípios são indicados ao plantio de determinadas culturas, bem como seus respectivos calendários de semeadura. \n\nAlém de orientar o produtor, o ZARC serve como requisito obrigatório: os produtores precisam seguir suas recomendações para poder acessar programas de seguro agrícola, a subvenção federal do seguro rural e, em alguns casos, para a concessão de crédito rural por agentes financeiros.",
     "key_numbers": [],
-    "answer_length": 1354,
-    "captured_at": "2026-10-23T22:39:07.646409"
+    "answer_length": 1025,
+    "captured_at": "2026-10-28T23:50:17.699177"
   },
   "prompt_regression_002": {
     "question": "Quais culturas têm maior risco até 2040?",
-    "answer": "Com base nos trechos fornecidos, a cultura que sofre os impactos mais relevantes em todos os cenários apresentados até 2040 é a **soja**, sendo destacada como uma das culturas mais afetadas, com reduções expressivas em suas áreas de baixo risco climático (*Agricultura - Produto 4 Complemento.pdf* — pág. 7; *Agricultura - Produto 8 final.pdf* — pág. 14).\n\nAlém da soja, o **milho** (tanto o de safra normal quanto o milho safrinha) também figura entre os mais afetados em termos de porcentagem de redução de áreas de baixo risco climático no modelo HadGen2ES, com valores médios nacionais chegando a mais de 35% no rcp4.5 e 28% no rcp8.5 (*Agricultura - Produto 4 Complemento.pdf* — pág. 7). O relatório aponta que o milho safrinha é particularmente impactado por sofrer reduções na disponibilidade de temperatura e água nos cenários futuros (*Agricultura - Produto 4 Complemento.pdf* — pág. 7). \n\nDe forma geral, as simulações indicam um aumento do risco agroclimático e redução do potencial produtivo de baixo risco para quase todas as lavouras até 2040, sendo os efeitos mais intensos gerados pelo modelo climático HadGEM2 ES (*Agricultura - Produto 8 final.pdf* — pág. 14).",
+    "answer": "Com base nos trechos fornecidos do relatório Brasil 2040, a cultura mais afetada e com maior redução de áreas de baixo risco climático nos cenários futuros até 2040 é a **soja**, apresentando impactos relevantes em todos os cenários analisados. O **milho safrinha** e o **milho de safra normal** também estão entre os mais afetados em termos de porcentagem de redução de áreas de baixo risco climático, especialmente no modelo HadGEM2-ES, onde os valores médios nacionais de redução para o milho safrinha chegam a mais de 35% no rcp4.5 e 28% no rcp8.5 (com fortes impactos no Sudeste).\n\nPor outro lado, no extremo opuesto, as culturas **menos afetadas** são a **cana-de-açúcar** e o **sorgo**, que sofrem as menores reduções de áreas de baixo risco de acordo com o modelo HadGEM2-ES. As variações de redução para a cana ficam em torno de 3% a 4% (com aumentos expressivos na Região Sul), enquanto para o sorgo as reduções no país ficam abaixo de 10% no HadGEM2-ES e praticamente inalteradas no modelo MIROC.",
     "key_numbers": [
+      "10%",
       "28%",
-      "35%"
+      "3%",
+      "35%",
+      "4%"
     ],
-    "answer_length": 1178,
-    "captured_at": "2026-10-23T22:39:13.448155"
+    "answer_length": 1007,
+    "captured_at": "2026-10-28T23:50:24.047537"
   },
   "agro_001": {
     "question": "Qual é a projeção de crescimento da produção de grãos e oleaginosas do Brasil entre 2010 e 2040?",
-    "answer": "Com base nos trechos fornecidos, a projeção de crescimento da produção de grãos e oleaginosas no Brasil entre 2010 e 2040 varia conforme o documento de referência:\n\n- **Produto 8** (pág. 10) e **Produto 5** (pág. 18): Apresentam uma variação projetada de **132%** na produção para o período entre 2010 e 2040 (*Agricultura - Produto 8 final.pdf — pág. 10* e *Agricultura - Produto 5 final.pdf — pág. 18*).\n- **Produto 1** (pág. 5): Apresenta uma variação projetada de **167%** na produção para o mesmo período (*Agricultura - Produto 1 final.pdf — pág. 5*).",
+    "answer": "Com base nos trechos fornecidos, existem duas projeções para o crescimento da produção de grãos e oleaginosas no Brasil entre 2010 e 2040, dependendo do documento consultado:\n\n- No **Produto 8 final** (página 10) e no **Produto 5 final** (página 18), a variação projetada na produção entre 2010 e 2040 é de **132%** para grãos e oleaginosas.\n- No **Produto 1 final** (página 5), a variação projetada na produção para o mesmo período é de **167%** para grãos e oleaginosas.\n\nAmbos os cenários de referência apontam para um forte crescimento do agronegócio brasileiro, impulsionado pelo consumo doméstico e pelas exportações, embora com taxas de crescimento anual inferiores às observadas na década anterior.",
     "key_numbers": [
       "132%",
       "167%"
     ],
-    "answer_length": 557,
-    "captured_at": "2026-10-23T22:39:19.051257"
+    "answer_length": 706,
+    "captured_at": "2026-10-28T23:50:30.071157"
   },
   "energia_001": {
     "question": "Qual o custo operacional do SIN no pior cenário climático (HadGEM RCP 8.5)?",
-    "answer": "Com base nos trechos fornecidos, no cenário extremo de impacto (HadGEM), o custo total de operação do Sistema Interligado Nacional (SIN) pode atingir valores de 14,4 a 16,7 vezes maiores que no caso de referência/linha de base (*Energia Produto 02.pdf — pág. 80* e *Energia Produto 03.pdf — pág. 55*). Esse aumento expressivo nos custos é impulsionado pela necessidade de as usinas termelétricas trabalharem a plena capacidade de forma ininterrupta para compensar a dramática redução na disponibilidade de energia hidrelétrica.",
+    "answer": "Com base nos trechos fornecidos, não há um valor numérico exato em dólares ou reais para o custo operacional do SIN no cenário HadGEM RCP 8.5. No entanto, o relatório aponta que, em termos de custos operacionais, os impactos das mudanças climáticas levam a aumentos drásticos no sistema: nos cenários de maior impacto, os custos operacionais variam entre um aumento de **3,5 a 16,7 vezes com relação à linha de base** (conforme mencionado em *Energia Produto 03.pdf — pág. 69* e *Energia Produto 02.pdf — pág. 84*). \n\nO relatório explica que isso ocorre porque as usinas termelétricas, que habitualmente atuam de forma flexível e apenas para complementar períodos desfavoráveis, passam a operar de forma ininterrupta e a plena capacidade para compensar a queda na geração hidrelétrica, elevando substancialmente os gastos com combustíveis.",
     "key_numbers": [
       "16.7x"
     ],
-    "answer_length": 527,
-    "captured_at": "2026-10-23T22:39:24.026877"
+    "answer_length": 839,
+    "captured_at": "2026-10-28T23:50:35.717099"
   }
 }

@@ -132,6 +132,15 @@ class TestRetrievalHitRate:
             f"  → Fix: the right chunks may not be retrieved, or chunk size may be too small"
         )
 
+    @pytest.mark.parametrize("case", RETRIEVAL_CASES, ids=[c["id"] for c in RETRIEVAL_CASES])
+    def test_source_hit_rate(self, case):
+        chunks = search(case["question"])
+        assert chunks_contain_source(chunks, case["expected_chunk_sources"]), (
+            f"\n[{case['id']}] SOURCE MISS (Hit Rate@{PROD_TOP_K})\n"
+            f"  Expected source(s): {case['expected_chunk_sources']}\n"
+            f"  Got: {sorted(returned_sources(chunks))}"
+        )
+
 
 class TestRetrievalAtDifferentK:
     def test_cross_sector_query_covers_multiple_sources(self):

@@ -38,7 +38,7 @@
   {
     "id": "energia_002",
     "question": "O que é o fator de fricção das hidrelétricas brasileiras?",
-    "expected_answer_contains": ["fricção", "MWh", "água"],
+    "expected_answer_contains": ["fricção", "9%", "MWh", "água"],
     "expected_chunk_sources": ["Energia Produto 02.pdf"],
     "category": "energia",
     "difficulty": "conceptual",
@@ -196,11 +196,11 @@
   {
     "id": "faithfulness_001",
     "question": "O risco de déficit no cenário MIROC RCP 4.5 ultrapassa o limite regulatório de 5%?",
-    "expected_answer_contains": ["MIROC", "déficit", "risco"],
+    "expected_answer_contains": ["17%", "MIROC", "déficit"],
     "expected_chunk_sources": ["Energia Produto 02.pdf", "Energia Produto 03.pdf"],
     "category": "faithfulness",
     "difficulty": "factual",
-    "notes": "Peak risk is 34% under MIROC 4.5 — well above the 5% limit. Removed 'ultrapassa' and '5%' as they may not appear verbatim in retrieved chunks."
+    "notes": "No MIROC 4.5 o risco de déficit fica em média acima de 10%, chegando a 17% em alguns anos, acima do limite de 5% (Energia Produto 03, pág. 69). O 34% do enunciado original não existe no texto indexado."
   },
   {
     "id": "faithfulness_002",

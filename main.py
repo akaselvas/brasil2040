@@ -8,6 +8,7 @@ from supabase import create_client
 from google import genai
 from google.genai import types
 import os
+import re
 
 app = FastAPI()
 
@@ -29,7 +30,7 @@ GEMINI_MODEL = os.environ.get("GEMINI_ANSWER_MODEL", "gemini-3.5-flash-lite")
 SYSTEM_PROMPT = """Você é o assistente especializado do Brasil 2040, uma ferramenta de visualização do relatório "Brasil 2040 — Mudanças Climáticas e Vulnerabilidade Agrícola".
 
 REGRAS DE ESCOPO E REDIRECIONAMENTO:
-- Se a pergunta for completamente fora do escopo do Brasil 2040 ou irrelevante para o tema de risco climático (como receitas, piadas ou assuntos gerais), responda exatamente: "Esta pergunta está fora do escopo do assistente Brasil 2040. Só posso responder perguntas sobre o relatório de risco climático."
+- Se a pergunta cita o relatório Brasil 2040, ou trata de clima, recursos naturais ou infraestrutura do Brasil, mas os trechos não trazem a informação pedida, responda "Não encontrei esse dado específico nos trechos fornecidos" em vez de usar a frase de fora de escopo. Use a frase de fora de escopo apenas para assuntos sem nenhuma relação com o relatório (receitas, esportes, entretenimento, assuntos gerais).
 - Você pode receber perguntas em outros idiomas (como inglês). Traduza-as mentalmente para buscar as respostas no contexto em português, mas responda sempre em português do Brasil.
 
 REGRAS DE CONTEXTO E FIDELIDADE:
@@ -63,6 +64,11 @@ ESTILO DE RESPOSTA:
 Responda sempre em português do Brasil. Seja conciso e técnico quando necessário, mas acessível. Máximo de 3 parágrafos.
 """
 
+EN_HINTS = {"the", "what", "which", "how", "is", "are", "of", "in", "and", "for", "to", "will", "be"}
+
+def lexical_text(question: str) -> str:
+    words = re.findall(r"[a-z]+", question.lower())
+    return "" if sum(w in EN_HINTS for w in words) >= 2 else question
 
 class QueryRequest(BaseModel):
     question: str
@@ -81,7 +87,7 @@ def search(req: QueryRequest):
     )[0].tolist()
     result = supabase.rpc(
         "match_documents_hybrid",
-        {"query_embedding": embedding, "query_text": req.question, "match_count": req.top_k}
+        {"query_embedding": embedding, "query_text": lexical_text(req.question), "match_count": req.top_k}
     ).execute()
     return {"chunks": result.data}
 
@@ -93,7 +99,7 @@ async def chat(req: ChatRequest):
     )[0].tolist()
     result = supabase.rpc(
         "match_documents_hybrid",
-        {"query_embedding": embedding, "query_text": req.question, "match_count": req.top_k}
+        {"query_embedding": embedding, "query_text": lexical_text(req.question), "match_count": req.top_k}
     ).execute()
     chunks = result.data
     context = "\n\n".join(

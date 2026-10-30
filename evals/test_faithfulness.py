@@ -245,6 +245,12 @@ class TestHallucinationTraps:
     def test_trap_questions_are_not_hallucinated(self, case):
         chunks, answer = get_chunks_and_answer(case["question"])
 
+        if case.get("should_hedge"):
+            assert is_refusal(answer), (
+                f"\n[{case['id']}] TRAP NOT HEDGED: the answer should say the information was not found\n"
+                f"  Answer: {answer[:300]}"
+            )
+
         question_norm = normalize(case["question"])
         forbidden_terms = [
             t for t in case.get("must_not_contain", [])
