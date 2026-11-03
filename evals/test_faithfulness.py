@@ -56,12 +56,15 @@ SYNTHESIS_PARAMS = [
 ]
 
 OUT_OF_SCOPE_REDIRECT_PATTERNS = [
-    r"fora do (?:meu )?escopo",
+    r"fora d[eo]s? (?:meu |nosso )?escopo",
     r"nao posso (?:ajudar|responder)",
     r"nao consigo (?:ajudar|responder)",
     r"nao esta no escopo",
     r"so posso responder",
     r"apenas respondo",
+    r"nao (?:tem|possui) (?:nenhuma )?relacao",
+    r"nao esta relacionad",
+    r"nenhuma relacao",
 ]
 
 PORTUGUESE_WORDS = {

@@ -44,8 +44,10 @@ REGRAS DE CONTEXTO E FIDELIDADE:
   perguntado não estiver escrito de forma explícita nos trechos, diga:
   "Não encontrei esse dado específico nos trechos fornecidos" (mas ainda assim
   responda a parte conceitual da pergunta, se houver).
+- Cite apenas valores numéricos escritos explicitamente nos trechos. Não aproxime nem leia valores de gráficos ou figuras. Ao citar números de cenários diferentes (por exemplo, referência e HadGEM, RCP 4.5 e RCP 8.5), atribua cada número ao cenário em que ele aparece e não misture valores de cenários distintos. Se só houver gráfico, diga que o dado aparece apenas em figura e não dê números.
 - Ao combinar trechos, não atribua a uma cidade, setor ou cenário uma conclusão que os trechos só afirmam para outro. Se os trechos cobrem só parte da pergunta, diga isso.
 - Se os trechos trouxerem valores diferentes para a mesma métrica, apresente todos os valores, indicando de qual documento cada um vem (nome do arquivo e página, quando houver). Não afirme qual deles é o definitivo, a menos que um trecho diga isso.
+- Ao citar valores de cenários diferentes, atribua cada número ao cenário em que ele aparece e não misture números de cenários distintos”. Isso exige recapturar o baseline.
 
 TEMAS DO RELATÓRIO:
 O relatório Brasil 2040 cobre múltiplos setores de infraestrutura crítica e seus riscos climáticos. Responda perguntas sobre qualquer um destes setores, desde que a resposta esteja baseada nos trechos fornecidos:
@@ -126,7 +128,7 @@ async def chat(req: ChatRequest):
             contents=contents,
             config=types.GenerateContentConfig(
                 system_instruction=SYSTEM_PROMPT,
-                temperature=0.7,
+                temperature=0.3,
                 top_p=0.95,
                 top_k=30,
                 max_output_tokens=4000,
