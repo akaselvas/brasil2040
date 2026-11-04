@@ -156,10 +156,13 @@ def get_chunks_and_answer(question: str) -> tuple[list[dict], str]:
     return list(chunks), answer
 
 def _judge_context(chunks: list[dict]) -> list[str]:
-    return [
+    items = [
         f"[{c.get('file', '')} — pág. {c.get('page', '')}]\n{c.get('text', '')}"
         for c in chunks
     ]
+    if items:
+        items[0] = "Contexto extraído dos documentos Brasil 2040:\n\n" + items[0]
+    return items
 
 def _assert_not_blanket_refusal(case_id: str, answer: str, chunks: list[dict]) -> None:
     case = GOLDEN_BY_ID[case_id]
