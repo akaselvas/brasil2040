@@ -227,7 +227,8 @@
     "expected_chunk_sources": ["Energia Produto 02.pdf"],
     "category": "retrieval",
     "difficulty": "factual",
-    "notes": "Factual check simplified to stable keywords to prevent RAG chunk splitting errors."
+    "allow_refusal": true,
+    "notes": "Os valores de demanda do SIN aparecem apenas em gráficos. O chatbot deve dizer que não encontrou valores numéricos, sem estimar números."
   },
   {
     "id": "retrieval_precision_002",
