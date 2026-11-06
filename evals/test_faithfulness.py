@@ -327,8 +327,8 @@ class TestOutOfScope:
 class TestResponseQuality:
     @pytest.mark.parametrize("case", TERM_PARAMS)
     def test_expected_terms_appear_in_factual_answers(self, case):
-        if case.get("allow_refusal"):
-            pytest.skip(f"[{case['id']}] case allows refusal")
+        # if case.get("allow_refusal"):
+        #     pytest.skip(f"[{case['id']}] case allows refusal")
 
         chunks, answer = get_chunks_and_answer(case["question"])
         normalized_answer = normalize(answer)
@@ -336,6 +336,9 @@ class TestResponseQuality:
             t for t in case["expected_answer_contains"]
             if not _term_in_text(t, normalized_answer)
         ]
+        if case.get("allow_refusal") and is_refusal(answer):
+            return
+        
         assert not missing, (
             f"\n[{case['id']}] FACTUAL ANSWER MISSING EXPECTED TERMS: {missing}\n"
             f"  Q: {case['question'][:120]}\n"
