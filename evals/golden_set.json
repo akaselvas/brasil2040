@@ -229,7 +229,7 @@
     "difficulty": "factual",
     "allow_refusal": true,
     "should_hedge": true,
-    "notes": "Os valores de demanda do SIN aparecem apenas em gráficos. O chatbot deve dizer que não encontrou valores numéricos, sem estimar números."
+    "notes": "O texto não traz a demanda média do SIN de 2015 a 2030 como valor explícito. Há só números relacionados: cerca de 35 GW médios de garantia física para atender ao crescimento da demanda até 2030 (Energia Produto 02, pág. 49) e redução de cerca de 14 GW médio na carga em 2030 no cenário alternativo (pág. 73). O chatbot deve dizer que não encontrou o valor, podendo citar esses números relacionados, sem estimar valores lidos de gráficos."
   },
   {
     "id": "retrieval_precision_002",
