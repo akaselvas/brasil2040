@@ -114,6 +114,8 @@ REFUSAL_MARKERS = [
     "não há informações",
     "não há dados",
     "não há registro",
+    "apenas em figura",
+    "apenas em gráfico",
 ]
 
 SENTENCE_SPLIT = re.compile(r"(?<=[.!?])\s+|\n+")
@@ -336,8 +338,15 @@ class TestResponseQuality:
             t for t in case["expected_answer_contains"]
             if not _term_in_text(t, normalized_answer)
         ]
-        if case.get("allow_refusal") and is_refusal(answer):
-            return
+        if case.get("allow_refusal"):
+            if case.get("should_hedge"):
+                assert is_refusal(answer), (
+                    f"\n[{case['id']}] expected a refusal (values only in figures)\n"
+                    f"  Answer: {answer[:300]}"
+                )
+                return
+            if is_refusal(answer):
+                return
         
         assert not missing, (
             f"\n[{case['id']}] FACTUAL ANSWER MISSING EXPECTED TERMS: {missing}\n"

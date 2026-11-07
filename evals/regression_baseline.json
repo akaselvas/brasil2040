@@ -1,9 +1,9 @@
 {
   "_metadata": {
-    "captured_at": "2026-11-04T22:39:18.850223",
-    "config_hash": "4e282d7b",
+    "captured_at": "2026-11-06T00:55:16.368411",
+    "config_hash": "d1d594ae",
     "config": {
-      "prompt": "a40355f6",
+      "prompt": "7f494100",
       "model": "gemini-3.5-flash-lite",
       "temperature": "0.3",
       "top_k": "10"
@@ -12,14 +12,14 @@
   },
   "prompt_regression_001": {
     "question": "O que é o ZARC e como ele funciona?",
-    "answer": "O Zoneamento Agrícola de Risco Climático (ZARC) é um instrumento de política agrícola e gestão de riscos mantido pelo Ministério da Agricultura, Pecuária e Abastecimento (MAPA) no Brasil, utilizado desde 1996. O seu objetivo principal é minimizar os riscos de perdas na agricultura decorrentes de fenômenos climáticos adversos.\n\nO ZARC funciona permitindo que cada município identifique a melhor época de plantio para diferentes culturas, considerando os tipos de solo e os ciclos de cultivares. Para isso, o zoneamento utiliza análises de frequência de dados meteorológicos e parâmetros de clima e solo para espacializar informações de risco. \n\nNa prática, as recomendações do ZARC servem como um pacote tecnológico obrigatório: o atendimento às suas normas é exigido para que os produtores possam acessar programas de seguro agrícola (como a subvenção federal ao prêmio do seguro rural) e o Programa de Garantia da Atividade Agropecuária (Proagro), sendo também utilizado por alguns agentes financeiros como condição para a concessão de crédito rural.",
+    "answer": "O Zoneamento Agrícola de Risco Climático (ZARC) é um instrumento de política agrícola e gestão de riscos na agricultura, mantido pelo Ministério da Agricultura, Pecuária e Abastecimento (MAPA). Ele é utilizado no Brasil desde 1996 com o objetivo de minimizar perdas agrícolas decorrentes de eventos climáticos adversos. \n\nO ZARC funciona permitindo que cada município identifique a melhor época de plantio para diferentes culturas, considerando os diversos tipos de solo e ciclos de cultivares. O estudo analisa parâmetros de clima, solo e ciclos de plantas para determinar os municípios indicados ao plantio e estabelecer seus respectivos calendários ou épocas de semeadura. \n\nAlém disso, o ZARC serve como requisito para o acesso a políticas públicas e crédito: o produtor deve observar as recomendações do zoneamento para poder fazer jus a programas de seguro agrícola (como o Programa de Garantia da Atividade Agropecuária - Proagro) e à subvenção federal do seguro rural, sendo que alguns agentes financeiros também condicionam a concessão de crédito rural ao seu uso.",
     "key_numbers": [],
-    "answer_length": 1053,
-    "captured_at": "2026-11-04T22:39:32.414912"
+    "answer_length": 1073,
+    "captured_at": "2026-11-06T00:55:36.920194"
   },
   "prompt_regression_002": {
     "question": "Quais culturas têm maior risco até 2040?",
-    "answer": "Com base nos relatórios do Brasil 2040, a cultura da **soja** é apontada como a mais afetada e com impactos mais relevantes em todos os cenários até 2040, apresentando reduções significativas nas áreas de baixo risco climático (cerca de 36% no RCP 4.5 e 39% no RCP 8.5 para o modelo HadGEM2-ES, e reduções em torno de 14% no RCP 4.5 e 11% no RCP 8.5 para o modelo MIROC).\n\nO **milho** (tanto o milho safrinha quanto o de safra normal) também figura entre os mais afetados em termos de percentual de redução de áreas de baixo risco no modelo HadGEM2-ES, com valores médios nacionais que chegam a mais de 35% no RCP 4.5 e 28% no RCP 8.5. O milho safrinha sofre impactos adicionais expressivos devido à redução na disponibilidade de temperatura e água nos meses finais de seu ciclo.\n\nEm contrapartida, culturas como a **cana-de-açúcar** e o **sorgo** encontram-se entre as menos afetadas. Segundo o modelo HadGEM2-ES, a cana apresenta reduções de área ao redor de 3% (RCP 4.5) e 4% (RCP 8.5), enquanto o sorgo registra reduções de área de baixo risco no país abaixo de 10% no HadGEM2-ES e fica praticamente inalterado no modelo MIROC.",
+    "answer": "Com base nos trechos fornecidos, a cultura da **soja** é apontada como uma das mais afetadas nos cenários futuros, sofrendo impactos relevantes em todos os cenários apresentados até 2040. Observa-se uma redução geral das áreas de baixo risco climático no Brasil de cerca de 36% no RCP 4.5 e 39% no RCP 8.5 para o modelo HadGEM2-ES, enquanto para o modelo MIROC a redução fica em torno de 14% (RCP 4.5) e 11% (RCP 8.5).\n\nO **milho** (tanto o milho de safra normal quanto, de forma mais acentuada, o **milho safrinha**) também figura entre os mais afetados em termos de porcentagem de redução de áreas de baixo risco climático no modelo HadGEM2-ES, com valores médios nacionais que chegam a mais de 35% no RCP 4.5 e 28% no RCP 8.5. \n\nEm contrapartida, entre as culturas **menos afetadas** estão a **cana-de-açúcar** e o **sorgo**. A cana-de-açúcar sofre reduções ao redor de 3% (RCP 4.5) e 4% (RCP 8.5) segundo o modelo HadGEM2-ES, enquanto o sorgo apresenta reduções de área de baixo risco no país abaixo de 10% no mesmo modelo e fica praticamente inalterado para o modelo MIROC.",
     "key_numbers": [
       "10%",
       "11%",
@@ -31,28 +31,26 @@
       "39%",
       "4%"
     ],
-    "answer_length": 1131,
-    "captured_at": "2026-11-04T22:39:43.316820"
+    "answer_length": 1078,
+    "captured_at": "2026-11-06T00:55:42.859787"
   },
   "agro_001": {
     "question": "Qual é a projeção de crescimento da produção de grãos e oleaginosas do Brasil entre 2010 e 2040?",
-    "answer": "Com base nos trechos fornecidos, a projeção de crescimento da produção de grãos e oleaginosas do Brasil entre 2010 e 2040 varia conforme o documento de referência:\n\n- No **Produto 8 (pág. 10)** e no **Produto 5 (pág. 18)**, a variação projetada na produção para o período é de **132%**.\n- No **Produto 1 (pág. 5)**, a variação projetada na produção para o período é de **167%**.",
+    "answer": "Com base nos trechos fornecidos, a projeção de crescimento da produção de grãos e oleaginosas do Brasil entre 2010 e 2040 varia conforme o documento de referência:\n\n- O **Produto 8** (pág. 10) e o **Produto 5** (pág. 18) apontam uma variação de **132%** na produção para o período.\n- O **Produto 1** (pág. 5), em seus resultados preliminares para o cenário de referência, indica uma variação projetada de **167%** para grãos e oleaginosas entre 2010 e 2040.",
     "key_numbers": [
       "132%",
       "167%"
     ],
-    "answer_length": 378,
-    "captured_at": "2026-11-04T22:39:52.399741"
+    "answer_length": 457,
+    "captured_at": "2026-11-06T00:55:49.290697"
   },
   "energia_001": {
     "question": "Qual o custo operacional do SIN no pior cenário climático (HadGEM RCP 8.5)?",
-    "answer": "Com base nos trechos fornecidos, o relatório não especifica um valor monetário exato para o custo operacional do SIN no pior cenário climático (HadGEM RCP 8.5). No entanto, o texto aponta que os impactos climáticos levam a custos operacionais altíssimos, variando entre um aumento de 3,5 a 16,7 vezes em relação à linha de base, nos cenários de menor e maior impacto, respectivamente. \n\nAlém disso, os trechos mencionam que os investimentos necessários para construir capacidade de geração para adaptação são de 158 bilhões de dólares até 2040 no cenário HadGEM 8.5 (conforme a página 69) e de 280 bilhões de dólares até 2040 no mesmo cenário (conforme mencionado na página 60).",
+    "answer": "Com base nos trechos fornecidos, o relatório não especifica um valor monetário absoluto para o custo operacional do SIN no cenário HadGEM RCP 8.5. No entanto, o texto aponta que os impactos climáticos levam a custos operacionais altíssimos, com um **aumento de 3,5 a 16,7 vezes** em relação à linha de base, correspondendo, respectivamente, aos cenários de menor e maior impacto.",
     "key_numbers": [
-      "158bi",
-      "16.7x",
-      "280bi"
+      "16.7x"
     ],
-    "answer_length": 678,
-    "captured_at": "2026-11-04T22:40:03.347153"
+    "answer_length": 379,
+    "captured_at": "2026-11-06T00:55:55.207750"
   }
 }

@@ -2,7 +2,7 @@
   {
     "id": "agro_001",
     "question": "Qual é a projeção de crescimento da produção de grãos e oleaginosas do Brasil entre 2010 e 2040?",
-    "expected_answer_contains": ["132%", "grãos", "oleaginosas", "2040"],
+    "expected_answer_contains": ["132%", "167%", "grãos", "oleaginosas", "2040"],
     "expected_chunk_sources": ["Agricultura - Produto 1 final.pdf", "Agricultura - Produto 5 final.pdf", "Agricultura - Produto 8 final.pdf"],
     "category": "agricultura",
     "difficulty": "factual",
@@ -228,6 +228,7 @@
     "category": "retrieval",
     "difficulty": "factual",
     "allow_refusal": true,
+    "should_hedge": true,
     "notes": "Os valores de demanda do SIN aparecem apenas em gráficos. O chatbot deve dizer que não encontrou valores numéricos, sem estimar números."
   },
   {

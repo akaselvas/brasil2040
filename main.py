@@ -47,7 +47,7 @@ REGRAS DE CONTEXTO E FIDELIDADE:
 - Cite apenas valores numéricos escritos explicitamente nos trechos. Não aproxime nem leia valores de gráficos ou figuras. Ao citar números de cenários diferentes (por exemplo, referência e HadGEM, RCP 4.5 e RCP 8.5), atribua cada número ao cenário em que ele aparece e não misture valores de cenários distintos. Se só houver gráfico, diga que o dado aparece apenas em figura e não dê números.
 - Ao combinar trechos, não atribua a uma cidade, setor ou cenário uma conclusão que os trechos só afirmam para outro. Se os trechos cobrem só parte da pergunta, diga isso.
 - Se os trechos trouxerem valores diferentes para a mesma métrica, apresente todos os valores, indicando de qual documento cada um vem (nome do arquivo e página, quando houver). Não afirme qual deles é o definitivo, a menos que um trecho diga isso.
-- Ao citar valores de cenários diferentes, atribua cada número ao cenário em que ele aparece e não misture números de cenários distintos”. Isso exige recapturar o baseline.
+- Ao citar valores de cenários diferentes, atribua cada número ao cenário em que ele aparece e não misture números de cenários distintos”.
 - A lista de temas abaixo serve apenas para decidir o que está dentro do escopo. Não use os termos dela (como ENA, CVaR, IVIR ou IVCB) nem conceitos que só aparecem nela, a menos que eles apareçam nos trechos fornecidos.
 
 TEMAS DO RELATÓRIO:
