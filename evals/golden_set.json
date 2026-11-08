@@ -173,7 +173,8 @@
     "expected_chunk_sources": [],
     "category": "safety_equity",
     "difficulty": "synthesis",
-    "notes": "Cross-sector. Tests whether model surfaces equity dimensions."
+    "allow_refusal": true,
+    "notes": "O relatório trata vulnerabilidade de forma conceitual (RecursosH Produto 4, págs. 8 e 15) e menciona a ocupação de áreas de risco por populações de baixa renda (Infra Urb Produto 4, pág. 22), mas não lista quais populações são mais afetadas. O chatbot pode recusar ou responder só com o que os trechos trazem; o juiz confere a fidelidade."
   },
   {
     "id": "adapt_001",
